@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Java_agent.iml" filepath="$PROJECT_DIR$/.idea/modules/Java_agent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Java_agent.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Java_agent.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Java_agent.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Java_agent.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Java_agent.app.test.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Java_agent.app.test.iml" />
+    </modules>
+  </component>
+</project>
