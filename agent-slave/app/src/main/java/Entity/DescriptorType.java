@@ -25,7 +25,7 @@ public class DescriptorType {
         ex) Ljava/lang/String => String , Ljava/util/Locale=> Locale(Local type)
 
     ArrayType:
-        [ ComponentType 이중 배열은 2개
+        [ ComponentType
         ex) [Ljava/lang/Object; => Object[]
 
     ( ParameterDescriptor* ) ReturnDescriptor

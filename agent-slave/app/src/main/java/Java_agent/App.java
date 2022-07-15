@@ -20,50 +20,11 @@ import java.util.Scanner;
 public class App {
 
     static DataSetRepo taskRepository = new DataSetRepoMemory();
-    public static void getclassandgetmethod(){
-        //        db
-        Scanner sc = new Scanner(System.in);
-
-//        DataSet data = GetClass.getClass("Sample/KoreaSoccerPlayer");
-
-//        String ClassName = sc.next();
-
-        String ClassName = "Package.MyClassVisitor";
-
-        while(true)
-        {
-            if (ClassName == "java.lang.Object" || ClassName == null )
-            {
-                break;
-            }
-            DataSet data = null;
-            try {
-                data = GetClass.getClass(ClassName);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            taskRepository.save(data);
-            ClassName = data.getSuper_class();
-
-
-        }
-
-        List<DataSet> data = taskRepository.find_all();
-
-        Collections.reverse(data);
-        String tab = "\t";
-
-
-
-
-
-    }
-
 
     public static void main(String[] args) throws IOException {
 
         Flag flag = new Flag();
-        String ClassName = "org.objectweb.asm.ClassVisitor";
+        String ClassName = "java.lang.String";
         //DescriptorType descriptorType = new DescriptorType();
         //System.out.println(descriptorType.getDescriptorType("(Ljava/lang/CharSequence;B;[[Ljava/lang/CharSequence;)Ljava/lang/String;"));
 
@@ -71,8 +32,6 @@ public class App {
         taskRepository.save(data);
         data.printDataset();
 
-        Scanner sc = new Scanner(System.in);
-        String methodName = sc.next();
 
     }
 }

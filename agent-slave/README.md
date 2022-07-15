@@ -11,91 +11,87 @@ https://living-light-8ce.notion.site/Java-ASM-c1a21d02736c4d5ea6785bb24cff3e0a
 
 ### 개발 환경 
 
-1. git clone 
-2. JDK > 11(추후 8로 수정)
-3. gradle > 
-4. intellij setting >
 
 ---
 
-### 실행 
-
-```linux
-jennifer>>> JAVA -jar agent.class 
-
-FILE SERCHING 
-[====================================-----]
-complete! 
-file list:
-  Java_agent/SoccerPlayer
-  Java_agent/KoreaSoccerPlayer
-  Java_agent/App
-  ......  
-  >> SoccerPlayer(Enter)
-
-```
-
----
 
 
 ### cli result
 
 ```linux
-class name: Java_agent/SoccerPlayer
-  Source name: SoccerPlayer.java
-  Major Version: 55
-  Super class: java/lang/Object
-  interface: 
-    Java_agent/Soccer
-    Java_agent/Soccer2
-  Field_value: 
-    value:name [Ljava/lang/String;, null]
-    value:num [I, null]
-  Method_value: 
-     method name:<init> (Ljava/lang/String;I)V
-     method name:setName (Ljava/lang/String;)V
-      INVOKESPECIAL Java_agent/SoccerPlayer.setName (Ljava/lang/String;)V
-     method name:setNum (I)V
-      INVOKESPECIAL Java_agent/SoccerPlayer.setNum (I)V
-     method name:getName ()Ljava/lang/String;
-     method name:getNum ()I
+Access : [PUBLIC, FINAL, TRANSITIVE]
+Class name: java/lang/String
+Source name: null
+Major Version: 55
+Super class: java/lang/Object
+interface
+  java/io/Serializable
+  java/lang/Comparable
+  java/lang/CharSequence
+Field_value
+                        access                      name                                     desc                          value
+              [PRIVATE, FINAL]                     value                                       [B                           null
+              [PRIVATE, FINAL]                     coder                                        B                           null
+                     [PRIVATE]                      hash                                        I                           null
+      [PRIVATE, STATIC, FINAL]          serialVersionUID                                        J           -6849794470754667710
+               [STATIC, FINAL]           COMPACT_STRINGS                                        Z                           null
+      [PRIVATE, STATIC, FINAL]    serialPersistentFields             [Ljava/io/ObjectStreamField;                           null
+       [PUBLIC, STATIC, FINAL]    CASE_INSENSITIVE_ORDER                   Ljava/util/Comparator;                           null
+               [STATIC, FINAL]                    LATIN1                                        B                              0
+               [STATIC, FINAL]                     UTF16                                        B                              1
+
+Method_value
+                        access                      name                                                                             desc 
+             [PRIVATE, STATIC]                rangeCheck                                                           ([CII)Ljava/lang/Void; 
+                      [PUBLIC]                    length                                                                              ()I 
+                      [PUBLIC]                   isEmpty                                                                              ()Z 
+                      [PUBLIC]                    charAt                                                                             (I)C 
+                      [PUBLIC]               codePointAt                                                                             (I)I 
+                      [PUBLIC]           codePointBefore                                                                             (I)I 
+                      [PUBLIC]            codePointCount                                                                            (II)I 
+                      [PUBLIC]        offsetByCodePoints                                                                            (II)I 
+                      [PUBLIC]                  getChars                                                                         (II[CI)V 
+                      [PUBLIC]                  getBytes                                                                         (II[BI)V 
+                      [PUBLIC]                  getBytes                                                           (Ljava/lang/String;)[B 
+                      [PUBLIC]                  getBytes                                                   (Ljava/nio/charset/Charset;)[B 
+                      [PUBLIC]                  getBytes                                                                             ()[B 
+                      [PUBLIC]                    equals                                                            (Ljava/lang/Object;)Z 
+                      [PUBLIC]             contentEquals                                                      (Ljava/lang/StringBuffer;)Z 
+                     [PRIVATE]      nonSyncContentEquals                                             (Ljava/lang/AbstractStringBuilder;)Z 
+                      [PUBLIC]             contentEquals                                                      (Ljava/lang/CharSequence;)Z 
+                      [PUBLIC]          equalsIgnoreCase                                                            (Ljava/lang/String;)Z 
+                      [PUBLIC]                 compareTo                                                            (Ljava/lang/String;)I 
+                      [PUBLIC]       compareToIgnoreCase                                                            (Ljava/lang/String;)I 
+                      [PUBLIC]             regionMatches                                                         (ILjava/lang/String;II)Z 
+                      [PUBLIC]             regionMatches                                                        (ZILjava/lang/String;II)Z 
+                      [PUBLIC]                startsWith                                                           (Ljava/lang/String;I)Z 
+                      [PUBLIC]                startsWith                                                            (Ljava/lang/String;)Z 
+                      [PUBLIC]                  endsWith                                                            (Ljava/lang/String;)Z 
+                      [PUBLIC]                  hashCode                                                                              ()I 
+                      [PUBLIC]                   indexOf                                                                             (I)I 
+                      [PUBLIC]                   indexOf                                                                            (II)I 
+                      [PUBLIC]               lastIndexOf                                                                             (I)I 
+                      [PUBLIC]               lastIndexOf                                                                            (II)I 
+                      [PUBLIC]                   indexOf                                                            (Ljava/lang/String;)I 
+                      [PUBLIC]                   indexOf                                                           (Ljava/lang/String;I)I 
+                      [STATIC]                   indexOf                                                       ([BBILjava/lang/String;I)I 
+                      [PUBLIC]               lastIndexOf                                                            (Ljava/lang/String;)I 
+                      [PUBLIC]               lastIndexOf                                                           (Ljava/lang/String;I)I 
+                      [STATIC]               lastIndexOf                                                       ([BBILjava/lang/String;I)I 
+                      [PUBLIC]                 substring                                                            (I)Ljava/lang/String; 
+                      [PUBLIC]                 substring                                                           (II)Ljava/lang/String; 
+                      [PUBLIC]               subSequence                                                     (II)Ljava/lang/CharSequence; 
+                      [PUBLIC]                    concat                                           (Ljava/lang/String;)Ljava/lang/String; 
+                      [PUBLIC]                   replace                                                           (CC)Ljava/lang/String; 
+                      [PUBLIC]                   matches                                                            (Ljava/lang/String;)Z 
+                      [PUBLIC]                  contains                                                      (Ljava/lang/CharSequence;)Z 
+                      [PUBLIC]              replaceFirst                         (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; 
+                      [PUBLIC]                replaceAll                         (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; 
+                      [PUBLIC]                   replace             (Ljava/lang/CharSequence;Ljava/lang/CharSequence;)Ljava/lang/String; 
+                      [PUBLIC]                     split                                         (Ljava/lang/String;I)[Ljava/lang/String; 
+                      [PUBLIC]                     split                                          (Ljava/lang/String;)[Ljava/lang/String;
 
 ```
 
 ---
 
-
-###  개발 일정 (8 weeks 7/4 ~ 8/31)
-각 주의 마지막 날 마다 리뷰 
-
-
-Feature List
-
-- [ ] make CLI program
-  - apache cli
-- [ ] make agent using Instrumenter
-  - java agent
-- [ ] make UML GUI
-
-
-1주차  
-    
-    asm를 활용한 bytecode 분석 및 데이터 셋 만들기
-- [X] java grammar 
-- [ ] Jvm file format study  
-- [X] study how to use asm
-  - vistmethod 처리 
-- [ ] class bytecode analyze
-    - [X] class_info
-    - [X] field_info
-    - [ ] method_info
-- [X] make data set  
-
-
-2주차
-
-
----
-
-참고 자료 모음집 
-https://visualvm.github.io/
