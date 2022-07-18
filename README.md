@@ -2,7 +2,7 @@
 
 # Java asm Profiler and Instrumenter
 
-목표
+### 목표
 
 ---
 
@@ -10,7 +10,28 @@ Agent Slave는 인턴쉅(7~8)기간 동안 제작하는 Java 프로그램이 실
 
 프로파일링 방식은 ASM을 사용하여 ByteCode를 측정하며 이를 통해 프로그램의 과부화 영역을 확인하고 최적화와 엔지니어링에 도움을 줄 수 있다. 
 
-방식
+---
+파일 구조 
+
+
+```linux 
+.
+├── CodeSample  코드 테스트 샘플용
+├── README.md  
+├── TestCase.jar  분석할 java program  
+└── agent-slave  java profiler
+    ...
+       └──main
+            ├── Entity
+            ├── Java_agent
+            ├── META-INF
+            ├── Package
+            ├── Sample
+            ├── Temp
+            └── repo
+```
+
+### 방식
 
 ---
 
@@ -47,7 +68,7 @@ Agent Slave는 인턴쉅(7~8)기간 동안 제작하는 Java 프로그램이 실
         
         [Instrumentation](https://www.notion.so/Instrumentation-bd109436aed04f9bbd20f73230032da8)
         
-        [**Guide to Java Instrumentation**](https://www.notion.so/Guide-to-Java-Instrumentation-facd144d5c284f95b015dcdf98502902)
+        [Guide to Java Instrumentation](https://www.notion.so/Guide-to-Java-Instrumentation-facd144d5c284f95b015dcdf98502902)
         
         [jvm](https://www.notion.so/jvm-025e6117c25a42e48181820f703e58ec)
         
@@ -60,6 +81,9 @@ Agent Slave는 인턴쉅(7~8)기간 동안 제작하는 Java 프로그램이 실
   - Notion
     https://living-light-8ce.notion.site/Jennifer-Intern-c1a21d02736c4d5ea6785bb24cff3e0a
   
+
+
+
 Agent-slave 실행 방법
 
 ---
