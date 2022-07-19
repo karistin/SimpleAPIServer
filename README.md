@@ -6,9 +6,22 @@
 
 ---
 
-Agent Slave는 인턴쉅(7~8)기간 동안 제작하는 Java 프로그램이 실행되는 동안 프로그램의 함수 호출 빈도와 사용량을 분석 하는 동적 프로그램이다. 
+Agent Slave는 인턴쉅(7~8)기간 동안 제작하는 Java 프로그램이 실행되는 동안 프로그램의 함수 호출 빈도와 사용량을 분석(Code coverage)한다.
 
-프로파일링 방식은 ASM을 사용하여 ByteCode를 측정하며 이를 통해 프로그램의 과부화 영역을 확인하고 최적화와 엔지니어링에 도움을 줄 수 있다. 
+프로파일링 방식은 ASM을 사용하여 ByteCode를 측정하며 이를 통해 프로그램의 과부화 영역을 확인할 수 있다. 그리고 이를 그래프로 표현하여 사용자가 인식하기 쉅게 한다. 
+
+2주 마다 핵심 기능을 구현한 프로토타입을 만들고 이를 기록한다.  
+
+
+- 2주차(1.0) : [ClassFile Filter](https://git.jennifersoft.com:6443/rnd/agent-slave/-/tree/1.0)  
+  
+  - 클래스 파일의 변수 및 함수 바이트 코드를 분석해서 이를 메모리에 저장한다. 
+
+
+- 4주차 : [Call-Graph](https://sourceware.org/binutils/docs/gprof/Call-Graph.html)(호출 그래프) 형식의 프로파일러 
+  - 메소드를 호출하는 클래스를 누군지 알아야 한다. 
+  - 메소드의 호출횟수 및 메소드내의 바이트 코드 파악 
+
 
 ---
 ### 파일 구조 
@@ -22,13 +35,13 @@ Agent Slave는 인턴쉅(7~8)기간 동안 제작하는 Java 프로그램이 실
 └── agent-slave  java profiler
     ...
        └──main
-            ├── Entity
-            ├── Java_agent
+            ├── Entity   
+            ├── Java_agent MainProject
             ├── META-INF
-            ├── Package
-            ├── Sample
-            ├── Temp
-            └── repo
+            ├── Package 기능제작(Service)
+            ├── Sample 
+            ├── Temp  임시 파일 
+            └── repo  
 ```
 
 ### 방식
