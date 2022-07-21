@@ -8,11 +8,5 @@ import org.junit.Test;
 import java.io.IOException;
 
 public class AppTest {
-    @Test
-    public void someTest() throws IOException {
-        String[] ops = GetMethod.getMethod("Java_agent.AppTest", "<init>", null);
 
-        for (String op : ops)
-            System.out.println(op);
-    }
 }

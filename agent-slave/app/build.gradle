@@ -15,6 +15,15 @@ repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
+tasks.named('jar') {
+    manifest {
+        attributes('Main-Class':'Java_agent.App')
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
 
 dependencies {
     // Use JUnit test framework.

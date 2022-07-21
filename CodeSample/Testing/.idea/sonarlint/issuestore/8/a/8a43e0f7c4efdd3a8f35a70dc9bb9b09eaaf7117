@@ -1,0 +1,6 @@
+
+Q	java:S125"<This block of commented-out lines of code should be removed.(Ş½ŒØ
+N	java:S106*"9Replace this use of System.out or System.err by a logger.(­‘ŸÓ
+J
+java:S1185="(Remove this method to simply inherit it.(Óë—»øÿÿÿÿ8óŸúò¡0
+T	java:S106D"9Replace this use of System.out or System.err by a logger.(«ş¥a8¯¹úò¡0

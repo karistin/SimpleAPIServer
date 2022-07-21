@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Main-Class: application.ApmApplication
+Premain-Class: agent.MyJavaAgent
+Can-Redefine-Classes: false
+Can-Retransform-Classes: false
+Can-Set-Native-Method-Prefix: false
+

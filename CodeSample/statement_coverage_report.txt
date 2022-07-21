@@ -1,0 +1,22 @@
+Statement Coverage is listed below for each class and package as well as the total:
+
+**************************************************************************************************************************
+Package Name          Class Name                 Executed Statements          Total statements          Statement Coverage
+**************************************************************************************************************************
+Package               MyMethodVisitor            6                            20                        30.00 %
+Entity                Methodvalue                10                           16                        62.50 %
+repo                  DataSetRepoMemory          2                            7                         28.57 %
+Package               GetClass                   4                            6                         66.67 %
+Entity                DataSet                    17                           46                        36.96 %
+Package               MyClassVisitor             32                           38                        84.21 %
+Entity                FieldValue                 11                           18                        61.11 %
+Entity                Flag$1                     25                           25                        100.00 %
+Entity                Flag                       2                            10                        20.00 %
+Package               MyMethodVisitor$1          7                            7                         100.00 %
+Entity                MethodInsnValue            0                            18                        0.00 %
+
+Total number of Lines Executed: 116
+
+Total number of Lines: 211
+
+Total Code Coverage: 54.98 %

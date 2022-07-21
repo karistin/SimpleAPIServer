@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes('Main-Class':'application.ApmApplication',
+                'Premain-Class': 'agent.MyJavaAgent',
+//                'Premain-Class': 'book.AllocAgent',
+                'Can-Redefine-Classes': 'false',
+                'Can-Retransform-Classes':'false',
+                'Can-Set-Native-Method-Prefix':'false')
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm-util
+    implementation group : 'org.ow2.asm', name: 'asm-util', version: '9.3'
+    // https://mvnrepository.com/artifact/org.ow2.asm/asm-commons
+    implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.3'
+    // https://mvnrepository.com/artifact/io.nervous/juint
+    implementation group: 'io.nervous', name: 'juint', version: '0.1.0'
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+
+}
+
+
+test {
+
+}
