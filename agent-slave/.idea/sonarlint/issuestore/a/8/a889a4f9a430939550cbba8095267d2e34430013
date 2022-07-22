@@ -1,0 +1,16 @@
+
+o
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ý¦å…
+†
+java:S1319"pThe type of "methodInsnValues" should be an interface such as "List" rather than the implementation "ArrayList".(ý¦å…
+r
+java:S1104"\Make methodInsnValues a static final constant or non-public and provide accessors if needed.(ý¦å…
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(à–ù¦ýÿÿÿÿ
+G
+java:S3599",Use another way to initialize this instance.(¶ÑÈòùÿÿÿÿ
+t
+java:S1171"YMove the contents of this initializer to a standard constructor or to field initializers.(ÒÌâ–øÿÿÿÿ
+V	java:S125+"<This block of commented-out lines of code should be removed.(‡†ûÿÿÿÿ
+M	java:S106:"9Replace this use of System.out or System.err by a logger.(ô£€<
+>
+java:S1185A"(Remove this method to simply inherit it.(½ë¯À

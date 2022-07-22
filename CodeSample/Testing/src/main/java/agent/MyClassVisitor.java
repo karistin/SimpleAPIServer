@@ -39,7 +39,7 @@ public class MyClassVisitor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         final MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions);
-        System.out.println("\t method name: "+name);
+//        System.out.println("\t method name: "+name);
         return  methodVisitor == null ? null : new MyMethodVisitor(methodVisitor, classname);
     }
 
@@ -53,7 +53,7 @@ public class MyClassVisitor extends ClassVisitor {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("Statement coverage information is written to report.txt in the root directory");
+//        System.out.println("Statement coverage information is written to report.txt in the root directory");
         writer.println("Statement Coverage is listed below for each class and package as well as the total:");
         writer.println();
 
@@ -62,13 +62,13 @@ public class MyClassVisitor extends ClassVisitor {
             @Override
             public void doPrint(String str) {
                 finalWriter.append(str);
-                System.out.print(str);
+//                System.out.print(str);
             }
 
             @Override
             public void doPrintln(String str) {
                 finalWriter.append("\n");
-                System.out.println();
+//                System.out.println();
             }
         };
 
@@ -107,12 +107,12 @@ public class MyClassVisitor extends ClassVisitor {
         writer.append("\n\nTotal Code Coverage: ").append( String.valueOf(totalCodeCoverage.getCodeCoverage())).append(" %");
 
 
-        System.out.println("Total number of Lines Executed in the Project: " + totalCodeCoverage.getExecutedLines());
-        System.out.println("Total number of Lines in the Project: " + totalCodeCoverage.getTotalLines());
-        System.out.println("Total Statement Coverage of the Project: " + totalCodeCoverage.getCodeCoverage() + " %");
+//        System.out.println("Total number of Lines Executed in the Project: " + totalCodeCoverage.getExecutedLines());
+//        System.out.println("Total number of Lines in the Project: " + totalCodeCoverage.getTotalLines());
+//        System.out.println("Total Statement Coverage of the Project: " + totalCodeCoverage.getCodeCoverage() + " %");
 
         writer.close();
-        System.out.println("****************************************************************************************************************************************************************");
+//        System.out.println("****************************************************************************************************************************************************************");
         super.visitEnd();
     }
 }

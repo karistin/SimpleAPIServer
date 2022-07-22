@@ -4,8 +4,10 @@ package agent;
 import agent.util.Filter;
 import org.objectweb.asm.*;
 
+import java.io.*;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
+import java.nio.charset.StandardCharsets;
 import java.security.ProtectionDomain;
 /**
  * packageName    : agent
@@ -40,16 +42,16 @@ public class MyTransformer implements ClassFileTransformer{
 
 
         if (Filter.classFilering(className)) {
-                System.out.println("className:"+className);
-                ClassReader reader = new ClassReader(classfileBuffer);
-                ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS|ClassWriter.COMPUTE_FRAMES);
-                MyClassVisitor visitor = new MyClassVisitor(writer);
-                reader.accept(visitor,ClassReader.EXPAND_FRAMES);
-                return writer.toByteArray();
+//            System.out.println("className:"+className);
+            ClassReader reader = new ClassReader(classfileBuffer);
+            ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS|ClassWriter.COMPUTE_FRAMES);
+            MyClassVisitor visitor = new MyClassVisitor(writer);
+            reader.accept(visitor,ClassReader.EXPAND_FRAMES);
 
-
+            return writer.toByteArray();
         }
 
         return classfileBuffer;
     }
+
 }

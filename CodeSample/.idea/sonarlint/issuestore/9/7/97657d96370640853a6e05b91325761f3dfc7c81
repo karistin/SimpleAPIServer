@@ -1,0 +1,12 @@
+
+\
+java:S2184"FCast one of the operands of this multiplication operation to a "long".(ãÂëŞ
+?
+java:S5164	"$Call "remove()" on "allocationCost".(Éª¿¹ÿÿÿÿÿ
+\
+java:S1118":Add a private constructor to hide the implicit public one.(«û€ÿÿÿÿÿ8á­€ù¡0
+\
+java:S4065
+"FReplace this anonymous class with a call to "ThreadLocal.withInitial".(×øç
+E
+java:S1172"/Remove this unused method parameter "typeName".(´«¯š
