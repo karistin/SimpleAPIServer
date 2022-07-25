@@ -30,7 +30,7 @@ dependencies {
     implementation group : 'org.ow2.asm', name: 'asm-util', version: '9.3'
     // https://mvnrepository.com/artifact/org.ow2.asm/asm-commons
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.3'
-    // https://mvnrepository.com/artifact/io.nervous/juint
+    // httprys://mvnreposito.com/artifact/io.nervous/juint
     implementation group: 'io.nervous', name: 'juint', version: '0.1.0'
     implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }

@@ -17,7 +17,11 @@ repositories {
 }
 tasks.named('jar') {
     manifest {
-        attributes('Main-Class':'Java_agent.App')
+        attributes('Main-Class':'Application.Main',
+                'Premain-Class': 'Agent.App',
+                'Can-Redefine-Classes': 'false',
+                'Can-Retransform-Classes':'false',
+                'Can-Set-Native-Method-Prefix':'false')
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
@@ -26,11 +30,6 @@ tasks.named('jar') {
 }
 
 dependencies {
-    // Use JUnit test framework.
-    testImplementation 'junit:junit:4.13.2'
-
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:30.1.1-jre'
 
     implementation 'org.ow2.asm:asm:9.3'
 
@@ -38,7 +37,3 @@ dependencies {
 
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'Java_agent.App'
-}

@@ -1,4 +1,5 @@
 
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(•ûŽœùÿÿÿÿ
-M
-java:S1068-"+Remove this unused "rootDir" private field.(Ý‹¹’ùÿÿÿÿ8ÉŠ¶Ë¡0
+S	java:S1068"9Replace this use of System.out or System.err by a logger.(¸Š›²ùÿÿÿÿ
+F
+java:S1068-"+Remove this unused "rootDir" private field.(Ý‹¹’ùÿÿÿÿ

@@ -33,8 +33,10 @@ public class CodeCoverageAPI {
 
     //called at the time of jvm when specific lines are executed->executed lines
     public static void markLineExecuted(String className, Integer line_number) {
-        hashMap.get(className).put(line_number, true);
 
+
+
+        hashMap.get(className).put(line_number, true);
 
     }
 

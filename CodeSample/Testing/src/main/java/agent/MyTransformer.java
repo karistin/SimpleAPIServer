@@ -9,6 +9,8 @@ import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.nio.charset.StandardCharsets;
 import java.security.ProtectionDomain;
+import java.util.Base64;
+
 /**
  * packageName    : agent
  * fileName       : MyClassVisitor
@@ -46,7 +48,11 @@ public class MyTransformer implements ClassFileTransformer{
             ClassReader reader = new ClassReader(classfileBuffer);
             ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS|ClassWriter.COMPUTE_FRAMES);
             MyClassVisitor visitor = new MyClassVisitor(writer);
+
             reader.accept(visitor,ClassReader.EXPAND_FRAMES);
+
+
+
 
             return writer.toByteArray();
         }

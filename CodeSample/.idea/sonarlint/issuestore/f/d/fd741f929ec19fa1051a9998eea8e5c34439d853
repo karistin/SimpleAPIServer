@@ -1,0 +1,22 @@
+
+t
+java:S1192&"YDefine a constant instead of duplicating this literal "java/lang/StringBuilder" 18 times.(ß’ãûùÿÿÿÿ
+p
+java:S1192+"UDefine a constant instead of duplicating this literal "()Ljava/lang/String;" 5 times.(¹¢À›şÿÿÿÿ
+b
+java:S1192!"GDefine a constant instead of duplicating this literal "<init>" 5 times.(«Ú²ùÿÿÿÿ
+d
+java:S11921"IDefine a constant instead of duplicating this literal "toString" 3 times.(¹«†ùÿÿÿÿ
+„
+java:S1192,"nDefine a constant instead of duplicating this literal "(Ljava/lang/String;)Ljava/lang/StringBuilder;" 8 times.(ª·ûÍ
+]
+java:S1192,"GDefine a constant instead of duplicating this literal "append" 9 times.(ª·ûÍ
+V	java:S125#"<This block of commented-out lines of code should be removed.(äŒ§òÿÿÿÿÿ
+I
+java:S1128".Remove this unused import 'Entity.DataEntity'.(ÈÙó¨ÿÿÿÿÿ
+Q
+java:S1128"6Remove this unused import 'org.objectweb.asm.Opcodes'.(âÚÔùÿÿÿÿ
+M
+java:S1128"2Remove this unused import 'javax.xml.crypto.Data'.(¦¿çˆıÿÿÿÿ
+E
+java:S1068"*Remove this unused "access" private field.(‹×†‘ıÿÿÿÿ

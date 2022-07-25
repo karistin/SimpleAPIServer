@@ -1,8 +1,11 @@
 package agent;
 
+import Entity.DataEntity;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.AdviceAdapter;
+
+import javax.xml.crypto.Data;
 
 /**
  * packageName    : agent
@@ -26,8 +29,12 @@ public class TimeAdviceAdapter extends AdviceAdapter {
 
     @Override
     protected void onMethodEnter() {
+
         if ("<init>".equals(methodName) || "<clinit>".equals(methodName))
             return;
+//      TimeHolder.start(args.getClass().getName() + "." + "main");
+//        dataEntity.setMethodName(methodName);
+
         mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
         mv.visitInsn(DUP);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);

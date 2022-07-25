@@ -47,4 +47,13 @@ public class Classloader extends ClassLoader{
     public Classloader(String rootDir) {
         this.rootDir = rootDir;
     }
+
+    public static void main(String[] args) {
+        String test = "com.jennifersoft.springbootdemo." +
+                "SpringBootDemoApplication$$EnhancerBySpringCGLIB$$78a5554e.setBeanFactory";
+        if (test.contains("."))
+        {
+            System.out.println(test.substring(test.lastIndexOf(".")+1));
+        }
+    }
 }
