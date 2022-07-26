@@ -4,12 +4,15 @@ import Package.GetClass;
 import Entity.DataSet;
 import Util.Filter;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
 import java.io.IOException;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 import java.lang.instrument.ClassFileTransformer;
+
+import static Agent.App.LOG;
 
 /**
  * packageName    : Agent
@@ -28,22 +31,14 @@ public class MyClassFileTransformer implements ClassFileTransformer {
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
         if(Filter.classFilering(className))
         {
-            System.out.println("Lodding Class : " + className);
-            DataSet data = null;
-            ClassReader classReader = null;
-            try {
-                classReader = new ClassReader(className);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-            MyClassVisitor myClassVisitor = new MyClassVisitor(classWriter);
-            classReader.accept(myClassVisitor, 0);
-            data = myClassVisitor.dataset;
-            App.taskRepository.save(data);
-            data.printDataset();
-//            System.out.println(App.taskRepository);
-            return classfileBuffer;
+            LOG.info("Lodding Class : " + className);
+            ClassReader reader = new ClassReader(classfileBuffer);
+            ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+            MyClassVisitor vistor = new MyClassVisitor(writer);
+            reader.accept(vistor, ClassReader.EXPAND_FRAMES);
+//            vistor.getDataset().printDataset();
+            App.taskRepository.save(vistor.getDataset());
+            return writer.toByteArray();
         }
         return classfileBuffer;
     }

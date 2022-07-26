@@ -1,11 +1,15 @@
 package Entity;
 
+import Type.AccessType;
+
 import java.util.ArrayList;
 
 public class Methodvalue {
     private int access;
     private String name;
     private String descriptor;
+
+    private Long methodCount = 0L;
 
     private ArrayList<MethodInsnValue> methodInsnValues= new ArrayList<MethodInsnValue>();
 
@@ -43,7 +47,7 @@ public class Methodvalue {
 
 
     public void printset(){
-        System.out.format("%30s %25s %80s \r\n",Flag.getaccessFlag(access), name,descriptor);
+        System.out.format("%30s %25s %80s \r\n", AccessType.getaccessFlag(access), name,descriptor);
         //if (methodInsnValues.size() !=0)
         //{
         //    System.out.format("\t\t%30s %25s %40s %50s %30s\r\n","opcode", "owner","name","descriptor","isInterface");

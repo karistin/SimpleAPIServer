@@ -10,10 +10,11 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Java_agent.app.main" />
+    <orderEntry type="library" name="Gradle: org.ow2.asm:asm-commons:9.3" level="project" />
     <orderEntry type="library" name="Gradle: org.ow2.asm:asm-util:9.3" level="project" />
-    <orderEntry type="library" name="Gradle: org.ow2.asm:asm:9.3" level="project" />
     <orderEntry type="library" name="Gradle: org.ow2.asm:asm-analysis:9.3" level="project" />
     <orderEntry type="library" name="Gradle: org.ow2.asm:asm-tree:9.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.ow2.asm:asm:9.3" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="Java_agent.app.main" />
 </module>

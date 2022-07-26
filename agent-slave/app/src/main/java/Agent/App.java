@@ -5,18 +5,29 @@ package Agent;
 
 import Repository.DataSetRepo;
 import Repository.DataSetRepoMemory;
-import java.lang.instrument.*;
+import Util.LogFormatter;
 
-import java.lang.String;
+import java.io.IOException;
+import java.lang.instrument.*;
+import java.util.logging.*;
 
 
 public class App {
 
     public static DataSetRepo taskRepository = new DataSetRepoMemory();
-
+    public final static Logger LOG = Logger.getGlobal();
 
     public static void premain(String args, Instrumentation instrumentation) {
-        System.out.println("[Permain agent] ");
+
+        LOG.setLevel(Level.INFO);
+        LOG.setUseParentHandlers(false);
+        ConsoleHandler handler = new ConsoleHandler();
+        Formatter formatter = new LogFormatter();
+        handler.setFormatter(formatter);
+        LOG.addHandler(handler);
+
+
+        LOG.info("[Premain Agnet Start]");
         instrumentation.addTransformer(new MyClassFileTransformer());
     }
 

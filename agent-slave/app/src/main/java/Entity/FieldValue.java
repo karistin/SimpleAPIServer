@@ -1,5 +1,7 @@
 package Entity;
 
+import Type.AccessType;
+
 public class FieldValue {
     private int access;
     private String name;
@@ -49,6 +51,6 @@ public class FieldValue {
     }
 
     public void printset(){
-        System.out.format("%30s %25s %40s %30s\r\n",Flag.getaccessFlag(access), name , descriptor, value);
+        System.out.format("%30s %25s %40s %30s\r\n", AccessType.getaccessFlag(access), name , descriptor, value);
     }
 }

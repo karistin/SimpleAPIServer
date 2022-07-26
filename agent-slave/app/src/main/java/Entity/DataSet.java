@@ -1,5 +1,7 @@
 package Entity;
 
+import Type.AccessType;
+
 import java.util.*;
 
 public class DataSet {
@@ -12,9 +14,9 @@ public class DataSet {
     private String Super_class;
     private String[] interfaces;
     private String source_name;
-    private ArrayList<FieldValue> fieldValues = new ArrayList<FieldValue>();
+    private ArrayList<FieldValue> fieldValues = new ArrayList<>();
 
-    private ArrayList<Methodvalue> methodvalues =new ArrayList<Methodvalue>();
+    private ArrayList<Methodvalue> methodvalues =new ArrayList<>();
 
 
     public ArrayList<FieldValue> getFieldValues() {
@@ -84,7 +86,7 @@ public class DataSet {
 
     public void printDataset(){
 
-        System.out.println("Access : "+ Flag.getaccessFlag(access));
+        System.out.println("Access : "+ AccessType.getaccessFlag(access));
         System.out.println("Class name: " + class_name);
         System.out.println("Source name: "+ source_name);
         System.out.println("Major Version: " + Major_version);

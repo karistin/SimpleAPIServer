@@ -13,8 +13,8 @@ package Util;
  */
 public class Filter {
     private static String[] classFilters = {
-            "java","jdk","javax","sun","com/sun","agent.","org/apache/maven","org/junit", "org/springframework", "org/springdoc","io/swagger","org/apache","org/w3c",
-            "nonapi/io","org/slf4j","ch/qos","com/fasterxml","org/xml","io/github","org/webjars","org/aopalliance"
+            "java","jdk","javax","sun","com/sun","agent.","org/apache/maven","org/junit", "org/springframework", "org/springdoc","org/apache","org/w3c",
+            "nonapi/io","org/slf4j","ch/qos","com/fasterxml","org/xml","io/github","org/webjars","org/aopalliance","io/swagger"
     };
 
 //    private static String[] classFilters = {

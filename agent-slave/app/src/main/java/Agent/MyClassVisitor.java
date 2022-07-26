@@ -10,17 +10,13 @@ import org.objectweb.asm.Opcodes;
 
 
 public class MyClassVisitor extends ClassVisitor implements Opcodes{
-    DataSet dataset = new DataSet();
-    public MyClassVisitor(){
-        super(ASM9);
-    }
+    private DataSet dataset = new DataSet();
+
     public MyClassVisitor(final ClassVisitor cv){
         super(ASM9, cv);
     }
-
-    @Override
-    public void visitInnerClass(String name, String outerName, String innerName, int access) {
-        super.visitInnerClass(name, outerName, innerName, access);
+    public DataSet getDataset() {
+        return dataset;
     }
 
     @Override
@@ -55,29 +51,20 @@ public class MyClassVisitor extends ClassVisitor implements Opcodes{
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         if (!name.equals( "<init>") && !name.equals( "<clinit>")){
-
             MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
-
             if(mv != null){
-                MyMethodVisitor myMethodVisitor = new MyMethodVisitor(mv);
-
+                MyMethodAdapter myMethodVisitor = new MyMethodAdapter(ASM9, mv, access, name, descriptor, name);
                 Methodvalue methodvalue = new Methodvalue();
                 methodvalue.setAccess(access);
                 methodvalue.setName(name);
                 methodvalue.setDescriptor(descriptor);
-                methodvalue.setMethodInsnValues(myMethodVisitor.methodInsnValues);
-
+                methodvalue.setMethodInsnValues(myMethodVisitor.getMethodInsnValues());
                 dataset.setMethodvalues(methodvalue);
 
                 return myMethodVisitor;
             }
-            return null;
         }
-        return null;
+        return super.visitMethod(access, name, descriptor, signature, exceptions);
     }
 
-    @Override
-    public void visitEnd() {
-        super.visitEnd();
-    }
 }

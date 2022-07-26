@@ -1,10 +1,0 @@
-
-r	java:S117/"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ü†À·ıÿÿÿÿ8øæÌÎ¡0
-
-java:S1149"_Replace the synchronized class "StringBuffer" by an unsynchronized one such as "StringBuilder".(³ßş÷üÿÿÿÿ8–çÌÎ¡0
-\
-java:S1161":Add the "@Override" annotation above this method signature(´„áçúÿÿÿÿ8ŠÍÎ¡0
-W
-java:S1161*":Add the "@Override" annotation above this method signature(Îî©Ú8ÂÍÎ¡0
-@
-java:S1128"Remove this duplicated import.(ÚÊŠ¤ûÿÿÿÿ8ÌÍÎ¡0
