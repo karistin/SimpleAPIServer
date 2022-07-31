@@ -27,4 +27,11 @@ public class DataSetRepoMemory implements DataSetRepo{
     public List<DataSet> find_all() {
         return new ArrayList<>(store.values());
     }
+
+    @Override
+    public void print() {
+        for (DataSet sto : store.values()) {
+            sto.printDataset();
+        }
+    }
 }

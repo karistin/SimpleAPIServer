@@ -11,5 +11,5 @@ public interface DataSetRepo {
     int get_size();
 
     List<DataSet> find_all();
-
+    void print();
 }

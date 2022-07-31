@@ -13,12 +13,16 @@ import static Type.InvokeType.getInvokeMap;
 
 public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
 
+    private final String packageName;
+    private final String className;
     private final String methodName;
     private final ArrayList<MethodInsnValue> methodInsnValues= new ArrayList<MethodInsnValue>();
 
-    public MyMethodAdapter(int api, MethodVisitor methodVisitor, int access, String name, String descriptor, String methodName) {
+    public MyMethodAdapter(int api, MethodVisitor methodVisitor, int access, String name, String descriptor, String className, String packageName) {
         super(api, methodVisitor, access, name, descriptor);
-        this.methodName = methodName;
+        this.packageName = packageName;
+        this.className = className;
+        this.methodName = name;
     }
 
     public String getMethodName() {
@@ -31,8 +35,7 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
 
     @Override
     protected void onMethodEnter() {
-        MyBCIMethod.setCount(this.methodName, 1L);
-        MyBCIMethod.setCallTime(this.methodName, 0L);
+
 //      다른 클래스에 같은 메소드의 경우 존재
         mv.visitLdcInsn(methodName);
         mv.visitMethodInsn(INVOKESTATIC, "Agent/MyBCIMethod","start","(Ljava/lang/String;)V",false);

@@ -53,7 +53,7 @@ public class MyClassVisitor extends ClassVisitor implements Opcodes{
         if (!name.equals( "<init>") && !name.equals( "<clinit>")){
             MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
             if(mv != null){
-                MyMethodAdapter myMethodVisitor = new MyMethodAdapter(ASM9, mv, access, name, descriptor, name);
+                MyMethodAdapter myMethodVisitor = new MyMethodAdapter(ASM9, mv, access, name, descriptor, dataset.getClass_name(), dataset.getSource_name());
                 Methodvalue methodvalue = new Methodvalue();
                 methodvalue.setAccess(access);
                 methodvalue.setName(name);

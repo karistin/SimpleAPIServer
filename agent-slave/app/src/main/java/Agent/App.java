@@ -7,7 +7,6 @@ import Repository.DataSetRepo;
 import Repository.DataSetRepoMemory;
 import Util.LogFormatter;
 
-import java.io.IOException;
 import java.lang.instrument.*;
 import java.util.logging.*;
 
@@ -26,7 +25,9 @@ public class App {
         handler.setFormatter(formatter);
         LOG.addHandler(handler);
 
-
+        PrintThread printThread = new PrintThread();
+        printThread.start();
+//        LOG.info(System.getProperty("sun.java.command"));
         LOG.info("[Premain Agnet Start]");
         instrumentation.addTransformer(new MyClassFileTransformer());
     }
