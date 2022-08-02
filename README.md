@@ -16,7 +16,7 @@ TODO / Roadmap (Detail in [Notion](https://living-light-8ce.notion.site/Jennifer
   - 클래스 파일의 변수 및 함수 바이트 코드를 분석해서 이를 메모리에 저장한다. 
 
 
-- 4주차(1.1) : [Profiling Dynamic](https://sourceware.org/binutils/docs/gprof/Call-Graph.html) 메소드 단위 프로파일링
+- 4주차(1.1) : [Profiling Dynamic](https://git.jennifersoft.com:6443/rnd/agent-slave/-/tree/1.1) 메소드 단위 프로파일링
   - 메소드를 호출하는 클래스를 누군지 알아야 한다. 
   - 메소드의 호출횟수, 실행 시간 및 메소드내의 바이트 코드 파악 
   -  UI 설계 및 제작 

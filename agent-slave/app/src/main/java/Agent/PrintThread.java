@@ -80,6 +80,7 @@ public class PrintThread extends Thread{
                     App.taskRepository.getClass(className).get().printDataset();
                     System.out.println("\r\nWrite Any Word to Back\r\n");
                     sc.next();
+                    continue;
                 }
                 else if(className.equals("skip")){
                     this.flags = false;
@@ -89,7 +90,7 @@ public class PrintThread extends Thread{
             }
 
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
                 System.out.print("Everything on the console will cleared");
                 System.out.print("\033[H\033[2J");
                 System.out.flush();

@@ -3,6 +3,8 @@ package Application;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 /**
  * packageName    : Application
  * fileName       : Main
@@ -15,14 +17,19 @@ import java.util.List;
  * 2022-07-25        lucas       최초 생성
  */
 public class Main {
-    public static List<Integer> arry  = new ArrayList<>();
-    public static int an;
     public static void main(String[] args) {
-        an = 4;
-        arry.add(an);
-        an = 5;
-        arry.add(an);
-        System.out.println(arry);
+        while(true){
+            Task1.tasking1();
+            Task2.tasking2();
+            Task3.tasking3();
+            Task4.tasking4();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
 }

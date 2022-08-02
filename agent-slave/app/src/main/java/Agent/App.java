@@ -17,7 +17,7 @@ public class App {
     public final static Logger LOG = Logger.getGlobal();
 
 //     java -javaagent:app/build/libs/app.jar -Dspring.main.banner-mode=off -Dlogging.pattern.console= -jar TestCase.jar
-
+//      java -javaagent:app/build/libs/app.jar -jar app/build/libs/app.jar
     public static void premain(String args, Instrumentation instrumentation) {
 
         LOG.setLevel(Level.INFO);

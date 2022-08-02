@@ -35,3 +35,6 @@ dependencies {
     implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.3'
 }
 
+application{
+    mainClass = 'Application.Main'
+}
