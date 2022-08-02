@@ -1,0 +1,14 @@
+
+a
+java:S2259:"DA "NullPointerException" could be thrown; "writer" is nullable here.(Å¿Ð…8æºä›¤0
+Z	java:S106%"9Replace this use of System.out or System.err by a logger.(‚—‚”þÿÿÿÿ8æºä›¤0
+X	java:S125+"<This block of commented-out lines of code should be removed.(Â˜¨æ8æºä›¤0
+X	java:S1259"<This block of commented-out lines of code should be removed.(ÚŒ¤ã8öºä›¤0
+W	java:S125B"<This block of commented-out lines of code should be removed.(Ž˜õZ8…»ä›¤0
+]	java:S125H"<This block of commented-out lines of code should be removed.(—Ûóäûÿÿÿÿ8…»ä›¤0
+L
+java:S1197N"*Move the array designators [] to the type.(ùßýÜùÿÿÿÿ8…»ä›¤0
+L
+java:S1197\"*Move the array designators [] to the type.(°òÏ©þÿÿÿÿ8…»ä›¤0
+]	java:S125o"<This block of commented-out lines of code should be removed.(ÀÂéÜúÿÿÿÿ8•»ä›¤0
+]	java:S125t"<This block of commented-out lines of code should be removed.(–ÓÛüÿÿÿÿ8•»ä›¤0

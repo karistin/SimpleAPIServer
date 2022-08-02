@@ -13,16 +13,14 @@ import static Type.InvokeType.getInvokeMap;
 
 public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
 
-    private final String packageName;
     private final String className;
     private final String methodName;
     private final ArrayList<MethodInsnValue> methodInsnValues= new ArrayList<MethodInsnValue>();
 
-    public MyMethodAdapter(int api, MethodVisitor methodVisitor, int access, String name, String descriptor, String className, String packageName) {
-        super(api, methodVisitor, access, name, descriptor);
-        this.packageName = packageName;
+    public MyMethodAdapter(int api, MethodVisitor methodVisitor, int access, String methodName, String descriptor, String className) {
+        super(api, methodVisitor, access, methodName, descriptor);
         this.className = className;
-        this.methodName = name;
+        this.methodName = methodName;
     }
 
     public String getMethodName() {
@@ -37,8 +35,7 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
     protected void onMethodEnter() {
 
 //      다른 클래스에 같은 메소드의 경우 존재
-        mv.visitLdcInsn(methodName);
-        mv.visitMethodInsn(INVOKESTATIC, "Agent/MyBCIMethod","start","(Ljava/lang/String;)V",false);
+        mv.visitMethodInsn(INVOKESTATIC, "Agent/MyBCIMethod","start","()V",false);
         super.onMethodEnter();
     }
 
@@ -71,8 +68,10 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
 
     @Override
     protected void onMethodExit(int opcode) {
+        mv.visitLdcInsn(className);
         mv.visitLdcInsn(methodName);
-        mv.visitMethodInsn(INVOKESTATIC, "Agent/MyBCIMethod","end","(Ljava/lang/String;)V",false);
+        mv.visitMethodInsn(INVOKESTATIC, "Agent/MyBCIMethod","end","(Ljava/lang/String;Ljava/lang/String;)V",false);
+
         super.onMethodExit(opcode);
     }
 

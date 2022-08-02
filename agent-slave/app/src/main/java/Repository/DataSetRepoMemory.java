@@ -16,15 +16,15 @@ public class DataSetRepoMemory implements DataSetRepo{
     }
 
     @Override
-    public int get_size(){return store.size();}
+    public int getSize(){return store.size();}
 
     @Override
-    public Optional<DataSet> find_class_data(String class_name) {
+    public Optional<DataSet> getClass(String class_name) {
         return Optional.ofNullable(store.get(class_name));
     }
 
     @Override
-    public List<DataSet> find_all() {
+    public List<DataSet> findAll() {
         return new ArrayList<>(store.values());
     }
 
@@ -34,4 +34,10 @@ public class DataSetRepoMemory implements DataSetRepo{
             sto.printDataset();
         }
     }
+
+    @Override
+    public Set<String> classList() {
+        return  store.keySet();
+    }
+
 }

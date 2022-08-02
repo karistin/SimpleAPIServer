@@ -11,9 +11,10 @@ import org.objectweb.asm.Opcodes;
 
 public class MyClassVisitor extends ClassVisitor implements Opcodes{
     private DataSet dataset = new DataSet();
-
-    public MyClassVisitor(final ClassVisitor cv){
+    private String className = "";
+    public MyClassVisitor(final ClassVisitor cv, String className){
         super(ASM9, cv);
+        this.className = className;
     }
     public DataSet getDataset() {
         return dataset;
@@ -53,7 +54,7 @@ public class MyClassVisitor extends ClassVisitor implements Opcodes{
         if (!name.equals( "<init>") && !name.equals( "<clinit>")){
             MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
             if(mv != null){
-                MyMethodAdapter myMethodVisitor = new MyMethodAdapter(ASM9, mv, access, name, descriptor, dataset.getClass_name(), dataset.getSource_name());
+                MyMethodAdapter myMethodVisitor = new MyMethodAdapter(ASM9, mv, access, name, descriptor, this.className);
                 Methodvalue methodvalue = new Methodvalue();
                 methodvalue.setAccess(access);
                 methodvalue.setName(name);
@@ -67,4 +68,8 @@ public class MyClassVisitor extends ClassVisitor implements Opcodes{
         return super.visitMethod(access, name, descriptor, signature, exceptions);
     }
 
+    @Override
+    public void visitEnd() {
+        super.visitEnd();
+    }
 }

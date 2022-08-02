@@ -1,6 +1,7 @@
 package Entity;
 
 import Type.AccessType;
+import Util.LogFormatter;
 
 import java.util.ArrayList;
 
@@ -47,15 +48,15 @@ public class Methodvalue {
 
 
     public void printset(){
-        System.out.format("%30s %25s %80s \r\n", AccessType.getaccessFlag(access), name,descriptor);
-        //if (methodInsnValues.size() !=0)
-        //{
-        //    System.out.format("\t\t%30s %25s %40s %50s %30s\r\n","opcode", "owner","name","descriptor","isInterface");
-        //    for(MethodInsnValue methodInsnValue: methodInsnValues){
-        //        methodInsnValue.printset();
-        //    }
-        //    System.out.println("\t\t\t\t============================================================================================================================================================================");
-        //}
+        System.out.format("%30s "+ LogFormatter.ANSI_RED +"%25s"+LogFormatter.ANSI_WHITE+"  %80s \r\n", AccessType.getaccessFlag(access), name,descriptor);
+//        if (methodInsnValues.size() !=0)
+//        {
+//            System.out.format("\t\t%30s %25s %40s %50s %30s\r\n","opcode", "owner","name","descriptor","isInterface");
+//            for(MethodInsnValue methodInsnValue: methodInsnValues){
+//                methodInsnValue.printset();
+//            }
+//
+//        }
     }
 
 }

@@ -16,6 +16,8 @@ public class App {
     public static DataSetRepo taskRepository = new DataSetRepoMemory();
     public final static Logger LOG = Logger.getGlobal();
 
+//     java -javaagent:app/build/libs/app.jar -Dspring.main.banner-mode=off -Dlogging.pattern.console= -jar TestCase.jar
+
     public static void premain(String args, Instrumentation instrumentation) {
 
         LOG.setLevel(Level.INFO);

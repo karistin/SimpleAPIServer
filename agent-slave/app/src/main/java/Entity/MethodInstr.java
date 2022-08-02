@@ -1,14 +1,33 @@
 package Entity;
 
 public class MethodInstr {
+
     private String methodName;
-    private Long callTime = 1L;
-    private Long callCount = 0L;
+    private Long callTime = 0L;
+    private Long callCount = 1L;
     private Long cultivTime = 0L;
 
+    private String packageName;
+    private String className;
 
     public String getMethodName() {
         return methodName;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public void setMethodName(String methodName) {
@@ -47,4 +66,16 @@ public class MethodInstr {
         this.callTime = 0L;
         this.cultivTime = 0L;
     }
+
+    @Override
+    public String toString() {
+        return "MethodInstr{" +
+                "methodName='" + methodName + '\'' +
+                ", callTime=" + callTime +
+                ", callCount=" + callCount +
+                ", cultivTime=" + cultivTime +
+                '}';
+    }
+
+
 }

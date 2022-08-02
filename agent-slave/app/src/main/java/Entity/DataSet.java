@@ -1,7 +1,13 @@
 package Entity;
 
+import Agent.MyBCIMethod;
 import Type.AccessType;
+import Util.LogFormatter;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 public class DataSet {
@@ -17,6 +23,7 @@ public class DataSet {
     private ArrayList<FieldValue> fieldValues = new ArrayList<>();
 
     private ArrayList<Methodvalue> methodvalues =new ArrayList<>();
+
 
 
     public ArrayList<FieldValue> getFieldValues() {
@@ -85,29 +92,38 @@ public class DataSet {
     }
 
     public void printDataset(){
-
+        System.out.println("************************\r\n");
         System.out.println("Access : "+ AccessType.getaccessFlag(access));
         System.out.println("Class name: " + class_name);
-        System.out.println("Source name: "+ source_name);
+        System.out.println("Source name: "+LogFormatter.ANSI_RED+ source_name+LogFormatter.ANSI_WHITE);
         System.out.println("Major Version: " + Major_version);
         System.out.println("Super class: " + Super_class);
 
-
-        System.out.println("interface");
-        for(String inter : interfaces){
-            System.out.println("  "+ inter);
+        if(interfaces.length !=0)
+        {
+            System.out.println("interface");
+            for(String inter : interfaces){
+                System.out.println("  "+ inter);
+            }
         }
 
-        System.out.println("Field_value");
-        System.out.format("%30s %25s %40s %30s\r\n","access", "name","desc","value");
-        for(FieldValue fieldValue:fieldValues){
-            fieldValue.printset();
+        if(fieldValues.size() !=0)
+        {
+            System.out.println("Field_value");
+            System.out.format("%30s %25s %40s %30s\r\n","access", "name","desc","value");
+            for(FieldValue fieldValue:fieldValues){
+                fieldValue.printset();
+            }
         }
-        System.out.println("\r\nMethod_value");
-        System.out.format("%30s %25s %80s \r\n","access", "name","desc");
-        for(Methodvalue methodvalue:methodvalues){
-            methodvalue.printset();
+        if(methodvalues.size() != 0)
+        {
+            System.out.println("\r\nMethod_value");
+            System.out.format("%30s %25s %80s \r\n","access", "name","desc");
+            for(Methodvalue methodvalue:methodvalues){
+                methodvalue.printset();
+            }
         }
 
     }
+
 }

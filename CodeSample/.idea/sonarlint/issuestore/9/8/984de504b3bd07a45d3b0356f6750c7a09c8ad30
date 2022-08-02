@@ -1,0 +1,19 @@
+
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¿´¬¿ÿÿÿÿÿ
+o
+java:S2293<"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿÅ¢¤
+ƒ
+java:S1319"mThe return type of this method should be an interface such as "Map" rather than the implementation "HashMap".(¯ë©ı
+f	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(£¨–Ê
+k	java:S117#"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ï‡Ê©úÿÿÿÿ
+k	java:S117."QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(÷ÿŠÓúÿÿÿÿ
+k	java:S117/"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(°•¬Îúÿÿÿÿ
+@
+java:S54113"*Use the primitive boolean expression here.(Ã¢ô
+P
+java:S1118":Add a private constructor to hide the implicit public one.(¸æÒ
+2
+java:S1116"Remove this empty statement.(¯ë©ı
+O
+java:S28641"4Iterate over the "entrySet" instead of the "keySet".(–²€¸ûÿÿÿÿ

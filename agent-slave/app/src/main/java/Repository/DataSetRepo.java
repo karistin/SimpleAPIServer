@@ -4,12 +4,19 @@ import Entity.DataSet;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface DataSetRepo {
     DataSet save(DataSet dataset);
-    Optional <DataSet> find_class_data(String class_name);
-    int get_size();
 
-    List<DataSet> find_all();
+
+    int getSize();
+
+    Optional<DataSet> getClass(String class_name);
+
+    List<DataSet> findAll();
+
     void print();
+
+    Set<String> classList();
 }

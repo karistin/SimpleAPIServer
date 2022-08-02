@@ -19,9 +19,9 @@ tasks.named('jar') {
     manifest {
         attributes('Main-Class':'Application.Main',
                 'Premain-Class': 'Agent.App',
-                'Can-Redefine-Classes': 'false',
-                'Can-Retransform-Classes':'false',
-                'Can-Set-Native-Method-Prefix':'false')
+                'Can-Redefine-Classes': 'true',
+                'Can-Retransform-Classes':'true',
+                'Can-Set-Native-Method-Prefix':'true')
     }
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
