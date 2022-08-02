@@ -1,0 +1,20 @@
+
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(£ËÜì
+>
+java:S2129:"!Remove this "Integer" constructor(°Ü†Ç8íÖÏ›¢0
+L
+java:S1874:"/Remove this use of "Integer"; it is deprecated.(°Ü†Ç8ıÖÏ›¢0
+>
+java:S2129<"!Remove this "Integer" constructor(¢«¦µ8ıÖÏ›¢0
+L
+java:S1874<"/Remove this use of "Integer"; it is deprecated.(¢«¦µ8ıÖÏ›¢0
+C
+java:S2129>"!Remove this "Integer" constructor(£èôÂùÿÿÿÿ8ıÖÏ›¢0
+Q
+java:S1874>"/Remove this use of "Integer"; it is deprecated.(£èôÂùÿÿÿÿ8ıÖÏ›¢0
+G
+java:S1181a"%Catch Exception instead of Throwable.(•”ø¾øÿÿÿÿ8›ñĞ›¢0
+G
+java:S1181g"%Catch Exception instead of Throwable.(•”ø¾øÿÿÿÿ8›ñĞ›¢0
+L
+java:S2093^"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8«ñĞ›¢0

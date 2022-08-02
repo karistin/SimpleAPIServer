@@ -15,21 +15,23 @@ repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
+tasks.named('jar') {
+    manifest {
+        attributes('Main-Class':'Application.Main',
+                'Premain-Class': 'Agent.App',
+                'Can-Redefine-Classes': 'true',
+                'Can-Retransform-Classes':'true',
+                'Can-Set-Native-Method-Prefix':'true')
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
 
 dependencies {
-    // Use JUnit test framework.
-    testImplementation 'junit:junit:4.13.2'
 
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:30.1.1-jre'
-
-    implementation 'org.ow2.asm:asm:9.3'
-
-    implementation 'org.ow2.asm:asm-util:9.3'
-
+    implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.3'
+    implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.3'
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'Java_agent.App'
-}

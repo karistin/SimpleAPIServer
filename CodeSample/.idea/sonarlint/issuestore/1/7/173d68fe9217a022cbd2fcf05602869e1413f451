@@ -1,0 +1,78 @@
+
+K
+java:S3740¦"/Provide the parametrized type for this generic.(ğÊôŞúÿÿÿÿ
+F
+java:S3740§"/Provide the parametrized type for this generic.(èĞ¤ª
+K
+java:S3740¨"/Provide the parametrized type for this generic.(»¼šıÿÿÿÿ
+F
+java:S3740½"/Provide the parametrized type for this generic.(» Í÷
+F
+java:S3740¾"/Provide the parametrized type for this generic.(™´–é
+K
+java:S3740¿"/Provide the parametrized type for this generic.(ë¶ƒÓüÿÿÿÿ
+K
+java:S3740û"/Provide the parametrized type for this generic.(ÛÇˆ³ÿÿÿÿÿ
+E
+java:S3740ü"/Provide the parametrized type for this generic.(ì¶¬
+K
+java:S3740ù"/Provide the parametrized type for this generic.(‘˜ÿáıÿÿÿÿ
+K
+java:S3740ù"/Provide the parametrized type for this generic.(‘˜ÿáıÿÿÿÿ
+F
+java:S3740ú"/Provide the parametrized type for this generic.(ªş¦‹
+E
+java:S3740"/Provide the parametrized type for this generic.(Ş›A
+K
+java:S3740"/Provide the parametrized type for this generic.(¤íé®üÿÿÿÿ
+F
+java:S3740¿"/Provide the parametrized type for this generic.(ªş¦‹
+l	java:S117Û"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(•Ö«úÿÿÿÿ
+l	java:S117Û"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(•Ö«úÿÿÿÿ
+3
+java:S1643±"Use a StringBuilder instead.(…Î÷ø
+_
+java:S2583ƒ"CChange this condition so that it does not always evaluate to "true"(ÅŠ„ñøÿÿÿÿ
+P
+java:S5993º"9Change the visibility of this constructor to "protected".(Ğ½Õ
+P
+java:S5993Ò"9Change the visibility of this constructor to "protected".(Ì«â
+U
+java:S5993İ"9Change the visibility of this constructor to "protected".(¹¤âäÿÿÿÿÿ
+U
+java:S5993è"9Change the visibility of this constructor to "protected".(–šçıÿÿÿÿ
+
+java:S1149¦"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ğÊôŞúÿÿÿÿ
+|
+java:S1149§"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(èĞ¤ª
+
+java:S1149¨"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(»¼šıÿÿÿÿ
+a
+java:S1124–"EReorder the modifiers to comply with the Java Language Specification.(¬Ö‘üÿÿÿÿ
+\
+java:S1124—"EReorder the modifiers to comply with the Java Language Specification.(Âü·š
+\
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(´šÍë
+A
+java:S1197©"*Move the array designators [] to the type.(°»³
+F
+java:S1197¬"*Move the array designators [] to the type.(Ù«Œùÿÿÿÿ
+u
+java:S3012²"YUse "Arrays.copyOf", "Arrays.asList", "Collections.addAll" or "System.arraycopy" instead.(â·øğüÿÿÿÿ
+u
+java:S3012Ì"YUse "Arrays.copyOf", "Arrays.asList", "Collections.addAll" or "System.arraycopy" instead.(â·øğüÿÿÿÿ
+i
+java:S3776ò"RRefactor this method to reduce its Cognitive Complexity from 68 to the 15 allowed.(°ËÌÍ
+G
+java:S1481ı"+Remove this unused "rowNum" local variable.(Şòº»ÿÿÿÿÿ
+=
+java:S1659“"!Declare "rem" on a separate line.(äæ»¯úÿÿÿÿ
+9
+java:S1659Ì""Declare "span" on a separate line.(ˆã´‡
+E
+java:S1659Û")Declare "space_after" on a separate line.(•Ö«úÿÿÿÿ
+W	java:S125"<This block of commented-out lines of code should be removed.(®Š ¤ıÿÿÿÿ
+;
+java:S1659Ê"$Declare "space2" on a separate line.(Ñá÷Ê
+G
+java:S1481ê"+Remove this unused "colNum" local variable.(”óè¾ùÿÿÿÿ
