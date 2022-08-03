@@ -18,7 +18,7 @@ repositories {
 tasks.named('jar') {
     manifest {
         attributes('Main-Class':'Application.Main',
-                'Premain-Class': 'Agent.App',
+                'Premain-Class': 'Com.Agent.App',
                 'Can-Redefine-Classes': 'true',
                 'Can-Retransform-Classes':'true',
                 'Can-Set-Native-Method-Prefix':'true')
