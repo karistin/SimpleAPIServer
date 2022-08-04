@@ -6,9 +6,18 @@ public class MethodInstr {
     private Long second = 0L;
     private Long calls = 1L;
     private Long totalTime = 0L;
+    private  StackTraceElement[] stacks;
 
     private String packageName;
     private String className;
+
+    public StackTraceElement[] getStacks() {
+        return stacks;
+    }
+
+    public void setStacks(StackTraceElement[] stacks) {
+        this.stacks = stacks;
+    }
 
     public String getMethodName() {
         return methodName;
@@ -60,22 +69,9 @@ public class MethodInstr {
     public void plusCalls(){
         this.calls +=1;
     }
-    public void reset(){
-        this.methodName = "";
-        this.calls = 0L;
-        this.second = 0L;
-        this.totalTime = 0L;
-    }
 
-    @Override
-    public String toString() {
-        return "MethodInstr{" +
-                "methodName='" + methodName + '\'' +
-                ", second=" + second +
-                ", calls=" + calls +
-                ", totalTime=" + totalTime +
-                '}';
-    }
+
+
 
 
 }

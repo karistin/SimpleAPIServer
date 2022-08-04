@@ -8,10 +8,8 @@ public class Methodvalue {
     private int access;
     private String name;
     private String descriptor;
-
     private Long methodCount = 0L;
-
-    private ArrayList<MethodInsnValue> methodInsnValues= new ArrayList<MethodInsnValue>();
+    private ArrayList<MethodInsnValue> methodInsnValues= new ArrayList<>();
 
     public int getAccess() {
         return access;
@@ -45,6 +43,14 @@ public class Methodvalue {
         this.methodInsnValues = methodInsnValues;
     }
 
+
+
+    public void printInsn() {
+        System.out.format("\t\t%30s %25s %30s\r\n","opcode", "owner", "name");
+        for(MethodInsnValue methodInsnValue: methodInsnValues){
+            methodInsnValue.printset();
+        }
+    }
 
     public void printset(){
         if (methodInsnValues.size() !=0)

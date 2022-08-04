@@ -24,6 +24,7 @@ public class MyBCIMethod {
         return methodInstrList;
     }
 //    static 메소드떔시 static
+
     public static void start(){
         time = System.currentTimeMillis();
     }
@@ -47,8 +48,10 @@ public class MyBCIMethod {
                 methodInstr.setPackageName(packageName);
                 methodInstrList.replace(methodName,methodInstr);
             }
+
         }
         else {
+            methodInstr.setStacks((new Throwable()).getStackTrace());
             methodInstr.setMethodName(methodName);
             methodInstr.setSecond(temp);
             methodInstr.setTotalTime(temp);

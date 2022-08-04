@@ -14,8 +14,13 @@ package Com.Util;
 public class Filter {
     private static String[] classFilters = {
             "java","jdk","javax","sun","com/sun","Com/Agent","org/apache/maven","org/junit", "org/springframework", "org/springdoc","org/apache","org/w3c","$","org/slf4j","com/fasterxml","nonapi",
-            "io/swagger","ch/qos"
+            "io/swagger","ch/qos","$$","Com/Type"
     };
+
+//    private static String[] classFilters = {
+//            "java","jdk","javax","sun","com/sun","Agent.","org/apache/maven","org/junit", "org/springframework", "org/springdoc","org/apache","org/w3c",
+//            "nonapi/io","org/slf4j","ch/qos","com/fasterxml","org/xml","io/github","org/webjars","org/aopalliance","io/swagger","$"
+//    };
 //    make white list
 
     static public boolean classFilering(String className){

@@ -34,14 +34,6 @@ public class MyClassFileTransformer implements ClassFileTransformer {
             MyClassVisitor vistor = new MyClassVisitor(writer, className);
             reader.accept(vistor, ClassReader.EXPAND_FRAMES);
             App.taskRepository.save(vistor.getDataset());
-//            try
-//            {
-//                Path path = Paths.get("classes/"+className+".class");
-//                Files.write(path, classfileBuffer);
-//                System.out.println(path.toAbsolutePath());
-//            }catch (IOException e){
-//                System.out.println(e);
-//            }
 
             return writer.toByteArray();
         }

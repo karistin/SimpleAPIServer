@@ -19,6 +19,13 @@ public class App {
 
     public static DataSetRepo taskRepository = new DataSetRepoMemory();
     public final static Logger LOG = Logger.getGlobal();
+    static Thread.UncaughtExceptionHandler exceptionHandler = new Thread.UncaughtExceptionHandler() {
+        @Override
+        public void uncaughtException(Thread t, Throwable e) {
+            System.out.println("Uncaught exception "+ e);
+            System.exit(0);
+        }
+    };
 
 //     java -javaagent:app/build/libs/app.jar -Dspring.main.banner-mode=off -Dlogging.pattern.console= -jar TestCase.jar
 //      java -javaagent:app/build/libs/app.jar -jar app/build/libs/app.jar
@@ -38,6 +45,8 @@ public class App {
         LOG.addHandler(textHandler);
 
         PrintThread printThread = new PrintThread();
+        printThread.setDaemon(true);
+        printThread.setUncaughtExceptionHandler(exceptionHandler);
         printThread.start();
 //        LOG.info(System.getProperty("sun.java.command"));
         LOG.info("[Premain Agnet Start]");

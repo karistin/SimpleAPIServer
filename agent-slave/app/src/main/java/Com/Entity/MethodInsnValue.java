@@ -50,6 +50,6 @@ public class MethodInsnValue {
     }
 
     public void printset() {
-        System.out.format("\t\t%30s %25s \r\n", opcode, name);
+        System.out.format("\t\t%30s %25s %30s \r\n", opcode, owner, name);
     }
 }
