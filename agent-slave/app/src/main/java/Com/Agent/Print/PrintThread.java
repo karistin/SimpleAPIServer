@@ -64,13 +64,15 @@ public class PrintThread extends Thread{
         List<String> index = new ArrayList<>();
         int printdepth = 20;
         String indexing = "";
+        int sort = 1;
         while (true) {
             if (state == menuState.METHOD)
             {
+
+
+                System.out.println("Sorting by second");
                 int col = 4;
                 int gap = 10;
-
-
                 MultiColumnPrinter printer = new MultiColumnPrinter(col, gap ,"*",0,false) {
                     @Override
                     public void doPrint(String str) {
@@ -83,8 +85,6 @@ public class PrintThread extends Thread{
                     }
                 };
 
-                System.out.println("Sorting by second");
-
                 String[] titleRow = new String[col];
                 titleRow[0] = "Method";
                 titleRow[1] = "Call";
@@ -96,8 +96,18 @@ public class PrintThread extends Thread{
 
                 List<String> keyList = new ArrayList<>(methodInstrList.keySet());
 
-
-                keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getTotalTime())).reversed());
+                if (sort == 1)
+                {
+                    keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getCalls())).reversed());
+                }
+                else if (sort == 2)
+                {
+                    keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getSecond())).reversed());
+                }
+                else
+                {
+                    keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getTotalTime())).reversed());
+                }
 
 //                 0 show all
                 if (printdepth !=0) {
@@ -131,28 +141,36 @@ public class PrintThread extends Thread{
             else if(state ==menuState.SEARCHING)
             {
                 Map<String, MethodInstr> methodInstrList = MyBCIMethod.getMethodInstrList();
+                System.out.println(index);
+                System.out.println("=================================");
                 for(Map.Entry<String, MethodInstr> method: methodInstrList.entrySet())
                 {
-                    System.out.println(method.getKey());
+//                    System.out.println(method.getKey());
+                    printindexing(method.getKey(), index);
                 }
+                System.out.println("=================================");
+
                 System.out.println("\r\nInput Method Name\r\n");
                 String name = sc.nextLine();
+
                 if(name.equals("exit"))
                 {
                     state = menuState.MENU;
+                }
+                else if(name.contains("grep"))
+                {
+                    index = List.of((name.split(" ")));
+                    index = index.subList(1, index.size());
                 }
                 else if (methodInstrList.get(name) != null)
                 {
                     MethodInstr method =  methodInstrList.get(name);
                     String packageClass = method.getPackageName()+method.getClassName();
                     System.out.println("\r\n"+packageClass+'/'+method.getMethodName());
-//                    System.out.println(method.getMethodName());
-
                     DataSet methodInstrs = App.taskRepository.getClass(packageClass).get();
                     ArrayList<Methodvalue> methodvalues = methodInstrs.getMethodvalues();
                     for(Methodvalue methodvalue:methodvalues)
                     {
-//                        System.out.println(methodvalue.getName());
                         if (methodvalue.getName().equals(name))
                         {
                             methodvalue.printInsn();
@@ -239,6 +257,7 @@ public class PrintThread extends Thread{
                 while(true)
                 {
                     index = new ArrayList<>();
+                    indexCount = 0;
                     System.out.println("AgentSlve Menu");
                     System.out.println("1. MethodProfiling");
                     System.out.println("2. SearchClssinfo");
@@ -251,10 +270,13 @@ public class PrintThread extends Thread{
                     switch (asn){
                         case "1":
                             state = menuState.METHOD;
-                            System.out.println("Input Depth");
+                            System.out.println("Input Depth(zero to default)");
                             printdepth = sc.nextInt();
-                            System.out.println("Indexing");
+                            System.out.println("Indexing(zero to default)");
                             indexing = sc.next();
+                            System.out.println("Sorting Method(default TotalTime)");
+                            System.out.println("1 : Call \t 2 : Average Second \t 3 : Total Time");
+                            sort = sc.nextInt();
                             break;
                         case "2":
                             state = menuState.CLASS;

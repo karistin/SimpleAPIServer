@@ -24,7 +24,7 @@ public class MyBCIMethod {
         return methodInstrList;
     }
 //    static 메소드떔시 static
-
+    private static Long instrTime = 0L;
     public static void start(){
         time = System.currentTimeMillis();
     }

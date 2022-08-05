@@ -40,7 +40,7 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-        if (!name.equals( "<init>") && !name.equals( "<clinit>")) {
+        if (!name.equals( "<init>") && !name.equals( "<clinit>") && !owner.contains("java")) {
             MethodInsnValue methodInsnValue = new MethodInsnValue();
             methodInsnValue.setOpcode(InvokeType.getInvokeMap(opcode));
             methodInsnValue.setOwner(owner);

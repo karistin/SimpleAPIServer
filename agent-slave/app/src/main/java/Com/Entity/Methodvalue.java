@@ -1,6 +1,7 @@
 package Com.Entity;
 
 import Com.Type.AccessType;
+import Com.Util.MultiColumnPrinter;
 
 import java.util.ArrayList;
 
@@ -46,15 +47,42 @@ public class Methodvalue {
 
 
     public void printInsn() {
-        System.out.format("\t\t%30s %25s %30s\r\n","opcode", "owner", "name");
-        for(MethodInsnValue methodInsnValue: methodInsnValues){
-            methodInsnValue.printset();
+        if (methodInsnValues.size()>0)
+        {
+
+            int col =3;
+            int gap = 8;
+            String[] row = new String[col];
+            MultiColumnPrinter printInsn = new MultiColumnPrinter(3,8,"*") {
+                @Override
+                public void doPrint(String str) {
+                    System.out.print(str);
+                }
+
+                @Override
+                public void doPrintln(String str) {
+                    System.out.println("");
+                }
+            };
+            row[0] = "opcode";
+            row[1] = "owner";
+            row[2] = "name";
+            printInsn.addTitle(row);
+            for(MethodInsnValue methodInsnValue: methodInsnValues){
+                row = new String[col];
+                row[0] = methodInsnValue.getOpcode();
+                row[1] = methodInsnValue.getOwner();
+                row[2] = methodInsnValue.getName();
+                printInsn.add(row);
+            }
+            printInsn.print();
         }
     }
 
     public void printset(){
         if (methodInsnValues.size() !=0)
         {
+
             System.out.format("%30s "+"%25s \r\n", AccessType.getaccessFlag(access), name);
 //            System.out.format("\t\t%30s %25s \r\n","opcode", "owner");
 //            for(MethodInsnValue methodInsnValue: methodInsnValues){
