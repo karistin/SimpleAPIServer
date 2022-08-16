@@ -25,7 +25,8 @@ public class MyClassFileTransformer implements ClassFileTransformer {
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        if(Filter.classFilering(className) && !className.equals("Com/Entity/MethodInstr"))
+        //bootLoader erroring 방지
+        if(Filter.classFilering(className) && !className.equals("Com/Entity/MethodInstr") && !className.equals("Com/Agent/MyBCIMethod"))
         {
             LOG.info("Lodding Class : " + className);
 //            className = className.substring(className.lastIndexOf("/")+1);

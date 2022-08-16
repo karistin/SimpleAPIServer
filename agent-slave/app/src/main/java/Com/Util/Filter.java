@@ -12,11 +12,14 @@ package Com.Util;
  * 2022-07-20        lucas       최초 생성
  */
 public class Filter {
+//    private static String[] classFilters = {
+//            "java","jdk","javax","sun","com/sun","Com/Agent","org/apache/maven","org/junit", "org/springframework", "org/springdoc","org/apache","org/w3c","$","org/slf4j","com/fasterxml","nonapi",
+//            "io/swagger","ch/qos","$$","Com/Agent/MyBCIMethod","com/google/","com.googlecode"
+//    };
     private static String[] classFilters = {
-            "java","jdk","javax","sun","com/sun","Com/Agent","org/apache/maven","org/junit", "org/springframework", "org/springdoc","org/apache","org/w3c","$","org/slf4j","com/fasterxml","nonapi",
-            "io/swagger","ch/qos","$$","Com/Type"
+            "jdk","javax","sun","com/sun","Com/Agent","org/apache/maven","org/junit", "org/springdoc","org/apache","org/w3c","$","org/slf4j","com/fasterxml",
+            "io/swagger","ch/qos","$$","Com/Agent/MyBCIMethod","com/google/","com.googlecode","org/springframework","java"
     };
-
 //    private static String[] classFilters = {
 //            "java","jdk","javax","sun","com/sun","Agent.","org/apache/maven","org/junit", "org/springframework", "org/springdoc","org/apache","org/w3c",
 //            "nonapi/io","org/slf4j","ch/qos","com/fasterxml","org/xml","io/github","org/webjars","org/aopalliance","io/swagger","$"

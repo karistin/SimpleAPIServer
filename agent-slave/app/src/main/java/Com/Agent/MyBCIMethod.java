@@ -2,7 +2,11 @@ package Com.Agent;
 
 import Com.Entity.MethodInstr;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
 import java.util.*;
+
+import static Com.Agent.App.LOG;
 
 /**
  * packageName    : Agent
@@ -25,8 +29,18 @@ public class MyBCIMethod {
     }
 //    static 메소드떔시 static
     private static Long instrTime = 0L;
+    private static Long base_cpu = 0L;
+    private static ThreadMXBean mxBean = ManagementFactory.getThreadMXBean();
+
     public static void start(){
-        time = System.currentTimeMillis();
+        if(!mxBean.isCurrentThreadCpuTimeSupported())
+        {
+            LOG.info("Not Supported");
+        }else {
+            mxBean.setThreadCpuTimeEnabled(true);
+        }
+        time = System.nanoTime();
+        base_cpu = mxBean.getCurrentThreadUserTime();
     }
 
     public static void end(String packageName, String methodName){
@@ -34,8 +48,11 @@ public class MyBCIMethod {
         packageName = packageName.substring(0,packageName.length()-className.length());
 
         MethodInstr methodInstr = new MethodInstr();
-        Long temp = System.currentTimeMillis() - time;
-
+        Long temp = System.nanoTime() - time;
+//        temp = ( mxBean.getCurrentThreadUserTime() - base_cpu)/temp;
+//        temp =  mxBean.getCurrentThreadUserTime();
+//        temp = (mxBean.getCurrentThreadUserTime() - base_cpu)/temp;
+//        System.out.println(mxBean.getThreadCount());
         if (methodInstrList.containsKey(methodName))
         {
             methodInstr = methodInstrList.get(methodName);
@@ -43,7 +60,8 @@ public class MyBCIMethod {
             {
                 methodInstr.plusCalls();
                 methodInstr.setTotalTime(temp+methodInstr.getTotalTime());
-                methodInstr.setSecond(methodInstr.getTotalTime()/methodInstr.getCalls());
+//                methodInstr.setSecond(methodInstr.getTotalTime()/methodInstr.getCalls());
+                methodInstr.setSecond(temp);
                 methodInstr.setClassName(className);
                 methodInstr.setPackageName(packageName);
                 methodInstrList.replace(methodName,methodInstr);

@@ -7,13 +7,20 @@ import Com.Entity.MethodInstr;
 import Com.Entity.Methodvalue;
 import Com.Util.LogFormatter;
 import Com.Util.MultiColumnPrinter;
+import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.terminal.Terminal;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.*;
+
+import static Com.Agent.App.LOG;
 
 public class PrintThread extends Thread{
 
@@ -22,7 +29,11 @@ public class PrintThread extends Thread{
     SignalHandler signalHandler = new SignalHandler() {
         @Override
         public void handle(Signal sig) {
-            state = menuState.MENU;
+            if(state != menuState.MENU)
+                state = menuState.MENU;
+            else{
+                System.exit(0);
+            }
         }
     };
 
@@ -59,12 +70,36 @@ public class PrintThread extends Thread{
     @Override
     public void run() {
 
+        new Frame();
+
+//        Localhosting
+//        int PORT_NUMBER = 8082;
+//        System.out.println("profilering server start");
+//        try(ServerSocket server = new ServerSocket(PORT_NUMBER)) {
+//            while(true)
+//            {
+//                try {
+//                    Socket connection = server.accept();
+//                    System.out.println("Client Access");
+//                    Thread task = new SocketThreadServer(connection);
+//                    task.start();
+//
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        }
+//        catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
         Signal.handle(new Signal("INT"),signalHandler);
         Scanner sc = new Scanner(System.in);
         List<String> index = new ArrayList<>();
         int printdepth = 20;
         String indexing = "";
-        int sort = 1;
+        int sort = 2;
+
         while (true) {
             if (state == menuState.METHOD)
             {
@@ -300,5 +335,6 @@ public class PrintThread extends Thread{
             System.out.print("\033[H\033[2J");
             System.out.flush();
         }
+
     }
 }

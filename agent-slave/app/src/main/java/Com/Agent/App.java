@@ -36,18 +36,21 @@ public class App {
         LOG.setUseParentHandlers(false);
 
         String logfile = System.getProperty("user.dir")+"/agentLog.txt";
-        Files.delete(Paths.get(logfile));
-        Handler textHandler = new FileHandler(logfile,true);
+        if(Files.exists(Paths.get(logfile)))
+            Files.delete(Paths.get(logfile));
+
+        Handler handler = new FileHandler(logfile,true);
 //        ConsoleHandler handler = new ConsoleHandler();
 
         Formatter formatter = new LogFormatter();
-        textHandler.setFormatter(formatter);
-        LOG.addHandler(textHandler);
+        handler.setFormatter(formatter);
+        LOG.addHandler(handler);
 
         PrintThread printThread = new PrintThread();
         printThread.setDaemon(true);
         printThread.setUncaughtExceptionHandler(exceptionHandler);
         printThread.start();
+
 //        LOG.info(System.getProperty("sun.java.command"));
         LOG.info("[Premain Agnet Start]");
         instrumentation.addTransformer(new MyClassFileTransformer());

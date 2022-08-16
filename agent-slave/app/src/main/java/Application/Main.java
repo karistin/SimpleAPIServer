@@ -21,9 +21,22 @@ import java.util.List;
  */
 public class Main {
 
+    private static String[] classFilters = {
+            "java","jdk","javax","sun","com/sun","com/Agent","org/apache/maven","org/junit", "org/springframework", "org/springdoc","org/apache","org/w3c","$","org/slf4j","com/fasterxml","nonapi",
+            "io/swagger","ch/qos","$$","Com.","com/googlecode/lanterna"
+    };
+    private static boolean Filtering(String name)
+    {
+//        String name ="Com/Agent/MyBCIMethod";
+        for (String classFilter: classFilters)
+        {
+            if(classFilter.contains(classFilter))
+                return false;
+        }
+        return true;
+    }
     public static void main(String args[]) {
-        String name ="java/lang";
-        System.out.println(!name.contains("java"));
+        System.out.println(Filtering("Com/Agent/MyBCIMethod"));
     }
 //    public static void main(String[] args) {
 //        while(true){

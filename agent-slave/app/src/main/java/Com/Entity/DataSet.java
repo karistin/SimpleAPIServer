@@ -3,9 +3,10 @@ package Com.Entity;
 import Com.Type.AccessType;
 import Com.Util.LogFormatter;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class DataSet {
+public class DataSet implements Serializable {
 
 
     private int access;
