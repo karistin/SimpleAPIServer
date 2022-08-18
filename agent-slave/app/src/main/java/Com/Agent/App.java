@@ -3,7 +3,7 @@
  */
 package Com.Agent;
 
-import Com.Agent.Print.PrintThread;
+import Com.Agent.UI.PrintThread;
 import Com.Repository.DataSetRepo;
 import Com.Repository.DataSetRepoMemory;
 import Com.Util.LogFormatter;

@@ -1,4 +1,4 @@
-package Com.Agent.Print;
+package Com.Agent.UI;
 
 import Com.Agent.App;
 import Com.Agent.MyBCIMethod;
@@ -7,20 +7,15 @@ import Com.Entity.MethodInstr;
 import Com.Entity.Methodvalue;
 import Com.Util.LogFormatter;
 import Com.Util.MultiColumnPrinter;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
-import javax.swing.*;
+import javax.management.MBeanServer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.lang.management.*;
 import java.util.*;
-
-import static Com.Agent.App.LOG;
 
 public class PrintThread extends Thread{
 
@@ -70,7 +65,7 @@ public class PrintThread extends Thread{
     @Override
     public void run() {
 
-        new Frame();
+//        new MainFrame();
 
 //        Localhosting
 //        int PORT_NUMBER = 8082;
@@ -171,7 +166,6 @@ public class PrintThread extends Thread{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-
             }
             else if(state ==menuState.SEARCHING)
             {
@@ -180,7 +174,6 @@ public class PrintThread extends Thread{
                 System.out.println("=================================");
                 for(Map.Entry<String, MethodInstr> method: methodInstrList.entrySet())
                 {
-//                    System.out.println(method.getKey());
                     printindexing(method.getKey(), index);
                 }
                 System.out.println("=================================");
@@ -213,9 +206,13 @@ public class PrintThread extends Thread{
                     }
 
                     System.out.println("=================================");
-                    for(StackTraceElement stack: method.getStacks())
+                    StackTraceElement[] stack = method.getStacks();
+                    for(int i=0; i<stack.length; i++)
                     {
-                        System.out.println(stack);
+                        if(i==0)
+                            continue;
+
+                        System.out.println("["+i+"] "+stack[i]);
                     }
                     System.out.println("=================================");
                     sc.nextLine();
@@ -279,8 +276,44 @@ public class PrintThread extends Thread{
             }
             else if (state == menuState.SUMMARY)
             {
-                System.out.println("Not Making");
-                state = menuState.MENU;
+//                OperatingSystemMXBean osbean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+                RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+                ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+                MemoryMXBean memBean = ManagementFactory.getMemoryMXBean() ;
+                MemoryUsage heapMemoryUsage = memBean.getHeapMemoryUsage();
+                MemoryUsage nonheapMemoryUsage = memBean.getNonHeapMemoryUsage();
+
+                long[] allThreadIds = threadMXBean.getAllThreadIds();
+                long nano =0;
+                for (long id : allThreadIds) {
+                    nano += threadMXBean.getThreadCpuTime(id);
+                }
+
+                System.out.println("Java Virtual Machine : " + System.getProperty("java.vm.name"));
+                System.out.println("Vendor : " + System.getProperty("java.vm.specification.vendor"));
+                System.out.println("PID : "+ProcessHandle.current().pid());
+                System.out.println("Runtime : "+new Date(runtimeMXBean.getStartTime()));
+                System.out.println("Uptime : "+runtimeMXBean.getUptime()/1000+" s");
+                System.out.println("Total CPU time : "+nano/1E6);
+                System.out.println("Working dir : "+System.getProperty("user.dir"));
+
+                System.out.println("Agent log :" +System.getProperty("user.dir")+"/agentLog.txt");
+                System.out.println("=====================================================");
+                System.out.println("Limit Heap memory "+ heapMemoryUsage.getMax());
+                System.out.println("Allocated Heap memory "+ heapMemoryUsage.getCommitted());
+                System.out.println("Using Heap memory "+ heapMemoryUsage.getUsed());
+
+                System.out.println("=======================================================");
+                System.out.println("Limit NonHeap memory "+ nonheapMemoryUsage.getMax());
+                System.out.println("Allocated NonHeap memory "+ nonheapMemoryUsage.getCommitted());
+                System.out.println("Using NonHeap memory "+ nonheapMemoryUsage.getUsed());
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
             else if (state == menuState.PERFORMACE)
             {
@@ -299,7 +332,7 @@ public class PrintThread extends Thread{
                     System.out.println("3. EventLog");
                     System.out.println("4. Searching");
 //                    System.out.println("5. JVM Summary");
-                    System.out.println("5. Performance");
+                    System.out.println("5. JVM Summary");
                     System.out.print("6. Exit\r\n=>");
                     String asn = sc.nextLine();
                     switch (asn){
@@ -323,7 +356,7 @@ public class PrintThread extends Thread{
                             state = menuState.SEARCHING;
                             break;
                         case "5":
-                            state = menuState.PERFORMACE;
+                            state = menuState.SUMMARY;
                             break;
                         case "6":
                             System.exit(0);

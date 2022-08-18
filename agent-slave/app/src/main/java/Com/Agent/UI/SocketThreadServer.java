@@ -1,20 +1,16 @@
-package Com.Agent.Print;
+package Com.Agent.UI;
 
 import Com.Agent.MyBCIMethod;
 import Com.Entity.MethodInstr;
 import com.google.gson.Gson;
 import org.json.JSONObject;
-import org.json.JSONString;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.List;
 import java.util.Map;
-
-import static Com.Agent.App.LOG;
 
 public class SocketThreadServer extends Thread{
 
