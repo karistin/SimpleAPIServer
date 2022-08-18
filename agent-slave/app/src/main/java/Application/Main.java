@@ -1,7 +1,12 @@
 package Application;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 /**
  * packageName    : Application
@@ -15,14 +20,9 @@ import java.util.List;
  * 2022-07-25        lucas       최초 생성
  */
 public class Main {
-    public static List<Integer> arry  = new ArrayList<>();
-    public static int an;
-    public static void main(String[] args) {
-        an = 4;
-        arry.add(an);
-        an = 5;
-        arry.add(an);
-        System.out.println(arry);
+
+    public static void main(String args[]) {
+        System.out.println("Hello ");
     }
 
 }
