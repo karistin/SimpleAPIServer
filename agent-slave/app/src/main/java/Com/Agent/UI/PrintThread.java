@@ -10,7 +10,6 @@ import Com.Util.MultiColumnPrinter;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
-import javax.management.MBeanServer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -62,31 +61,29 @@ public class PrintThread extends Thread{
         indexCount +=1;
     }
 
+    private DataSet findDataSet(MethodInstr method)
+    {
+        String name = method.getPackageName()+method.getClassName();
+        if(App.taskRepository.getClass(name).isPresent()) {
+            return App.taskRepository.getClass(name).get();
+        }
+        return null;
+    }
+
+    private Methodvalue findMethod(DataSet dataSet, MethodInstr method)
+    {
+        for(Methodvalue methodvalue: dataSet.getMethodvalues())
+        {
+            if(methodvalue.getName().equals(method.getMethodName()))
+            {
+                return methodvalue;
+            }
+        }
+        return null;
+    }
     @Override
     public void run() {
 
-//        new MainFrame();
-
-//        Localhosting
-//        int PORT_NUMBER = 8082;
-//        System.out.println("profilering server start");
-//        try(ServerSocket server = new ServerSocket(PORT_NUMBER)) {
-//            while(true)
-//            {
-//                try {
-//                    Socket connection = server.accept();
-//                    System.out.println("Client Access");
-//                    Thread task = new SocketThreadServer(connection);
-//                    task.start();
-//
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        }
-//        catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
 
         Signal.handle(new Signal("INT"),signalHandler);
         Scanner sc = new Scanner(System.in);
@@ -190,20 +187,22 @@ public class PrintThread extends Thread{
                     index = List.of((name.split(" ")));
                     index = index.subList(1, index.size());
                 }
+                else if(name.contains("tree"))
+                {
+                    
+                }
                 else if (methodInstrList.get(name) != null)
                 {
                     MethodInstr method =  methodInstrList.get(name);
-                    String packageClass = method.getPackageName()+method.getClassName();
-                    System.out.println("\r\n"+packageClass+'/'+method.getMethodName());
-                    DataSet methodInstrs = App.taskRepository.getClass(packageClass).get();
-                    ArrayList<Methodvalue> methodvalues = methodInstrs.getMethodvalues();
-                    for(Methodvalue methodvalue:methodvalues)
+                    DataSet dataSet = findDataSet(method);
+                    if(dataSet !=null)
                     {
-                        if (methodvalue.getName().equals(name))
-                        {
+                        Methodvalue methodvalue = findMethod(dataSet, method);
+                        if (methodvalue != null) {
                             methodvalue.printInsn();
                         }
                     }
+
 
                     System.out.println("=================================");
                     StackTraceElement[] stack = method.getStacks();
