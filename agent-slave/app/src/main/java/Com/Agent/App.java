@@ -3,7 +3,7 @@
  */
 package Com.Agent;
 
-import Com.Agent.UI.PrintThread;
+import Com.UI.UIMain;
 import Com.Repository.DataSetRepo;
 import Com.Repository.DataSetRepoMemory;
 import Com.Util.LogFormatter;
@@ -27,7 +27,7 @@ public class App {
         }
     };
 
-//     java -javaagent:app/build/libs/app.jar -Dspring.main.banner-mode=off -Dlogging.pattern.console= -jar TestCase.jar
+//     java -javaagent:app/build/libs/app.jar -Dspring.Main.banner-mode=off -Dlogging.pattern.console= -jar TestCase.jar
 //      java -javaagent:app/build/libs/app.jar -jar app/build/libs/app.jar
     public static void premain(String args, Instrumentation instrumentation) throws IOException {
 
@@ -46,10 +46,16 @@ public class App {
         handler.setFormatter(formatter);
         LOG.addHandler(handler);
 
-        PrintThread printThread = new PrintThread();
-        printThread.setDaemon(true);
-        printThread.setUncaughtExceptionHandler(exceptionHandler);
-        printThread.start();
+        UIMain uiMain = new UIMain();
+        uiMain.setDaemon(true);
+        uiMain.setUncaughtExceptionHandler(exceptionHandler);
+        uiMain.start();
+
+
+//        PrintThread printThread = new PrintThread();
+//        printThread.setDaemon(true);
+//        printThread.setUncaughtExceptionHandler(exceptionHandler);
+//        printThread.start();
 
 //        LOG.info(System.getProperty("sun.java.command"));
         LOG.info("[Premain Agnet Start]");

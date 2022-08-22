@@ -53,7 +53,7 @@ public class Methodvalue {
             int col =3;
             int gap = 8;
             String[] row = new String[col];
-            MultiColumnPrinter printInsn = new MultiColumnPrinter(3,8,"*") {
+            MultiColumnPrinter printInsn = new MultiColumnPrinter(3,8,"*",0,false) {
                 @Override
                 public void doPrint(String str) {
                     System.out.print(str);
@@ -68,6 +68,7 @@ public class Methodvalue {
             row[1] = "owner";
             row[2] = "name";
             printInsn.addTitle(row);
+
             for(MethodInsnValue methodInsnValue: methodInsnValues){
                 row = new String[col];
                 row[0] = methodInsnValue.getOpcode();

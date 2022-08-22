@@ -1,12 +1,12 @@
-package Com.Agent.UI;
+package Com.UI;
 
 import Com.Agent.App;
 import Com.Agent.MyBCIMethod;
-import Com.Entity.DataSet;
-import Com.Entity.MethodInstr;
-import Com.Entity.Methodvalue;
+import Com.Entity.*;
 import Com.Util.LogFormatter;
 import Com.Util.MultiColumnPrinter;
+import org.barfuin.texttree.api.DefaultNode;
+import org.barfuin.texttree.api.TextTree;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
@@ -38,7 +38,7 @@ public class PrintThread extends Thread{
     private String indexing(String name, List<String>index){
         for(String ind: index)
         {
-            if (name.contains(ind.toLowerCase()))
+            if (name.toLowerCase().contains(ind.toLowerCase()))
             {
                 name = name.replace(ind, LogFormatter.ANSI_BLUE+ind+LogFormatter.ANSI_WHITE);
                 return name;
@@ -51,6 +51,13 @@ public class PrintThread extends Thread{
         if (index.size() != 0)
         {
             name = indexing(name ,index);
+            for (String ind : index) {
+                if(name.equalsIgnoreCase(ind))
+                {
+                    name = name.replace(ind, LogFormatter.ANSI_BLUE+ind+LogFormatter.ANSI_WHITE);
+
+                }
+            }
             if(!name.equals("-1")){
                 System.out.println(name);
                 indexCount +=1;
@@ -142,7 +149,7 @@ public class PrintThread extends Thread{
                         keyList = new ArrayList<>(keyList.subList(0, printdepth));
                     }
                 }
-
+                System.out.println(indexing);
                 for (String key : keyList) {
                     String[] row = new String[col];
                     MethodInstr methodInstr = methodInstrList.get(key);
@@ -164,7 +171,7 @@ public class PrintThread extends Thread{
                     throw new RuntimeException(e);
                 }
             }
-            else if(state ==menuState.SEARCHING)
+            else if(state == menuState.SEARCHING)
             {
                 Map<String, MethodInstr> methodInstrList = MyBCIMethod.getMethodInstrList();
                 System.out.println(index);
@@ -187,21 +194,99 @@ public class PrintThread extends Thread{
                     index = List.of((name.split(" ")));
                     index = index.subList(1, index.size());
                 }
-                else if(name.contains("tree"))
+                else if(name.startsWith("tree"))
                 {
-                    
+//                    System.out.println("tree");
+
+                    List<String> nameList = List.of(name.split(" "));
+                    name = nameList.get(nameList.size()-1);
+                    System.out.println("==========================\r\n\r\n");
+
+                    DefaultNode tree = new DefaultNode(name);
+                    List<MethodInsnValue> methodInsnValueList = null;
+                    if(methodInstrList.get(name) !=null)
+                    {
+                        MethodInstr method = methodInstrList.get(name);
+                        System.out.println(method.getPackageName() + method.getClassName() +"."+method.getMethodName()+"\r\n\r\n");
+                        DataSet dataSet = findDataSet(method);
+                        if(dataSet != null)
+                        {
+                            Methodvalue methodvalue = findMethod(dataSet, method);
+                            if(methodvalue !=null)
+                            {
+
+                                methodInsnValueList = methodvalue.getMethodInsnValues();
+                                for (MethodInsnValue methodInsnValue : methodInsnValueList) {
+                                    DefaultNode node = new DefaultNode(methodInsnValue.getName());
+                                    tree.addChild(node);
+
+
+
+                                    if (methodInstrList.get(node.getKey()) != null){
+                                        MethodInstr method2 = methodInstrList.get(node.getKey());
+                                        DataSet dataSet2 = findDataSet(method2);
+                                        if (dataSet2 != null) {
+                                            Methodvalue methodvalue2 = findMethod(dataSet2, method2);
+                                            if (methodvalue2 != null) {
+                                                List<MethodInsnValue> methodInsnValueList2 = methodvalue2.getMethodInsnValues();
+                                                for (MethodInsnValue methodInsnValue2 : methodInsnValueList2) {
+                                                    DefaultNode servnode = new DefaultNode(methodInsnValue2.getName());
+                                                    node.addChild(servnode);
+
+                                                    if(methodInstrList.get(servnode.getKey()) != null)
+                                                    {
+                                                        MethodInstr method3 = methodInstrList.get(servnode.getKey());
+                                                        DataSet dataSet3 = findDataSet(method3);
+                                                        if (dataSet3 != null) {
+                                                            Methodvalue methodvalue3 = findMethod(dataSet3, method3);
+                                                            if (methodvalue3 != null) {
+                                                                List<MethodInsnValue> methodInsnValueList3 = methodvalue3.getMethodInsnValues();
+                                                                for (MethodInsnValue methodInsnValue3 : methodInsnValueList3) {
+                                                                    servnode.addChild(new DefaultNode(methodInsnValue3.getName()));
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+
+
+
+
+
+                        String renderd = TextTree.newInstance().render(tree);
+                        System.out.println(renderd);
+                        sc.nextLine();
+
+
+                    }
+
+
+
                 }
                 else if (methodInstrList.get(name) != null)
                 {
                     MethodInstr method =  methodInstrList.get(name);
                     DataSet dataSet = findDataSet(method);
+                    System.out.println(method.getPackageName()+method.getClassName()+"."+method.getMethodName());
                     if(dataSet !=null)
                     {
                         Methodvalue methodvalue = findMethod(dataSet, method);
                         if (methodvalue != null) {
+
                             methodvalue.printInsn();
                         }
                     }
+
 
 
                     System.out.println("=================================");

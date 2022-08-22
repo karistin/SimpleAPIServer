@@ -16,12 +16,15 @@ import static java.lang.Thread.sleep;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         Main main = new Main();
-        main.sayHi();
+        while (true) {
+            main.sayHi();
+            Thread.sleep(100);
+        }
     }
 
     private void sayHi() throws InterruptedException {
-        System.out.println("hi, ksj");
         sleep();
+        System.out.println("hi, ksj"+System.currentTimeMillis());
     }
 
     private void sleep() throws InterruptedException {
