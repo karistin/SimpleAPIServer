@@ -3,6 +3,7 @@ package Com.Agent;
 import Com.Entity.MethodInsnValue;
 import Com.Type.InvokeType;
 import org.objectweb.asm.Handle;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.AdviceAdapter;
@@ -20,6 +21,21 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
         super(api, methodVisitor, access, methodName, descriptor);
         this.className = className;
         this.methodName = methodName;
+    }
+
+    @Override
+    public void visitJumpInsn(int opcode, Label label) {
+        super.visitJumpInsn(opcode, label);
+        if(opcode == Opcodes.IF_ACMPEQ)
+            System.out.println("IF_ACMPEQ");
+        else if(opcode == Opcodes.IF_ICMPEQ)
+            System.out.println("IF_ICMPEQ");
+        else if(opcode == Opcodes.IF_ICMPGT)
+            System.out.println("IF_ICMPGT");
+        else if(opcode == Opcodes.IF_ACMPNE)
+            System.out.println("IF_ACMPNE");
+
+//        System.out.println(Opcodes.IFopcode);
     }
 
     public String getMethodName() {

@@ -51,13 +51,6 @@ public class PrintThread extends Thread{
         if (index.size() != 0)
         {
             name = indexing(name ,index);
-            for (String ind : index) {
-                if(name.equalsIgnoreCase(ind))
-                {
-                    name = name.replace(ind, LogFormatter.ANSI_BLUE+ind+LogFormatter.ANSI_WHITE);
-
-                }
-            }
             if(!name.equals("-1")){
                 System.out.println(name);
                 indexCount +=1;

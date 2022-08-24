@@ -3,6 +3,7 @@
  */
 package Com.Agent;
 
+import Com.UI.PrintThread;
 import Com.UI.UIMain;
 import Com.Repository.DataSetRepo;
 import Com.Repository.DataSetRepoMemory;
@@ -46,16 +47,16 @@ public class App {
         handler.setFormatter(formatter);
         LOG.addHandler(handler);
 
-        UIMain uiMain = new UIMain();
-        uiMain.setDaemon(true);
-        uiMain.setUncaughtExceptionHandler(exceptionHandler);
-        uiMain.start();
+//        UIMain uiMain = new UIMain();
+//        uiMain.setDaemon(true);
+//        uiMain.setUncaughtExceptionHandler(exceptionHandler);
+//        uiMain.start();
 
 
-//        PrintThread printThread = new PrintThread();
-//        printThread.setDaemon(true);
-//        printThread.setUncaughtExceptionHandler(exceptionHandler);
-//        printThread.start();
+        PrintThread printThread = new PrintThread();
+        printThread.setDaemon(true);
+        printThread.setUncaughtExceptionHandler(exceptionHandler);
+        printThread.start();
 
 //        LOG.info(System.getProperty("sun.java.command"));
         LOG.info("[Premain Agnet Start]");

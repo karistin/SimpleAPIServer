@@ -33,14 +33,15 @@ public class MyBCIMethod {
     private static ThreadMXBean mxBean = ManagementFactory.getThreadMXBean();
 
     public static void start(){
-        if(!mxBean.isCurrentThreadCpuTimeSupported())
-        {
-            LOG.info("Not Supported");
-        }else {
-            mxBean.setThreadCpuTimeEnabled(true);
-        }
-        time = System.nanoTime();
-        base_cpu = mxBean.getCurrentThreadUserTime();
+//        if(!mxBean.isCurrentThreadCpuTimeSupported())
+//        {
+//            LOG.info("Not Supported");
+//        }else {
+//            mxBean.setThreadCpuTimeEnabled(true);
+//        }
+//        time = System.nanoTime();
+        time = System.currentTimeMillis();
+//        base_cpu = mxBean.getCurrentThreadUserTime();
     }
 
     public static void end(String packageName, String methodName){
@@ -48,7 +49,7 @@ public class MyBCIMethod {
         packageName = packageName.substring(0,packageName.length()-className.length());
 
         MethodInstr methodInstr = new MethodInstr();
-        Long temp = System.nanoTime() - time;
+        Long temp = System.currentTimeMillis() - time;
 //        temp = ( mxBean.getCurrentThreadUserTime() - base_cpu)/temp;
 //        temp =  mxBean.getCurrentThreadUserTime();
 //        temp = (mxBean.getCurrentThreadUserTime() - base_cpu)/temp;
@@ -60,8 +61,8 @@ public class MyBCIMethod {
             {
                 methodInstr.plusCalls();
                 methodInstr.setTotalTime(temp+methodInstr.getTotalTime());
-//                methodInstr.setSecond(methodInstr.getTotalTime()/methodInstr.getCalls());
-                methodInstr.setSecond(temp);
+                methodInstr.setSecond(methodInstr.getTotalTime()/methodInstr.getCalls());
+//                methodInstr.setSecond(temp);
                 methodInstr.setClassName(className);
                 methodInstr.setPackageName(packageName);
                 methodInstrList.replace(methodName,methodInstr);
