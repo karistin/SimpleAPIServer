@@ -6,11 +6,9 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 import java.util.*;
 
-import static Com.Agent.App.LOG;
-
 /**
  * packageName    : Agent
- * fileName       : MyBCIMethod
+ * fileName       : MethodCount
  * author         : lucas
  * date           : 2022-07-26
  * description    :
@@ -19,7 +17,7 @@ import static Com.Agent.App.LOG;
  * -----------------------------------------------------------
  * 2022-07-26        lucas       최초 생성
  */
-public class MyBCIMethod {
+public class MethodCount {
     private static Map<String , MethodInstr> methodInstrList = new HashMap<>();
 
     private static Long time = 0L;

@@ -1,7 +1,8 @@
 package Com.UI;
 
 import Com.Agent.App;
-import Com.Agent.MyBCIMethod;
+import Com.Agent.CostAccounter;
+import Com.Agent.MethodCount;
 import Com.Entity.*;
 import Com.Util.LogFormatter;
 import Com.Util.MultiColumnPrinter;
@@ -97,7 +98,7 @@ public class PrintThread extends Thread{
             {
 
 
-                System.out.println("Sorting by second");
+
                 int col = 4;
                 int gap = 10;
                 MultiColumnPrinter printer = new MultiColumnPrinter(col, gap ,"*",0,false) {
@@ -119,21 +120,24 @@ public class PrintThread extends Thread{
                 titleRow[3] = "TotalTime(ms)";
                 printer.addTitle(titleRow);
 //                sorting by CallTime
-                Map<String, MethodInstr> methodInstrList = MyBCIMethod.getMethodInstrList();
+                Map<String, MethodInstr> methodInstrList = MethodCount.getMethodInstrList();
 
                 List<String> keyList = new ArrayList<>(methodInstrList.keySet());
 
                 if (sort == 1)
                 {
                     keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getCalls())).reversed());
+                    System.out.println("Sorting by Call");
                 }
                 else if (sort == 2)
                 {
                     keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getSecond())).reversed());
+                    System.out.println("Sorting by Second");
                 }
                 else
                 {
                     keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getTotalTime())).reversed());
+                    System.out.println("Sorting by Totaltime");
                 }
 
 //                 0 show all
@@ -142,13 +146,15 @@ public class PrintThread extends Thread{
                         keyList = new ArrayList<>(keyList.subList(0, printdepth));
                     }
                 }
-                System.out.println(indexing);
+//                System.out.println(indexing);
+//                Erroring
+
                 for (String key : keyList) {
                     String[] row = new String[col];
                     MethodInstr methodInstr = methodInstrList.get(key);
                     String name = methodInstr.getPackageName()+methodInstr.getClassName()+"/"+methodInstr.getMethodName();
-                    if(!name.contains(indexing) && !indexing.equals("0"))
-                        continue;
+//                    if(!name.contains(indexing) && !indexing.equals("0"))
+//                        continue;
                     row[0] = name;
                     row[1] = String.valueOf(methodInstr.getCalls());
                     row[2] = methodInstr.getSecond()+"ms";
@@ -156,8 +162,10 @@ public class PrintThread extends Thread{
 
                     printer.add(row);
                 }
-
                 printer.print();
+
+                System.out.println(CostAccounter.getAllocationCost());
+
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
@@ -166,7 +174,7 @@ public class PrintThread extends Thread{
             }
             else if(state == menuState.SEARCHING)
             {
-                Map<String, MethodInstr> methodInstrList = MyBCIMethod.getMethodInstrList();
+                Map<String, MethodInstr> methodInstrList = MethodCount.getMethodInstrList();
                 System.out.println(index);
                 System.out.println("=================================");
                 for(Map.Entry<String, MethodInstr> method: methodInstrList.entrySet())

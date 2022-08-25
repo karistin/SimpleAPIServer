@@ -14,11 +14,11 @@ package Com.Util;
 public class Filter {
 //    private static String[] classFilters = {
 //            "java","jdk","javax","sun","com/sun","Com/Agent","org/apache/maven","org/junit", "org/springframework", "org/springdoc","org/apache","org/w3c","$","org/slf4j","com/fasterxml","nonapi",
-//            "io/swagger","ch/qos","$$","Com/Agent/MyBCIMethod","com/google/","com.googlecode"
+//            "io/swagger","ch/qos","$$","Com/Agent/MethodCount","com/google/","com.googlecode"
 //    };
     private static String[] classFilters = {
             "jdk","javax","sun","com/sun","Com/Agent","org/apache/maven","org/junit", "org/springdoc","org/apache","org/w3c","$","org/slf4j","com/fasterxml",
-            "io/swagger","ch/qos","$$","Com/Agent/MyBCIMethod","com/google/","com.googlecode","org/springframework","java","org/barfuin/"
+            "io/swagger","ch/qos","$$","Com/Agent/MethodCount","com/google/","com.googlecode","org/springframework","java","org/barfuin/"
     };
 //    private static String[] classFilters = {
 //            "java","jdk","javax","sun","com/sun","Agent.","org/apache/maven","org/junit", "org/springframework", "org/springdoc","org/apache","org/w3c",

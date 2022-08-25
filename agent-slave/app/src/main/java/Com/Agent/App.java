@@ -3,16 +3,18 @@
  */
 package Com.Agent;
 
-import Com.UI.PrintThread;
-import Com.UI.UIMain;
-import Com.Repository.DataSetRepo;
-import Com.Repository.DataSetRepoMemory;
-import Com.Util.LogFormatter;
+import Com.UI.*;
+//import Com.UI.PrintThread;
+//import Com.UI.UIMain;
+import Com.Repository.*;
+//import Com.Repository.DataSetRepoMemory;
+import Com.Util.*;
 
 import java.io.IOException;
 import java.lang.instrument.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.function.Supplier;
 import java.util.logging.*;
 
 
@@ -23,7 +25,7 @@ public class App {
     static Thread.UncaughtExceptionHandler exceptionHandler = new Thread.UncaughtExceptionHandler() {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
-            System.out.println("Uncaught exception "+ e);
+            LOG.warning("Uncaught exception "+ e);
             System.exit(0);
         }
     };
@@ -61,6 +63,70 @@ public class App {
 //        LOG.info(System.getProperty("sun.java.command"));
         LOG.info("[Premain Agnet Start]");
         instrumentation.addTransformer(new MyClassFileTransformer());
+    }
+
+    public static void agentmain(String args, Instrumentation instrumentation) throws IOException {
+        LOG.setLevel(Level.INFO);
+        LOG.setUseParentHandlers(false);
+
+        String logfile = System.getProperty("user.dir")+"/agentLog.txt";
+        if(Files.exists(Paths.get(logfile)))
+            Files.delete(Paths.get(logfile));
+
+        Handler handler = new FileHandler(logfile,true);
+//        ConsoleHandler handler = new ConsoleHandler();
+
+        Formatter formatter = new LogFormatter();
+        handler.setFormatter(formatter);
+        LOG.addHandler(handler);
+
+        PrintThread printThread = new PrintThread();
+        printThread.setDaemon(true);
+        printThread.setUncaughtExceptionHandler(exceptionHandler);
+        printThread.start();
+
+//        LOG.info(System.getProperty("sun.java.command"));
+        LOG.info("[agentmain Agnet Start]");
+//        instrumentation.addTransformer(new MyClassFileTransformer());
+        transformClass("jennifer",instrumentation);
+    }
+
+    private static void transformClass(
+            String className, Instrumentation instrumentation
+    ){
+        Class<?> targetCls = null;
+        ClassLoader targetClassLoader = null;
+
+        for (Class<?> clazz : instrumentation.getAllLoadedClasses()) {
+            if (clazz.getName().contains(className)) {
+//                System.out.println(clazz.getName());
+                targetCls = clazz;
+                targetClassLoader = clazz.getClassLoader();
+                transform(targetCls, targetClassLoader, instrumentation);
+            }
+        }
+        if (targetCls == null) {
+        throw new RuntimeException("Failed to find class [" + className + "]");
+        }
+    }
+
+    private static void transform(
+            Class<?> clazz,
+            ClassLoader classLoader,
+            Instrumentation instrumentation
+    ){
+        AttachClassFileTransformer transformer = new AttachClassFileTransformer(clazz.getName(), classLoader);
+        instrumentation.addTransformer(transformer, true);
+        try {
+            instrumentation.retransformClasses(clazz);
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new RuntimeException(
+                    "Transform failed for:" +clazz.getName()+"]"
+            );
+        }
+
+
     }
 
 }

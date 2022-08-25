@@ -23,17 +23,74 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
         this.methodName = methodName;
     }
 
+//    NAWARRAY 정수형 오퍼랜드가 1개인것
+    @Override
+    public void visitIntInsn(int opcode, int operand) {
+        if(opcode != Opcodes.NEWARRAY)
+        {
+            super.visitIntInsn(opcode, operand);
+            return;
+        }
+        final int typeSize;
+
+        switch(operand){
+            case Opcodes.T_BOOLEAN:
+            case Opcodes.T_BYTE:
+                typeSize =1;
+                break;
+            case Opcodes.T_SHORT:
+            case Opcodes.T_CHAR:
+                typeSize =2;
+                break;
+            case Opcodes.T_INT:
+            case Opcodes.T_FLOAT:
+                typeSize =4;
+                break;
+            case Opcodes.T_LONG:
+            case Opcodes.T_DOUBLE:
+                typeSize =8;
+                break;
+            default:
+                throw new IllegalStateException("Illegal op: to NEWARRAY seen: " + operand);
+        }
+
+        super.visitInsn(Opcodes.DUP);
+        super.visitLdcInsn(typeSize);
+        super.visitMethodInsn(Opcodes.INVOKESTATIC,"Com/Agent/CostAccounter", "recordArrayAllocation", "(II)V", true);
+        super.visitIntInsn(opcode, operand);
+    }
+
+//  참조형
+    @Override
+    public void visitTypeInsn(int opcode, String type) {
+
+        switch (opcode) {
+            case Opcodes.NEW:
+                super.visitLdcInsn(type);
+                super.visitMethodInsn(Opcodes.INVOKESTATIC, "Com/Agent/CostAccounter", "reocrdAllocation", "(Ljava/lang/String;)V",true);
+                break;
+            case Opcodes.ANEWARRAY:
+                super.visitInsn(Opcodes.DUP);
+                super.visitLdcInsn(8);
+                super.visitMethodInsn(Opcodes.INVOKESTATIC,"Com/Agent/CostAccounter", "recordArrayAllocation", "(II)V", true);
+                break;
+        }
+        super.visitTypeInsn(opcode,type);
+
+
+    }
+
     @Override
     public void visitJumpInsn(int opcode, Label label) {
         super.visitJumpInsn(opcode, label);
-        if(opcode == Opcodes.IF_ACMPEQ)
-            System.out.println("IF_ACMPEQ");
-        else if(opcode == Opcodes.IF_ICMPEQ)
-            System.out.println("IF_ICMPEQ");
-        else if(opcode == Opcodes.IF_ICMPGT)
-            System.out.println("IF_ICMPGT");
-        else if(opcode == Opcodes.IF_ACMPNE)
-            System.out.println("IF_ACMPNE");
+//        if(opcode == Opcodes.IF_ACMPEQ)
+//            System.out.println("IF_ACMPEQ");
+//        else if(opcode == Opcodes.IF_ICMPEQ)
+//            System.out.println("IF_ICMPEQ");
+//        else if(opcode == Opcodes.IF_ICMPGT)
+//            System.out.println("IF_ICMPGT");
+//        else if(opcode == Opcodes.IF_ACMPNE)
+//            System.out.println("IF_ACMPNE");
 
 //        System.out.println(Opcodes.IFopcode);
     }
@@ -50,7 +107,7 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
     protected void onMethodEnter() {
 
 //      다른 클래스에 같은 메소드의 경우 존재
-        mv.visitMethodInsn(INVOKESTATIC, "Com/Agent/MyBCIMethod","start","()V",false);
+        mv.visitMethodInsn(INVOKESTATIC, "Com/Agent/MethodCount","start","()V",false);
         super.onMethodEnter();
     }
 
@@ -85,7 +142,7 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
     protected void onMethodExit(int opcode) {
         mv.visitLdcInsn(className);
         mv.visitLdcInsn(methodName);
-        mv.visitMethodInsn(INVOKESTATIC, "Com/Agent/MyBCIMethod","end","(Ljava/lang/String;Ljava/lang/String;)V",false);
+        mv.visitMethodInsn(INVOKESTATIC, "Com/Agent/MethodCount","end","(Ljava/lang/String;Ljava/lang/String;)V",false);
 
         super.onMethodExit(opcode);
     }
