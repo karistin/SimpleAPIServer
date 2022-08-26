@@ -3,7 +3,9 @@ package Com.UI;
 import Com.Agent.App;
 import Com.Agent.CostAccounter;
 import Com.Agent.MethodCount;
+import Com.Agent.MyClassFileTransformer;
 import Com.Entity.*;
+import Com.Util.Filter;
 import Com.Util.LogFormatter;
 import Com.Util.MultiColumnPrinter;
 import org.barfuin.texttree.api.DefaultNode;
@@ -114,7 +116,7 @@ public class PrintThread extends Thread{
                 };
 
                 String[] titleRow = new String[col];
-                titleRow[0] = "Method";
+                titleRow[0] = "Package.Classes."+LogFormatter.ANSI_RED+"Method"+LogFormatter.ANSI_WHITE;
                 titleRow[1] = "Call";
                 titleRow[2] = "Average second(ms)";
                 titleRow[3] = "TotalTime(ms)";
@@ -152,7 +154,7 @@ public class PrintThread extends Thread{
                 for (String key : keyList) {
                     String[] row = new String[col];
                     MethodInstr methodInstr = methodInstrList.get(key);
-                    String name = methodInstr.getPackageName()+methodInstr.getClassName()+"/"+methodInstr.getMethodName();
+                    String name = methodInstr.getPackageName()+methodInstr.getClassName()+"/"+LogFormatter.ANSI_RED+methodInstr.getMethodName()+LogFormatter.ANSI_WHITE;
 //                    if(!name.contains(indexing) && !indexing.equals("0"))
 //                        continue;
                     row[0] = name;
@@ -164,7 +166,7 @@ public class PrintThread extends Thread{
                 }
                 printer.print();
 
-                System.out.println(CostAccounter.getAllocationCost());
+//                System.out.println(CostAccounter.getAllocationCost());
 
                 try {
                     Thread.sleep(2000);
@@ -177,9 +179,16 @@ public class PrintThread extends Thread{
                 Map<String, MethodInstr> methodInstrList = MethodCount.getMethodInstrList();
                 System.out.println(index);
                 System.out.println("=================================");
+
+
                 for(Map.Entry<String, MethodInstr> method: methodInstrList.entrySet())
                 {
-                    printindexing(method.getKey(), index);
+                    String name = method.getKey();
+                    if(methodInstrList.get(name) != null)
+                    {
+                        MethodInstr methodInstr = methodInstrList.get(method.getKey());
+                        printindexing(methodInstr.getClassName()+"."+LogFormatter.ANSI_RED+method.getKey()+LogFormatter.ANSI_WHITE, index);
+                    }
                 }
                 System.out.println("=================================");
 
@@ -203,13 +212,14 @@ public class PrintThread extends Thread{
                     name = nameList.get(nameList.size()-1);
                     System.out.println("==========================\r\n\r\n");
 
-                    DefaultNode tree = new DefaultNode(name);
                     List<MethodInsnValue> methodInsnValueList = null;
                     if(methodInstrList.get(name) !=null)
                     {
                         MethodInstr method = methodInstrList.get(name);
+                        DefaultNode tree = new DefaultNode(method.getClassName()+"."+LogFormatter.ANSI_RED+name+LogFormatter.ANSI_WHITE);
                         System.out.println(method.getPackageName() + method.getClassName() +"."+method.getMethodName()+"\r\n\r\n");
                         DataSet dataSet = findDataSet(method);
+
                         if(dataSet != null)
                         {
                             Methodvalue methodvalue = findMethod(dataSet, method);
@@ -218,32 +228,31 @@ public class PrintThread extends Thread{
 
                                 methodInsnValueList = methodvalue.getMethodInsnValues();
                                 for (MethodInsnValue methodInsnValue : methodInsnValueList) {
-                                    DefaultNode node = new DefaultNode(methodInsnValue.getName());
+                                    DefaultNode node = new DefaultNode(methodInsnValue.getOwner()+"."+LogFormatter.ANSI_RED+methodInsnValue.getName()+LogFormatter.ANSI_WHITE);
                                     tree.addChild(node);
 
-
-
-                                    if (methodInstrList.get(node.getKey()) != null){
-                                        MethodInstr method2 = methodInstrList.get(node.getKey());
+                                    if (methodInstrList.get(methodInsnValue.getName()) != null){
+                                        MethodInstr method2 = methodInstrList.get(methodInsnValue.getName());
                                         DataSet dataSet2 = findDataSet(method2);
                                         if (dataSet2 != null) {
+
                                             Methodvalue methodvalue2 = findMethod(dataSet2, method2);
                                             if (methodvalue2 != null) {
                                                 List<MethodInsnValue> methodInsnValueList2 = methodvalue2.getMethodInsnValues();
                                                 for (MethodInsnValue methodInsnValue2 : methodInsnValueList2) {
-                                                    DefaultNode servnode = new DefaultNode(methodInsnValue2.getName());
+                                                    DefaultNode servnode = new DefaultNode(methodInsnValue2.getOwner()+"."+LogFormatter.ANSI_RED+methodInsnValue2.getName()+LogFormatter.ANSI_WHITE);
                                                     node.addChild(servnode);
 
-                                                    if(methodInstrList.get(servnode.getKey()) != null)
+                                                    if(methodInstrList.get(methodInsnValue2.getName()) != null)
                                                     {
-                                                        MethodInstr method3 = methodInstrList.get(servnode.getKey());
+                                                        MethodInstr method3 = methodInstrList.get(methodInsnValue2.getName());
                                                         DataSet dataSet3 = findDataSet(method3);
                                                         if (dataSet3 != null) {
                                                             Methodvalue methodvalue3 = findMethod(dataSet3, method3);
                                                             if (methodvalue3 != null) {
                                                                 List<MethodInsnValue> methodInsnValueList3 = methodvalue3.getMethodInsnValues();
                                                                 for (MethodInsnValue methodInsnValue3 : methodInsnValueList3) {
-                                                                    servnode.addChild(new DefaultNode(methodInsnValue3.getName()));
+                                                                    servnode.addChild(new DefaultNode(methodInsnValue3.getOwner()+"."+LogFormatter.ANSI_RED+methodInsnValue3.getName()+LogFormatter.ANSI_WHITE));
                                                                 }
                                                             }
                                                         }
@@ -259,11 +268,6 @@ public class PrintThread extends Thread{
 
                             }
                         }
-
-
-
-
-
                         String renderd = TextTree.newInstance().render(tree);
                         System.out.println(renderd);
                         sc.nextLine();
@@ -393,6 +397,28 @@ public class PrintThread extends Thread{
                 System.out.println("Allocated NonHeap memory "+ nonheapMemoryUsage.getCommitted());
                 System.out.println("Using NonHeap memory "+ nonheapMemoryUsage.getUsed());
 
+                System.out.println("=======================================================");
+                System.out.println("Currently loaded : " + App.instrument.getAllLoadedClasses().length);
+
+                System.out.println("=======================================================");
+                System.out.println("Currently live : ");
+                System.out.println("Currently live daemons : ");
+                System.out.println("Peak : ");
+                System.out.println("Total started : ");
+
+
+                System.out.println("=======================================================");
+                System.out.println("GC Name : ");
+                System.out.println("collections : ");
+                System.out.println("Time : ");
+
+
+                System.out.println("=======================================================");
+                System.out.println("OS name : ");
+                System.out.println("OS version : ");
+                System.out.println("Architecture : ");
+                System.out.println("Processors : ");
+
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
@@ -411,6 +437,12 @@ public class PrintThread extends Thread{
                 {
                     index = new ArrayList<>();
                     indexCount = 0;
+                    if (App.filteringName == null) {
+                        System.out.println("Filter " + LogFormatter.ANSI_RED+Arrays.toString(Filter.getClassFilters())+LogFormatter.ANSI_WHITE);
+                    } else {
+                        System.out.println("Filter "+ LogFormatter.ANSI_RED+App.filteringName+LogFormatter.ANSI_WHITE);
+                    }
+
                     System.out.println("AgentSlve Menu");
                     System.out.println("1. MethodProfiling");
                     System.out.println("2. SearchClssinfo");

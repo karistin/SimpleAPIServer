@@ -1,6 +1,9 @@
 package Application;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * packageName    : Application
  * fileName       : Main
@@ -14,7 +17,7 @@ package Application;
  */
 public class Main {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws InterruptedException {
 //        BinaryTreeModel root = new BinaryTreeModel("root");
 //
 //        BinaryTreeModel node1 = new BinaryTreeModel("node1");
@@ -57,5 +60,29 @@ public class Main {
 //  함수 매개변수 표시
 //    코드의 개선성
 
+        while(true) {
+            String str = new String("World");
+            String str2 = "Hello";
+            int intger = 2;
+            byte[] bytearray = new byte[10];
+            boolean flag = false;
+            String[] array = new String[5];
+            int result = Test(3,5);
+            for (String arr : array) {
+                arr = "Hello";
+            }
+            str = "";
+            str2 = "";
+            intger = 0;
+            array = null;
+            Map<String, Integer> map = new HashMap();
+            Thread.sleep(1000);
+        }
     }
+
+    private static int Test(int a, int b) {
+        int c = a + b;
+        return c*2;
+    }
+
 }

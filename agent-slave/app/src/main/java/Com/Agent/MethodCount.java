@@ -43,11 +43,12 @@ public class MethodCount {
     }
 
     public static void end(String packageName, String methodName){
+        Long temp = System.currentTimeMillis() - time;
+
         String className = packageName.substring(packageName.lastIndexOf("/")+1);
         packageName = packageName.substring(0,packageName.length()-className.length());
 
         MethodInstr methodInstr = new MethodInstr();
-        Long temp = System.currentTimeMillis() - time;
 //        temp = ( mxBean.getCurrentThreadUserTime() - base_cpu)/temp;
 //        temp =  mxBean.getCurrentThreadUserTime();
 //        temp = (mxBean.getCurrentThreadUserTime() - base_cpu)/temp;

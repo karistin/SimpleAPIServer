@@ -14,14 +14,17 @@ import java.io.IOException;
 import java.lang.instrument.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import java.util.function.Supplier;
 import java.util.logging.*;
 
 
 public class App {
 
+    public static Instrumentation instrument = null;
     public static DataSetRepo taskRepository = new DataSetRepoMemory();
     public final static Logger LOG = Logger.getGlobal();
+    public static String filteringName = null;
     static Thread.UncaughtExceptionHandler exceptionHandler = new Thread.UncaughtExceptionHandler() {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
@@ -35,6 +38,7 @@ public class App {
     public static void premain(String args, Instrumentation instrumentation) throws IOException {
 
 
+        instrument = instrumentation;
         LOG.setLevel(Level.INFO);
         LOG.setUseParentHandlers(false);
 
@@ -69,6 +73,8 @@ public class App {
         LOG.setLevel(Level.INFO);
         LOG.setUseParentHandlers(false);
 
+        instrument = instrumentation;
+
         String logfile = System.getProperty("user.dir")+"/agentLog.txt";
         if(Files.exists(Paths.get(logfile)))
             Files.delete(Paths.get(logfile));
@@ -80,15 +86,23 @@ public class App {
         handler.setFormatter(formatter);
         LOG.addHandler(handler);
 
+        LOG.info("[agentmain Agnet Start]");
+
+//        Scanner sc = new Scanner(System.in);
+//        String name = sc.nextLine();
+
+
         PrintThread printThread = new PrintThread();
         printThread.setDaemon(true);
         printThread.setUncaughtExceptionHandler(exceptionHandler);
         printThread.start();
 
 //        LOG.info(System.getProperty("sun.java.command"));
-        LOG.info("[agentmain Agnet Start]");
+
 //        instrumentation.addTransformer(new MyClassFileTransformer());
-        transformClass("jennifer",instrumentation);
+
+        filteringName = "jennifer";
+        transformClass(filteringName,instrumentation);
     }
 
     private static void transformClass(
@@ -116,6 +130,7 @@ public class App {
             Instrumentation instrumentation
     ){
         AttachClassFileTransformer transformer = new AttachClassFileTransformer(clazz.getName(), classLoader);
+
         instrumentation.addTransformer(transformer, true);
         try {
             instrumentation.retransformClasses(clazz);

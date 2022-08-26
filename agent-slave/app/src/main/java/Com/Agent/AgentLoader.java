@@ -4,6 +4,7 @@ import com.sun.tools.attach.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * packageName    : Com.Agent
@@ -51,6 +52,7 @@ public class AgentLoader {
         }else{
             System.out.println("Not find TestCase!");
         }
+
 
 //        if(!vm.isPresent()) {
 //            System.out.println("Target Application not found");

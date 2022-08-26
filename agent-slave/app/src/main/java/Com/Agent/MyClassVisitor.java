@@ -8,6 +8,8 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import java.util.Arrays;
+
 
 public class MyClassVisitor extends ClassVisitor implements Opcodes{
     private DataSet dataset = new DataSet();
@@ -51,10 +53,14 @@ public class MyClassVisitor extends ClassVisitor implements Opcodes{
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+//        System.out.println(name);
         if (!name.equals( "<init>") && !name.equals( "<clinit>")){
             MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
             if(mv != null){
                 MyMethodAdapter myMethodVisitor = new MyMethodAdapter(ASM9, mv, access, name, descriptor, this.className);
+//                System.out.println(Arrays.toString(myMethodVisitor.getArgumentTypes()));
+//                System.out.println(myMethodVisitor.getReturnType());
+
                 Methodvalue methodvalue = new Methodvalue();
                 methodvalue.setAccess(access);
                 methodvalue.setName(name);

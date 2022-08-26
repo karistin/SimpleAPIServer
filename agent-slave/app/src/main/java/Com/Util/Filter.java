@@ -26,6 +26,10 @@ public class Filter {
 //    };
 //    make white list
 
+    public static String[] getClassFilters() {
+        return classFilters;
+    }
+
     static public boolean classFilering(String className){
         for (String classFilter : classFilters) {
             if (className.toLowerCase().contains(classFilter)) {

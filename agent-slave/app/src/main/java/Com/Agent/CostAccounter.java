@@ -20,12 +20,13 @@ public class CostAccounter {
                 }
             };
 
-    public static void recordAllocation(final String typeName) {
+    public  static  void recordAllocation(final String typeName) {
         checkAllocationCost(1);
     }
 
-    public static void recordArrayAllocation(final int length, final int multiplier) {
-        checkAllocationCost((long) length * multiplier);
+    public static void recordArrayAllocation(final int length) {
+        System.out.println(length);
+        checkAllocationCost((long) length);
     }
 
     public static void checkAllocationCost(final long additional) {

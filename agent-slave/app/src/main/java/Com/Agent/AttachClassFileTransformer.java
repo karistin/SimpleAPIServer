@@ -55,20 +55,11 @@ public class AttachClassFileTransformer implements ClassFileTransformer {
             ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
             MyClassVisitor vistor = new MyClassVisitor(writer, className);
             reader.accept(vistor, ClassReader.EXPAND_FRAMES);
-            vistor.getDataset().printDataset();
+//            vistor.getDataset().printDataset();
             App.taskRepository.save(vistor.getDataset());
 
 
-//            String file = System.getProperty("user.dir") + className;
-//            if(Files.exists(Paths.get(file))) {
-//                try {
-//                    Files.delete(Paths.get(file));
-//                    FileWriter filewriter = new FileWriter(file);
-//                    filewriter.write(String.valueOf(writer.toByteArray()));
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
+
 
             return writer.toByteArray();
         }
