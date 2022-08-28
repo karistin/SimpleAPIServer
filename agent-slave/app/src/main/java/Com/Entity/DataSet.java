@@ -89,15 +89,15 @@ public class DataSet implements Serializable {
 
     public void printDataset(){
         System.out.println("************************\r\n");
-        System.out.println("Access : "+ AccessType.getaccessFlag(access));
-        System.out.println("Class name: " + class_name);
-        System.out.println("Source name: "+ LogFormatter.ANSI_RED+ source_name+LogFormatter.ANSI_WHITE);
-        System.out.println("Major Version: " + Major_version);
-        System.out.println("Super class: " + Super_class);
+        System.out.println("Access        : "+ AccessType.getaccessFlag(access));
+        System.out.println("Class name    : " + class_name);
+        System.out.println("Source name   : "+ LogFormatter.ANSI_RED+ source_name+LogFormatter.ANSI_WHITE);
+        System.out.println("Major Version : " + Major_version);
+        System.out.println("Super class   : " + Super_class);
 
         if(interfaces.length !=0)
         {
-            System.out.println("interface");
+            System.out.println("Interface");
             for(String inter : interfaces){
                 System.out.println("  "+ inter);
             }

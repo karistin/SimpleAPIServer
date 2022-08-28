@@ -2,13 +2,11 @@ package Com.Agent;
 
 import Com.Entity.MethodInsnValue;
 import Com.Type.InvokeType;
-import org.objectweb.asm.Handle;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AdviceAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
@@ -16,14 +14,66 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
     private final String className;
     private final String methodName;
     private final ArrayList<MethodInsnValue> methodInsnValues= new ArrayList<MethodInsnValue>();
+    private Type[] paramTypes;
 
     public MyMethodAdapter(int api, MethodVisitor methodVisitor, int access, String methodName, String descriptor, String className) {
         super(api, methodVisitor, access, methodName, descriptor);
         this.className = className;
         this.methodName = methodName;
+        this.paramTypes = Type.getArgumentTypes(descriptor);
     }
 
-//    NAWARRAY 정수형 오퍼랜드가 1개인것
+//    @Override
+//    public void visitCode() {
+////        int paramLength = paramTypes.length;
+//////        System.out.println(Arrays.toString(this.paramTypes));
+////        // Create array with length equal to number of parameters
+////        mv.visitIntInsn(Opcodes.BIPUSH, paramLength);
+////        mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
+////        mv.visitVarInsn(Opcodes.ASTORE, paramLength);
+//////
+//////        // Fill the created array with method parameters
+////        int i = 0;
+////        for (Type tp : paramTypes) {
+////            mv.visitVarInsn(Opcodes.ALOAD, paramLength);
+////            mv.visitIntInsn(Opcodes.BIPUSH, i);
+////
+////            if (tp.equals(Type.BOOLEAN_TYPE) || tp.equals(Type.BYTE_TYPE) || tp.equals(Type.CHAR_TYPE) || tp.equals(Type.SHORT_TYPE) || tp.equals(Type.INT_TYPE))
+////                mv.visitVarInsn(Opcodes.ILOAD, i);
+////            else if (tp.equals(Type.LONG_TYPE)) {
+////                mv.visitVarInsn(Opcodes.LLOAD, i);
+////                i++;
+////            }
+////            else if (tp.equals(Type.FLOAT_TYPE))
+////                mv.visitVarInsn(Opcodes.FLOAD, i);
+////            else if (tp.equals(Type.DOUBLE_TYPE)) {
+////                mv.visitVarInsn(Opcodes.DLOAD, i);
+////                i++;
+////            }
+////            else
+////                mv.visitVarInsn(Opcodes.ALOAD, i);
+////
+////            mv.visitInsn(Opcodes.AASTORE);
+////            i++;
+//        }
+
+//        // Load id, class name and method name
+////        this.visitLdcInsn(new Integer(this.methodID));
+//        this.visitLdcInsn(this.className);
+//        this.visitLdcInsn(this.methodName);
+//
+//        // Load the array of parameters that we created
+//        this.visitVarInsn(Opcodes.ALOAD, paramLength);
+//
+//        mv.visitMethodInsn(Opcodes.INVOKESTATIC,
+//                "jalen/MethodStats",
+//                "onMethodEntry",
+//                "(ILjava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V");
+
+//        super.visitCode();
+//    }
+
+    //    NAWARRAY 정수형 오퍼랜드가 1개인것
 //    @Override
 //    public void visitIntInsn(int opcode, int operand) {
 //
@@ -133,7 +183,7 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
 
     @Override
     protected void onMethodEnter() {
-        Label l0 = new Label();
+//        Label l0 = new Label();
 //        mv.visitLabel(l0);
 //        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
 //        mv.visitVarInsn(ILOAD, 0); //1 instead of 0 if PrintInt wasn't static

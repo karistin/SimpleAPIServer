@@ -92,10 +92,10 @@ public class App {
 //        String name = sc.nextLine();
 
 
-        PrintThread printThread = new PrintThread();
-        printThread.setDaemon(true);
-        printThread.setUncaughtExceptionHandler(exceptionHandler);
-        printThread.start();
+//        PrintThread printThread = new PrintThread();
+//        printThread.setDaemon(true);
+//        printThread.setUncaughtExceptionHandler(exceptionHandler);
+//        printThread.start();
 
 //        LOG.info(System.getProperty("sun.java.command"));
 

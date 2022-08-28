@@ -1,13 +1,12 @@
 package Com.UI;
 
 import Com.Agent.App;
-import Com.Agent.CostAccounter;
 import Com.Agent.MethodCount;
-import Com.Agent.MyClassFileTransformer;
 import Com.Entity.*;
 import Com.Util.Filter;
 import Com.Util.LogFormatter;
 import Com.Util.MultiColumnPrinter;
+import com.sun.management.GcInfo;
 import org.barfuin.texttree.api.DefaultNode;
 import org.barfuin.texttree.api.TextTree;
 import sun.misc.Signal;
@@ -37,6 +36,7 @@ public class PrintThread extends Thread{
     enum menuState{
         METHOD,SUMMARY,EVENT,PERFORMACE,CLASS,MENU,SEARCHING
     }
+
 
     private String indexing(String name, List<String>index){
         for(String ind: index)
@@ -84,13 +84,19 @@ public class PrintThread extends Thread{
         }
         return null;
     }
+
+
     @Override
     public void run() {
 
 
         Signal.handle(new Signal("INT"),signalHandler);
         Scanner sc = new Scanner(System.in);
+
         List<String> index = new ArrayList<>();
+        List<String> MethodCategory = new ArrayList<>(Arrays.asList("CallCount", "AverageTime(ms)", "AverageTime(ns)", "LastTime(ns)", "TotalCPUtime(ms)", "TotalTime(ms)"));
+        String[] Category = null;
+
         int printdepth = 20;
         String indexing = "";
         int sort = 2;
@@ -99,10 +105,8 @@ public class PrintThread extends Thread{
             if (state == menuState.METHOD)
             {
 
-
-
-                int col = 4;
-                int gap = 10;
+                int col = 6;
+                int gap = 6;
                 MultiColumnPrinter printer = new MultiColumnPrinter(col, gap ,"*",0,false) {
                     @Override
                     public void doPrint(String str) {
@@ -115,32 +119,62 @@ public class PrintThread extends Thread{
                     }
                 };
 
+
+
                 String[] titleRow = new String[col];
                 titleRow[0] = "Package.Classes."+LogFormatter.ANSI_RED+"Method"+LogFormatter.ANSI_WHITE;
+//                for (String cateindex : Category) {
+//
+//                }
+//                MethodCategory.get(Category);
                 titleRow[1] = "Call";
-                titleRow[2] = "Average second(ms)";
+                titleRow[2] = "AverageTime(ms)";
                 titleRow[3] = "TotalTime(ms)";
+                titleRow[4] = "Cputime(ms)";
+                titleRow[5] = "LastCall(ms)";
+
                 printer.addTitle(titleRow);
 //                sorting by CallTime
                 Map<String, MethodInstr> methodInstrList = MethodCount.getMethodInstrList();
 
                 List<String> keyList = new ArrayList<>(methodInstrList.keySet());
 
+
+
+
                 if (sort == 1)
                 {
                     keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getCalls())).reversed());
-                    System.out.println("Sorting by Call");
+                    System.out.println("Sorting by "+LogFormatter.ANSI_RED+"Call"+LogFormatter.ANSI_WHITE);
                 }
                 else if (sort == 2)
                 {
-                    keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getSecond())).reversed());
-                    System.out.println("Sorting by Second");
+                    keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getNanotime())).reversed());
+                    System.out.println("Sorting by "+LogFormatter.ANSI_RED+"AverageTime"+LogFormatter.ANSI_WHITE);
                 }
-                else
+                else if(sort ==3)
                 {
-                    keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getTotalTime())).reversed());
-                    System.out.println("Sorting by Totaltime");
+                    keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getTotalNanoTime())).reversed());
+                    System.out.println("Sorting by "+LogFormatter.ANSI_RED+"Totaltime"+LogFormatter.ANSI_WHITE);
+                } else if (sort == 4) {
+                    keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getCputime())).reversed());
+                    System.out.println("Sorting by "+LogFormatter.ANSI_RED+"Totaltime"+LogFormatter.ANSI_WHITE);
+                }else if (sort == 5){
+                    keyList.sort((Comparator.comparing(o -> methodInstrList.get(o).getLastTime())).reversed());
+                    System.out.println("Sorting by "+LogFormatter.ANSI_RED+"LastCall"+LogFormatter.ANSI_WHITE);
                 }
+
+
+//                if (!indexing.equals("0") && indexing !=null) {
+//                    List<String> dupKeyList = keyList;
+//                    for (String key : dupKeyList) {
+//                        if (!key.contains(indexing)) {
+//                            System.out.println(key);
+//                            keyList.remove(key);
+//                        }
+//                    }
+//                }
+
 
 //                 0 show all
                 if (printdepth !=0) {
@@ -155,12 +189,22 @@ public class PrintThread extends Thread{
                     String[] row = new String[col];
                     MethodInstr methodInstr = methodInstrList.get(key);
                     String name = methodInstr.getPackageName()+methodInstr.getClassName()+"/"+LogFormatter.ANSI_RED+methodInstr.getMethodName()+LogFormatter.ANSI_WHITE;
-//                    if(!name.contains(indexing) && !indexing.equals("0"))
-//                        continue;
+                    if(!name.contains(indexing) && !indexing.equals("0"))
+                        continue;
                     row[0] = name;
                     row[1] = String.valueOf(methodInstr.getCalls());
-                    row[2] = methodInstr.getSecond()+"ms";
-                    row[3] = methodInstr.getTotalTime()+"ms";
+                    if(methodInstr.getSecond() == 0){
+                        row[2] = methodInstr.getNanotime()/1E6+"ms";
+                    }else{
+                        row[2] = methodInstr.getSecond()+"ms";
+                    }
+                    if (methodInstr.getTotalTime() == 0) {
+                        row[3] = methodInstr.getTotalNanoTime()/1E6+"ms";
+                    }else{
+                        row[3] = methodInstr.getTotalTime()+"ms";
+                    }
+                    row[4] = methodInstr.getCputime()/1E6+"ms";
+                    row[5] = methodInstr.getLastTime()/1E6+"ms";
 
                     printer.add(row);
                 }
@@ -368,9 +412,11 @@ public class PrintThread extends Thread{
 //                OperatingSystemMXBean osbean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
                 RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
                 ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
-                MemoryMXBean memBean = ManagementFactory.getMemoryMXBean() ;
+                MemoryMXBean memBean = ManagementFactory.getMemoryMXBean();
                 MemoryUsage heapMemoryUsage = memBean.getHeapMemoryUsage();
                 MemoryUsage nonheapMemoryUsage = memBean.getNonHeapMemoryUsage();
+                ClassLoadingMXBean classLoadingMXBean = ManagementFactory.getClassLoadingMXBean();
+                List<GarbageCollectorMXBean> garbageCollectorMXBean = ManagementFactory.getGarbageCollectorMXBeans();
 
                 long[] allThreadIds = threadMXBean.getAllThreadIds();
                 long nano =0;
@@ -378,46 +424,79 @@ public class PrintThread extends Thread{
                     nano += threadMXBean.getThreadCpuTime(id);
                 }
 
-                System.out.println("Java Virtual Machine : " + System.getProperty("java.vm.name"));
-                System.out.println("Vendor : " + System.getProperty("java.vm.specification.vendor"));
-                System.out.println("PID : "+ProcessHandle.current().pid());
-                System.out.println("Runtime : "+new Date(runtimeMXBean.getStartTime()));
-                System.out.println("Uptime : "+runtimeMXBean.getUptime()/1000+" s");
-                System.out.println("Total CPU time : "+nano/1E6);
-                System.out.println("Working dir : "+System.getProperty("user.dir"));
 
-                System.out.println("Agent log :" +System.getProperty("user.dir")+"/agentLog.txt");
-                System.out.println("=====================================================");
-                System.out.println("Limit Heap memory "+ heapMemoryUsage.getMax());
-                System.out.println("Allocated Heap memory "+ heapMemoryUsage.getCommitted());
-                System.out.println("Using Heap memory "+ heapMemoryUsage.getUsed());
+                String leftStringAlignFormat = "%-25s : %-63s %n";
+                String leftIntAlignFormat = "%-25s : %-63d %n";
+                String leftLongAlignFormat = "%-25s : %-63f %n";
 
-                System.out.println("=======================================================");
-                System.out.println("Limit NonHeap memory "+ nonheapMemoryUsage.getMax());
-                System.out.println("Allocated NonHeap memory "+ nonheapMemoryUsage.getCommitted());
-                System.out.println("Using NonHeap memory "+ nonheapMemoryUsage.getUsed());
-
-                System.out.println("=======================================================");
-                System.out.println("Currently loaded : " + App.instrument.getAllLoadedClasses().length);
-
-                System.out.println("=======================================================");
-                System.out.println("Currently live : ");
-                System.out.println("Currently live daemons : ");
-                System.out.println("Peak : ");
-                System.out.println("Total started : ");
-
-
-                System.out.println("=======================================================");
-                System.out.println("GC Name : ");
-                System.out.println("collections : ");
-                System.out.println("Time : ");
+                System.out.println(LogFormatter.ANSI_RED+"JVM Info"+LogFormatter.ANSI_WHITE);
+                System.out.format(leftStringAlignFormat, "Java Java Virtual Machine",System.getProperty("java.vm.name"));
+                System.out.format(leftStringAlignFormat,"Vendor ",System.getProperty("java.vm.specification.vendor"));
+                System.out.format(leftIntAlignFormat, "PID ",ProcessHandle.current().pid());
+                System.out.println("Runtime                   : "+new Date(runtimeMXBean.getStartTime()));
+                System.out.println("Uptime                    : "+runtimeMXBean.getUptime()/1000+"s");
+                System.out.println("Total CPU time            : "+nano/1E6+"ms");
+                System.out.println("Working dir               : "+System.getProperty("user.dir"));
+                System.out.println("Agent log                 : " +System.getProperty("user.dir")+"/agentLog.txt"+"\r\n");
+                /*
+                *         +----------------------------------------------+
+                *            +////////////////           |                  +
+                *           +////////////////           |                  +
+                *            +----------------------------------------------+
+                *
+                *            |--------|
+                *               init
+                *            |---------------|
+                *                   used
+                *            |---------------------------|
+                *                      committed
+                *            |----------------------------------------------|
+                *            max
+                * */
 
 
-                System.out.println("=======================================================");
-                System.out.println("OS name : ");
-                System.out.println("OS version : ");
-                System.out.println("Architecture : ");
-                System.out.println("Processors : ");
+                System.out.println(LogFormatter.ANSI_RED+"HeapMemory"+LogFormatter.ANSI_WHITE);
+                System.out.println("Max Heap memory           : "+ heapMemoryUsage.getMax()/(1024.f)+"kbytes");
+                System.out.println("Committed Heap memory     : "+ heapMemoryUsage.getCommitted()/(1024.f)+"kbytes");
+                System.out.println("Used Heap memory          : "+ heapMemoryUsage.getUsed()/(1024.f)+"kbytes");
+                System.out.println("Init Heap memory          : "+ heapMemoryUsage.getInit()/(1024.f)+"kbytes\r\n");
+
+
+                System.out.println(LogFormatter.ANSI_RED+"NonHeapMemory"+LogFormatter.ANSI_WHITE);
+                if (nonheapMemoryUsage.getMax() == -1) {
+                    System.out.println("Max NonHeapMemory         : "+ Double.POSITIVE_INFINITY);
+                }else{
+                    System.out.println("Max NonHeap memory        : "+ nonheapMemoryUsage.getMax()/(1024.f)+"kbytes");
+                }
+
+                System.out.println("Committed NonHeap memory  : "+ nonheapMemoryUsage.getCommitted()/(1024.f)+"kbytes");
+                System.out.println("Used NonHeap memory       : "+ nonheapMemoryUsage.getUsed()/(1024.f)+"kbytes");
+                System.out.println("Init NonHeap memory       : "+ nonheapMemoryUsage.getInit()/(1024.f)+"kbytes\r\n");
+
+
+                System.out.println(LogFormatter.ANSI_RED+"Class"+LogFormatter.ANSI_WHITE);
+                System.out.println("TotalLoadClassCount       : " + classLoadingMXBean.getTotalLoadedClassCount());
+                System.out.println("LoadedClassCount          : " + classLoadingMXBean.getLoadedClassCount());
+                System.out.println("UnloadedClassCount        : " + classLoadingMXBean.getUnloadedClassCount()+"\r\n");
+
+
+                System.out.println(LogFormatter.ANSI_RED+"Thread"+LogFormatter.ANSI_WHITE);
+                System.out.println("ThreadCount               : "+threadMXBean.getThreadCount());
+                System.out.println("DemonThreadCount          : "+threadMXBean.getDaemonThreadCount());
+                System.out.println("PeakThreadCount           : "+threadMXBean.getPeakThreadCount()+"\r\n");
+
+
+
+//                System.out.println(LogFormatter.ANSI_RED+"GarbageCollector"+LogFormatter.ANSI_WHITE);
+//                System.out.println("GC Name : ");
+//                System.out.println("collections : ");
+//                System.out.println("Time : "+"\r\n");
+
+                System.out.println(LogFormatter.ANSI_RED+"OS"+LogFormatter.ANSI_WHITE);
+                System.out.println("OS name                   : "+System.getProperty("os.name"));
+                System.out.println("OS version                : "+System.getProperty("os.version"));
+                System.out.println("Architecture              : "+System.getProperty("os.arch"));
+                System.out.println("Processors                : "+Runtime.getRuntime().availableProcessors());
 
                 try {
                     Thread.sleep(2000);
@@ -435,6 +514,7 @@ public class PrintThread extends Thread{
             {
                 while(true)
                 {
+                    Category = null;
                     index = new ArrayList<>();
                     indexCount = 0;
                     if (App.filteringName == null) {
@@ -448,7 +528,6 @@ public class PrintThread extends Thread{
                     System.out.println("2. SearchClssinfo");
                     System.out.println("3. EventLog");
                     System.out.println("4. Searching");
-//                    System.out.println("5. JVM Summary");
                     System.out.println("5. JVM Summary");
                     System.out.print("6. Exit\r\n=>");
                     String asn = sc.nextLine();
@@ -460,8 +539,14 @@ public class PrintThread extends Thread{
                             System.out.println("Indexing(zero to default)");
                             indexing = sc.next();
                             System.out.println("Sorting Method(default TotalTime)");
-                            System.out.println("1 : Call \t 2 : Average Second \t 3 : Total Time");
+                            System.out.println("1:CallCount \t 2:AverageTime \t 3:TotalTime \t 4:CPUtime \t 5:LastTime");
                             sort = sc.nextInt();
+//                            System.out.println("Setting Category(defalut 0,1,2)");
+//                            for(String cate: MethodCategory)
+//                            {
+//                                System.out.println("["+ MethodCategory.indexOf(cate)+"] "+cate);
+//                            }
+//                            Category = sc.next().split(" ");
                             break;
                         case "2":
                             state = menuState.CLASS;

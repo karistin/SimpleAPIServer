@@ -46,10 +46,6 @@ public class LogFormatter extends Formatter {
         builder.append("]");
 
         builder.append(" [");
-        builder.append(record.getSourceClassName());
-        builder.append("]");
-
-        builder.append(" [");
         builder.append(record.getLevel().getName());
         builder.append("]");
 

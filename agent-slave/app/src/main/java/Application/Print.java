@@ -18,7 +18,9 @@ public class Print {
     }
 
     public static void main(String[] args) {
-        int a = PrintInt(10);
-        System.out.println("Done");
+        String ant = "1 2 3";
+        String[] arr = ant.split(" ");
+//        int a = PrintInt(10);
+//        System.out.println("Done");
     }
 }

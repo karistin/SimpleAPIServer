@@ -3,16 +3,53 @@ package Com.Entity;
 public class MethodInstr {
 
     private String methodName;
-    private Long second = 0L;
+    private Long microSecond = 0L;
+    private Long lastTime = 0l;
+    private Long nanotime =0L;
+    private Long cputime =0L;
     private Long calls = 1L;
     private Long totalTime = 0L;
+    private Long totalNanoTime =0L;
+
+    public Long getTotalNanoTime() {
+        return totalNanoTime;
+    }
+
+    public void setTotalNanoTime(Long totalNanoTime) {
+        this.totalNanoTime = totalNanoTime;
+    }
+
     private  StackTraceElement[] stacks;
 
     private String packageName;
     private String className;
 
+    public Long getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(Long lastTime) {
+        this.lastTime = lastTime;
+    }
+
     public StackTraceElement[] getStacks() {
         return stacks;
+    }
+
+    public Long getNanotime() {
+        return nanotime;
+    }
+
+    public void setNanotime(Long nanotime) {
+        this.nanotime = nanotime;
+    }
+
+    public Long getCputime() {
+        return cputime;
+    }
+
+    public void setCputime(Long cputime) {
+        this.cputime = cputime;
     }
 
     public void setStacks(StackTraceElement[] stacks) {
@@ -44,11 +81,11 @@ public class MethodInstr {
     }
 
     public Long getSecond() {
-        return second;
+        return microSecond;
     }
 
     public void setSecond(Long second) {
-        this.second = second;
+        this.microSecond = second;
     }
 
     public Long getCalls() {

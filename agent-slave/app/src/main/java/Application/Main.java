@@ -60,24 +60,33 @@ public class Main {
 //  함수 매개변수 표시
 //    코드의 개선성
 
-        while(true) {
-            String str = new String("World");
-            String str2 = "Hello";
-            int intger = 2;
-            byte[] bytearray = new byte[10];
-            boolean flag = false;
-            String[] array = new String[5];
-            int result = Test(3,5);
-            for (String arr : array) {
-                arr = "Hello";
-            }
-            str = "";
-            str2 = "";
-            intger = 0;
-            array = null;
-            Map<String, Integer> map = new HashMap();
-            Thread.sleep(1000);
+//        while(true) {
+//            String str = new String("World");
+//            String str2 = "Hello";
+//            int intger = 2;
+//            byte[] bytearray = new byte[10];
+//            boolean flag = false;
+//            String[] array = new String[5];
+//            int result = Test(3,5);
+//            for (String arr : array) {
+//                arr = "Hello";
+//            }
+//            str = "";
+//            str2 = "";
+//            intger = 0;
+//            array = null;
+//            Map<String, Integer> map = new HashMap();
+//            Thread.sleep(1000);
+//        }
+        String leftAlignFormat = "| %-15s | %-4d |%n";
+
+        System.out.format("+-----------------+------+%n");
+        System.out.format("| Column name     | ID   |%n");
+        System.out.format("+-----------------+------+%n");
+        for (int i = 0; i < 5; i++) {
+            System.out.format(leftAlignFormat, "some data" + i, i * i);
         }
+        System.out.format("+-----------------+------+%n");
     }
 
     private static int Test(int a, int b) {
