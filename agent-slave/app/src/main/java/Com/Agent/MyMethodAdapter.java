@@ -23,39 +23,44 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
         this.paramTypes = Type.getArgumentTypes(descriptor);
     }
 
-//    @Override
-//    public void visitCode() {
-////        int paramLength = paramTypes.length;
-//////        System.out.println(Arrays.toString(this.paramTypes));
-////        // Create array with length equal to number of parameters
-////        mv.visitIntInsn(Opcodes.BIPUSH, paramLength);
-////        mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
-////        mv.visitVarInsn(Opcodes.ASTORE, paramLength);
-//////
-//////        // Fill the created array with method parameters
-////        int i = 0;
-////        for (Type tp : paramTypes) {
-////            mv.visitVarInsn(Opcodes.ALOAD, paramLength);
-////            mv.visitIntInsn(Opcodes.BIPUSH, i);
-////
-////            if (tp.equals(Type.BOOLEAN_TYPE) || tp.equals(Type.BYTE_TYPE) || tp.equals(Type.CHAR_TYPE) || tp.equals(Type.SHORT_TYPE) || tp.equals(Type.INT_TYPE))
-////                mv.visitVarInsn(Opcodes.ILOAD, i);
-////            else if (tp.equals(Type.LONG_TYPE)) {
-////                mv.visitVarInsn(Opcodes.LLOAD, i);
-////                i++;
-////            }
-////            else if (tp.equals(Type.FLOAT_TYPE))
-////                mv.visitVarInsn(Opcodes.FLOAD, i);
-////            else if (tp.equals(Type.DOUBLE_TYPE)) {
-////                mv.visitVarInsn(Opcodes.DLOAD, i);
-////                i++;
-////            }
-////            else
-////                mv.visitVarInsn(Opcodes.ALOAD, i);
-////
-////            mv.visitInsn(Opcodes.AASTORE);
-////            i++;
-//        }
+    @Override
+    public void visitCode() {
+
+        if (this.methodName.equals("configue")) {
+            super.visitCode();
+            return;
+        }
+        int paramLength = paramTypes.length;
+        mv.visitIntInsn(Opcodes.BIPUSH, paramLength);
+        mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
+        mv.visitVarInsn(Opcodes.ASTORE, paramLength);
+//
+//        // Fill the created array with method parameters
+        int i = 0;
+
+        for (Type tp : paramTypes) {
+            mv.visitVarInsn(Opcodes.ALOAD, paramLength);
+            mv.visitIntInsn(Opcodes.BIPUSH, i);
+
+            if (tp.equals(Type.BOOLEAN_TYPE) || tp.equals(Type.BYTE_TYPE) || tp.equals(Type.CHAR_TYPE) || tp.equals(Type.SHORT_TYPE) || tp.equals(Type.INT_TYPE))
+                mv.visitVarInsn(Opcodes.ILOAD, i);
+            else if (tp.equals(Type.LONG_TYPE)) {
+                mv.visitVarInsn(Opcodes.LLOAD, i);
+                i++;
+            }
+            else if (tp.equals(Type.FLOAT_TYPE))
+                mv.visitVarInsn(Opcodes.FLOAD, i);
+            else if (tp.equals(Type.DOUBLE_TYPE)) {
+                mv.visitVarInsn(Opcodes.DLOAD, i);
+                i++;
+            }
+            else
+                mv.visitVarInsn(Opcodes.ALOAD, i);
+
+            mv.visitInsn(Opcodes.AASTORE);
+            i++;
+        }
+
 
 //        // Load id, class name and method name
 ////        this.visitLdcInsn(new Integer(this.methodID));
@@ -63,15 +68,19 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
 //        this.visitLdcInsn(this.methodName);
 //
 //        // Load the array of parameters that we created
-//        this.visitVarInsn(Opcodes.ALOAD, paramLength);
-//
-//        mv.visitMethodInsn(Opcodes.INVOKESTATIC,
-//                "jalen/MethodStats",
-//                "onMethodEntry",
-//                "(ILjava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)V");
 
-//        super.visitCode();
-//    }
+
+        mv.visitLdcInsn(this.methodName);
+        mv.visitVarInsn(Opcodes.ALOAD, paramLength);
+
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC,
+                    "Com/Agent/MethodParameter",
+                    "MethodStats",
+                    "(Ljava/lang/String;[Ljava/lang/Object;)V",false);
+
+
+        super.visitCode();
+    }
 
     //    NAWARRAY 정수형 오퍼랜드가 1개인것
 //    @Override

@@ -35,7 +35,7 @@ public class MyClassFileTransformer implements ClassFileTransformer {
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
         //bootLoader erroring 방지
         classCount +=1;
-        if(Filter.classFilering(className) && !className.equals("Com/Entity/MethodInstr") && !className.equals("Com/Agent/MethodCount") && !className.equals("Com/Agent/CostAccounter"))
+        if(Filter.classFilering(className) && !className.equals("Com/Entity/MethodInstr") && !className.equals("Com/Agent/MethodCount") && !className.equals("Com/Agent/MethodParameter"))
         {
             LOG.info("Lodding Class : " + className);
 //            className = className.substring(className.lastIndexOf("/")+1);
@@ -45,9 +45,18 @@ public class MyClassFileTransformer implements ClassFileTransformer {
             reader.accept(vistor, ClassReader.EXPAND_FRAMES);
             App.taskRepository.save(vistor.getDataset());
 
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(new File("Print.class"));
+                fos.write(writer.toByteArray());
+                fos.flush();
+                fos.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 //            FileOutputStream fos = null;
 //            try {
-//                fos = new FileOutputStream(new File("Print.class"));
+//                fos = new FileOutputStream(new File(className+".class"));
 //                fos.write(writer.toByteArray());
 //                fos.flush();
 //                fos.close();

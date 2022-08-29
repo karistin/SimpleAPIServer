@@ -49,7 +49,7 @@ public class MethodCount {
         Long nano = System.nanoTime() - nanotime;
         Long cpu = mxBean.getCurrentThreadUserTime() - cputime;
         if (cpu < 0) {
-            cpu = Long.valueOf(0);
+            cpu = 0L;
         }
         String className = packageName.substring(packageName.lastIndexOf("/")+1);
         packageName = packageName.substring(0,packageName.length()-className.length());

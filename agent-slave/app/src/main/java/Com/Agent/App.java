@@ -66,6 +66,9 @@ public class App {
 
 //        LOG.info(System.getProperty("sun.java.command"));
         LOG.info("[Premain Agnet Start]");
+
+
+
         instrumentation.addTransformer(new MyClassFileTransformer());
     }
 
@@ -92,14 +95,11 @@ public class App {
 //        String name = sc.nextLine();
 
 
-//        PrintThread printThread = new PrintThread();
-//        printThread.setDaemon(true);
-//        printThread.setUncaughtExceptionHandler(exceptionHandler);
-//        printThread.start();
+        PrintThread printThread = new PrintThread();
+        printThread.setDaemon(true);
+        printThread.setUncaughtExceptionHandler(exceptionHandler);
+        printThread.start();
 
-//        LOG.info(System.getProperty("sun.java.command"));
-
-//        instrumentation.addTransformer(new MyClassFileTransformer());
 
         filteringName = "jennifer";
         transformClass(filteringName,instrumentation);
