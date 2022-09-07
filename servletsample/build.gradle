@@ -3,6 +3,7 @@ plugins {
     id 'war'
 }
 
+
 group 'org.example'
 version '1.0-SNAPSHOT'
 
@@ -19,3 +20,4 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+

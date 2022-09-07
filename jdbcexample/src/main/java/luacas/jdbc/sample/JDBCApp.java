@@ -12,7 +12,6 @@ public class JDBCApp {
             while (rs.next()) {
                 int idx = rs.getInt("idx");
                 String name = rs.getString("name");
-
                 System.out.printf("%d - %s\n", idx, name);
             }
             rs.close();

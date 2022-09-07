@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <web-app>
     <servlet>
-        <servlet-name>ServletExample</servlet-name>
-        <servlet-class>lucas.servlet.sample.ServletApp</servlet-class>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>lucas.servlet.sample.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ServletExample</servlet-name>
-        <url-pattern>/apps</url-pattern>
+        <servlet-name>login</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
 </web-app>
