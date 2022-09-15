@@ -13,7 +13,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     // https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-api
-//    implementation 'io.opentelemetry:opentelemetry-api:1.18.0'
+    implementation 'io.opentelemetry:opentelemetry-api:1.18.0'
     // https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-exporters-jaeger
 //    implementation 'io.opentelemetry:opentelemetry-exporters-jaeger:0.9.1'
 
@@ -21,11 +21,21 @@ dependencies {
     implementation 'io.grpc:grpc-netty:1.35.0'
     implementation 'io.grpc:grpc-protobuf:1.35.0'
     implementation 'io.grpc:grpc-stub:1.35.0'
-//    implementation 'io.opentelemetry:opentelemetry-proto:0.13.1'
+    // https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-exporters-otlp
+    implementation group: 'io.opentelemetry', name: 'opentelemetry-exporters-otlp', version: '0.9.1'
+
+
+    implementation 'io.opentelemetry:opentelemetry-proto:0.13.1'
 //    implementation("io.opentelemetry:opentelemetry-sdk")
-    implementation('io.opencensus:opencensus-api:0.30.0')
-    implementation('io.opencensus:opencensus-exporter-trace-jaeger:0.28.3')
-    implementation('io.opencensus:opencensus-impl:0.28.3')
+//    implementation('io.opencensus:opencensus-api:0.30.0')
+//    implementation('io.opencensus:opencensus-exporter-trace-jaeger:0.28.3')
+//    implementation('io.opencensus:opencensus-impl:0.28.3')
+    // https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-bom
+//    implementation group: 'io.opentelemetry', name: 'opentelemetry-bom', version: '1.18.0', ext: 'pom'
+    // https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-exporter-jaeger
+    implementation group: 'io.opentelemetry', name: 'opentelemetry-exporter-jaeger', version: '0.10.0'
+
+
 }
 
 test {

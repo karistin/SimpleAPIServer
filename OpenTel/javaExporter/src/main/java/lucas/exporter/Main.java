@@ -1,23 +1,37 @@
 package lucas.exporter;
 
 
-import com.google.protobuf.AbstractMessageLite;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.Message;
+import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import io.opencensus.exporter.trace.jaeger.JaegerTraceExporter;
-import io.opentelemetry.api.OpenTelemetry;
+import io.grpc.stub.StreamObserver;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
-import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.TraceStateBuilder;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
-import io.opentelemetry.context.propagation.ContextPropagators;
-import io.opentelemetry.exporters.jaeger.JaegerGrpcSpanExporter;
+import io.opentelemetry.api.trace.TracerProvider;
+import io.opentelemetry.context.Scope;
+import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
+import io.opentelemetry.exporter.jaeger.proto.api_v2.Model;
+import io.opentelemetry.exporters.otlp.OtlpGrpcSpanExporter;
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest;
+import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponse;
+import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponseOrBuilder;
 import io.opentelemetry.proto.collector.trace.v1.TraceServiceGrpc;
+import io.opentelemetry.proto.common.v1.AnyValue;
+import io.opentelemetry.proto.common.v1.KeyValue;
+//import io.opentelemetry.proto.resource.v1.Resource;
+import io.opentelemetry.proto.resource.v1.Resource;
+import io.opentelemetry.proto.trace.v1.*;
+//import io.opentelemetry.sdk.resources.Resource;
+//import io.opentelemetry.sdk.resources.ResourceAttributes;
+import io.opentelemetry.sdk.trace.data.SpanData;
+//import io.opentelemetry.sdk.resources.*;
 
-import io.opentelemetry.proto.trace.v1.InstrumentationLibrarySpans;
-import io.opentelemetry.proto.trace.v1.ResourceSpans;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 /**
@@ -32,34 +46,105 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
  * 2022-09-14        lucas       최초 생성
  */
 public class Main {
-    public static void main(String[] args) {
-//        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost",14250)
-//                .usePlaintext()
-//                .build();
-////
-//        TraceServiceGrpc.TraceServiceStub serviceGrpc = TraceServiceGrpc.newStub(channel);
-////
-////        Long time = System.currentTimeMillis();
-////
+
+
+    public static void main(String[] args) throws ClassNotFoundException {
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 4317)
+                .usePlaintext()
+                .build();
+
+        JaegerGrpcSpanExporter jaegerExporter = JaegerGrpcSpanExporter.builder()
+                .setEndpoint("localhost:4317")
+                .build();
+
+        OtlpGrpcSpanExporter OtlpExporter = OtlpGrpcSpanExporter.newBuilder()
+                .setChannel(channel)
+                .build();
+
+        Channel rpcChannel = ManagedChannelBuilder.forAddress("localhost", 4317)
+                .usePlaintext()
+                .build();
+
+
+        TraceServiceGrpc.TraceServiceStub stub = TraceServiceGrpc.newStub(channel);
+
+
+//        ExportTraceServiceRequest req = ExportTraceServiceRequest.newBuilder().setResourceSpans(
+//                ResourceSpans.newBuilder()
+//                        .setResource(
+//                        Resource.newBuilder().addAttributes(
+//                                KeyValue.newBuilder().setKey("dfd").setValue(AnyValue.newBuilder().setStringValue("dsfsd"))
+//                        )
+//                        )).build();
+
+
+        KeyValue SpanAttr = KeyValue.newBuilder().setKey("http.method").setValue(AnyValue.newBuilder().setStringValue("GET"))
+                .setKey("net.sock.family").setValue(AnyValue.newBuilder().setStringValue("inet"))
+                .setKey("http.flavor").setValue(AnyValue.newBuilder().setStringValue("1.1"))
+                .setKey("http.scheme").setValue(AnyValue.newBuilder().setStringValue("http"))
+                .setKey("http.target").setValue(AnyValue.newBuilder().setStringValue("/app"))
+                .setKey("net.host.name").setValue(AnyValue.newBuilder().setStringValue("0.0.0.0"))
+                .build();
+
+        KeyValue ResourceAttr = KeyValue.newBuilder().setKey("webengine.name").setValue(AnyValue.newBuilder().setStringValue("Spring"))
+                .setKey("webengine.version").setValue(AnyValue.newBuilder().setStringValue("1.0.0"))
+                .setKey("service.name").setValue(AnyValue.newBuilder().setStringValue("Sample-Spring"))
+                .build();
+
+
+        Span span = Span.newBuilder()
+                .setSpanId(ByteString.copyFromUtf8("sdfdsafasd"))
+                .setTraceId(ByteString.copyFromUtf8("fsafasfasdfds"))
+                .setName("GET /servlet")
+                .setKind(Span.SpanKind.SPAN_KIND_SERVER)
+                .setStartTimeUnixNano(System.nanoTime())
+                .setEndTimeUnixNano(System.nanoTime()+30*1000*1000)
+                .addAttributes(
+                        SpanAttr
+                )
+                .build();
+
+        Status status = Status.newBuilder()
+                .setMessage("OK")
+                .setCode(Status.StatusCode.STATUS_CODE_OK)
+                .build();
+
+        Resource resource = Resource.newBuilder()
+                .addAttributes(
+                        ResourceAttr
+                )
+                .build();
+
+        ResourceSpans resourceSpans = ResourceSpans.newBuilder()
+                .setResource(
+                    resource
+                )
+                .build();
+
+
+        ExportTraceServiceRequest request = ExportTraceServiceRequest.newBuilder()
+                .addResourceSpans(
+                        resourceSpans
+                )
+                .build();
+
+
+
+//        stub.export(request, (StreamObserver<ExportTraceServiceResponse>) null);
+
 //
-//        ExportTraceServiceRequest request = ExportTraceServiceRequest.newBuilder().build();
+//        TracerProvider provider = TracerProvider.noop();
+//        AttributeKey.stringKey()
 
-//        ResourceSpans spans = ResourceSpans.newBuilder().build();
+//        TracingDate date = new TracingDate();
 //
-//        InstrumentationLibrarySpans instrumentationLibrarySpans = InstrumentationLibrarySpans.newBuilder().build();
-
-//        request.toBuilder().addResourceSpans(ResourceSpans.newBuilder().getDefaultInstanceForType());
-
-
-
-//
-//        System.out.println(request.getSerializedSize());
-////        serviceGrpc.export(request, StreamObserver< ExportTraceServiceResponse > responseObserver)
-//
-//    JaegerGrpcSpanExporter jaegerExporter =
-//                JaegerGrpcSpanExporter.newBuilder().setChannel(channel).setServiceName("Testing").build();
+//        SpanData span = date.selectWithTracing("Query");
+////        List<SpanData> data = Collections.synchronizedList(new ArrayList<>());
+//        spans.add(span);
+//        OtlpExporter.export(spans);
 
 
-    JaegerTraceExporter.createAndRegister();
     }
+
+
 }
