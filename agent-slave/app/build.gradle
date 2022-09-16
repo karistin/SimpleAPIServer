@@ -35,7 +35,7 @@ dependencies {
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.3'
     implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.3'
     // https://mvnrepository.com/artifact/com.googlecode.lanterna/lanterna
-    implementation group: 'com.googlecode.lanterna', name: 'lanterna', version: '3.0.1'
+//    implementation group: 'com.googlecode.lanterna', name: 'lanterna', version: '3.0.1'
     // https://mvnrepository.com/artifact/org.json/json
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson

@@ -1,0 +1,14 @@
+
+FROM tomcat:jdk11-openjdk
+# jakarata java 
+
+COPY ./webapps /usr/local/tomcat/webapps
+ENV JAVA_OPTS="$JAVA_OPTS -javaagent:/usr/local/tomcat/webapps/javaExporter-1.0-SNAPSHOT.jar"
+# -cp, Adding compile time classpath as Tomcat's /lib/servlet-api.jar file.
+# - d, destination output location.
+WORKDIR /usr/local/tomcat
+RUN ["javac", "-cp", "./lib/servlet-api.jar", "-d", "./webapps/ROOT/WEB-INF/classes/", "./webapps/ROOT/src/TestingServlet.java"]
+
+# Serve Tomcat
+EXPOSE 8080
+CMD ["catalina.sh", "run"]

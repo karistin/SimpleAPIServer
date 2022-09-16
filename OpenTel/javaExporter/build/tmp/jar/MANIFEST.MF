@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Main-Class: lucas.exporter.Main
+Premain-Class: lucas.agent.permain
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Can-Set-Native-Method-Prefix: true
+

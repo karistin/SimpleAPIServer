@@ -13,9 +13,7 @@ import io.opentelemetry.api.trace.TraceStateBuilder;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.TracerProvider;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
-import io.opentelemetry.exporter.jaeger.proto.api_v2.Model;
-import io.opentelemetry.exporters.otlp.OtlpGrpcSpanExporter;
+
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest;
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponse;
 import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceResponseOrBuilder;
@@ -25,13 +23,6 @@ import io.opentelemetry.proto.common.v1.KeyValue;
 //import io.opentelemetry.proto.resource.v1.Resource;
 import io.opentelemetry.proto.resource.v1.Resource;
 import io.opentelemetry.proto.trace.v1.*;
-//import io.opentelemetry.sdk.resources.Resource;
-//import io.opentelemetry.sdk.resources.ResourceAttributes;
-import io.opentelemetry.sdk.trace.data.SpanData;
-//import io.opentelemetry.sdk.resources.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 
 /**
@@ -53,13 +44,7 @@ public class Main {
                 .usePlaintext()
                 .build();
 
-        JaegerGrpcSpanExporter jaegerExporter = JaegerGrpcSpanExporter.builder()
-                .setEndpoint("localhost:4317")
-                .build();
 
-        OtlpGrpcSpanExporter OtlpExporter = OtlpGrpcSpanExporter.newBuilder()
-                .setChannel(channel)
-                .build();
 
         Channel rpcChannel = ManagedChannelBuilder.forAddress("localhost", 4317)
                 .usePlaintext()
@@ -126,6 +111,7 @@ public class Main {
                 .addResourceSpans(
                         resourceSpans
                 )
+
                 .build();
 
 
