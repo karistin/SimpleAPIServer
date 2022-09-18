@@ -26,11 +26,13 @@ dependencies {
 
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.3'
     implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.3'
-    implementation 'io.opentelemetry:opentelemetry-api:1.18.0'
-    implementation 'io.grpc:grpc-netty:1.35.0'
-    implementation 'io.grpc:grpc-protobuf:1.35.0'
-    implementation 'io.grpc:grpc-stub:1.35.0'
-    implementation 'io.opentelemetry:opentelemetry-proto:0.13.1'
+
+    implementation 'io.grpc:grpc-netty:1.44.1'
+    implementation 'io.grpc:grpc-protobuf:1.44.1'
+    implementation 'io.grpc:grpc-stub:1.44.1'
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+    //    implementation 'io.opentelemetry:opentelemetry-api:1.18.0'
 }
 
 test {
