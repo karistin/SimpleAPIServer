@@ -1,5 +1,0 @@
-ext.pathMapper = [:]
-ext.pathMapper.put('<<target java executable path>>', '<<target java executable path>>')
-ext.pathMapper.put('C:/Users/seong/Desktop/agent-slave/CodeSample/AttachMode', '/mnt/c/Users/seong/Desktop/agent-slave/CodeSample/AttachMode')
-ext.pathMapper.put("<<target java executable path>>", '/usr/bin/java')
-ext.mapPath = { path -> pathMapper.get(path) ?: path }
