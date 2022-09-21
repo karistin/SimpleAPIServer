@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="c3p0-0.9.1.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/c3p0-0.9.1.1.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/commons-dbutils-1.5.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/gson-2.8.6.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/mariadb-java-client-2.6.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

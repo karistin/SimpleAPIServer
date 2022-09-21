@@ -5,6 +5,7 @@ package lucas.exporter;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest;
 
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException, IOException, InterruptedException {
 
         String target = "localhost:4317";
+//        String target = "localhost:8080";
         ManagedChannel channel = ManagedChannelBuilder.forTarget(target)
                 .usePlaintext()
                 .build();
@@ -36,6 +38,7 @@ public class Main {
         try{
             OtplExporter client = new OtplExporter(channel);
             client.trace();
+            client.log();
         }finally {
 //            TCP channel off
             channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
