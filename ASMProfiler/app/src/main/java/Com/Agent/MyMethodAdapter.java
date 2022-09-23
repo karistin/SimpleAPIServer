@@ -26,40 +26,40 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
     @Override
     public void visitCode() {
 
-        if (this.methodName.equals("configue")) {
-            super.visitCode();
-            return;
-        }
-        int paramLength = paramTypes.length;
-        mv.visitIntInsn(Opcodes.BIPUSH, paramLength);
-        mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
-        mv.visitVarInsn(Opcodes.ASTORE, paramLength);
+//        if (this.methodName.equals("configue")) {
+//            super.visitCode();
+//            return;
+//        }
+//        int paramLength = paramTypes.length;
+//        mv.visitIntInsn(Opcodes.BIPUSH, paramLength);
+//        mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
+//        mv.visitVarInsn(Opcodes.ASTORE, paramLength);
+////
+////        // Fill the created array with method parameters
+//        int i = 0;
 //
-//        // Fill the created array with method parameters
-        int i = 0;
-
-        for (Type tp : paramTypes) {
-            mv.visitVarInsn(Opcodes.ALOAD, paramLength);
-            mv.visitIntInsn(Opcodes.BIPUSH, i);
-
-            if (tp.equals(Type.BOOLEAN_TYPE) || tp.equals(Type.BYTE_TYPE) || tp.equals(Type.CHAR_TYPE) || tp.equals(Type.SHORT_TYPE) || tp.equals(Type.INT_TYPE))
-                mv.visitVarInsn(Opcodes.ILOAD, i);
-            else if (tp.equals(Type.LONG_TYPE)) {
-                mv.visitVarInsn(Opcodes.LLOAD, i);
-                i++;
-            }
-            else if (tp.equals(Type.FLOAT_TYPE))
-                mv.visitVarInsn(Opcodes.FLOAD, i);
-            else if (tp.equals(Type.DOUBLE_TYPE)) {
-                mv.visitVarInsn(Opcodes.DLOAD, i);
-                i++;
-            }
-            else
-                mv.visitVarInsn(Opcodes.ALOAD, i);
-
-            mv.visitInsn(Opcodes.AASTORE);
-            i++;
-        }
+//        for (Type tp : paramTypes) {
+//            mv.visitVarInsn(Opcodes.ALOAD, paramLength);
+//            mv.visitIntInsn(Opcodes.BIPUSH, i);
+//
+//            if (tp.equals(Type.BOOLEAN_TYPE) || tp.equals(Type.BYTE_TYPE) || tp.equals(Type.CHAR_TYPE) || tp.equals(Type.SHORT_TYPE) || tp.equals(Type.INT_TYPE))
+//                mv.visitVarInsn(Opcodes.ILOAD, i);
+//            else if (tp.equals(Type.LONG_TYPE)) {
+//                mv.visitVarInsn(Opcodes.LLOAD, i);
+//                i++;
+//            }
+//            else if (tp.equals(Type.FLOAT_TYPE))
+//                mv.visitVarInsn(Opcodes.FLOAD, i);
+//            else if (tp.equals(Type.DOUBLE_TYPE)) {
+//                mv.visitVarInsn(Opcodes.DLOAD, i);
+//                i++;
+//            }
+//            else
+//                mv.visitVarInsn(Opcodes.ALOAD, i);
+//
+//            mv.visitInsn(Opcodes.AASTORE);
+//            i++;
+//        }
 
 
 //        // Load id, class name and method name
@@ -70,13 +70,13 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
 //        // Load the array of parameters that we created
 
 
-        mv.visitLdcInsn(this.methodName);
-        mv.visitVarInsn(Opcodes.ALOAD, paramLength);
-
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC,
-                    "Com/Agent/MethodParameter",
-                    "MethodStats",
-                    "(Ljava/lang/String;[Ljava/lang/Object;)V",false);
+//        mv.visitLdcInsn(this.methodName);
+//        mv.visitVarInsn(Opcodes.ALOAD, paramLength);
+//
+//        mv.visitMethodInsn(Opcodes.INVOKESTATIC,
+//                    "Com/Agent/MethodParameter",
+//                    "MethodStats",
+//                    "(Ljava/lang/String;[Ljava/lang/Object;)V",false);
 
 
         super.visitCode();
@@ -192,6 +192,11 @@ public class MyMethodAdapter extends AdviceAdapter implements Opcodes {
 
     @Override
     protected void onMethodEnter() {
+        try {
+            Class.forName("Com/Agent/MethodCount");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 //        Label l0 = new Label();
 //        mv.visitLabel(l0);
 //        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");

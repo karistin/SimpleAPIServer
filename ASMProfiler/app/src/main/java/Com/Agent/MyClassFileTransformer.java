@@ -45,15 +45,15 @@ public class MyClassFileTransformer implements ClassFileTransformer {
             reader.accept(vistor, ClassReader.EXPAND_FRAMES);
             App.taskRepository.save(vistor.getDataset());
 
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(new File("Print.class"));
-                fos.write(writer.toByteArray());
-                fos.flush();
-                fos.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+//            FileOutputStream fos = null;
+//            try {
+//                fos = new FileOutputStream(new File("Print.class"));
+//                fos.write(writer.toByteArray());
+//                fos.flush();
+//                fos.close();
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
 //            FileOutputStream fos = null;
 //            try {
 //                fos = new FileOutputStream(new File(className+".class"));

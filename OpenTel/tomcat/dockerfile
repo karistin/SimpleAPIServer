@@ -3,7 +3,7 @@ FROM tomcat:jdk11-openjdk
 # jakarata java 
 
 COPY ./webapps /usr/local/tomcat/webapps
-ENV JAVA_OPTS="$JAVA_OPTS -javaagent:/usr/local/tomcat/webapps/javaExporter-1.0-SNAPSHOT.jar"
+ENV JAVA_OPTS="$JAVA_OPTS -javaagent:/usr/local/tomcat/webapps/javaExporter-1.0.jar"
 # -cp, Adding compile time classpath as Tomcat's /lib/servlet-api.jar file.
 # - d, destination output location.
 WORKDIR /usr/local/tomcat

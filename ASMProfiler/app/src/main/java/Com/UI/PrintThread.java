@@ -20,7 +20,7 @@ import java.util.*;
 
 public class PrintThread extends Thread{
 
-    menuState state = menuState.METHOD;
+    menuState state = menuState.CLASS;
     int indexCount = 0;
     SignalHandler signalHandler = new SignalHandler() {
         @Override

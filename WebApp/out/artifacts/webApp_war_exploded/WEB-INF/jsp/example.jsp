@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+
   String exampleData = (String) request.getAttribute("ExampleData");
   System.out.println(exampleData);
 %>

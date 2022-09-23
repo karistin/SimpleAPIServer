@@ -37,7 +37,6 @@ public class MyMethodAdapter extends AdviceAdapter {
     @Override
     protected void onMethodEnter() {
 
-        System.out.println(methodName + " find");
         mv.visitLdcInsn(methodName);
         mv.visitMethodInsn(INVOKESTATIC, "lucas/agent/MethodHook","starthook","(Ljava/lang/String;)V", false);
         super.onMethodEnter();

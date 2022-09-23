@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+
+version '1.0'
 
 repositories {
     mavenCentral()
@@ -11,7 +11,7 @@ repositories {
 
 tasks.named('jar') {
     manifest {
-        attributes('Main-Class':"lucas.exporter.Main",
+        attributes(
                 'Premain-Class': 'lucas.agent.permain',
                 'Can-Redefine-Classes': 'true',
                 'Can-Retransform-Classes':'true',
@@ -27,14 +27,13 @@ dependencies {
     implementation group: 'org.ow2.asm', name: 'asm-commons', version: '9.3'
     implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.3'
 
-    implementation 'io.grpc:grpc-netty:1.44.1'
-    implementation 'io.grpc:grpc-protobuf:1.44.1'
-    implementation 'io.grpc:grpc-stub:1.44.1'
-    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+//    implementation 'io.grpc:grpc-netty:1.44.1'
+//    implementation 'io.grpc:grpc-protobuf:1.44.1'
+//    implementation 'io.grpc:grpc-stub:1.44.1'
+//    implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
-    implementation 'io.opentelemetry:opentelemetry-api:1.18.0'
-    // https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-proto
-    implementation group: 'io.opentelemetry', name: 'opentelemetry-proto', version: '1.7.1-alpha'
+//    implementation 'io.opentelemetry:opentelemetry-api:1.18.0'
+//    implementation group: 'io.opentelemetry', name: 'opentelemetry-proto', version: '1.7.1-alpha'
 }
 
 test {

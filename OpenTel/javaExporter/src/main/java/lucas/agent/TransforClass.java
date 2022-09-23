@@ -13,6 +13,7 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 import java.util.Arrays;
 
+
 /**
  * packageName    : lucas.exporter.lucas.agent
  * fileName       : TransforClass
@@ -30,24 +31,24 @@ public class TransforClass implements ClassFileTransformer {
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
 //        TestingServlet
-        if(className.contains("Testing"))
+        if(className.contains("service") && Filter.classFilering(className))
         {
-            System.out.println(className + " found");
+            System.out.println(className);
             ClassReader reader = new ClassReader(classfileBuffer);
             ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
             MyClassVisitor visitor = new MyClassVisitor(writer);
 
             reader.accept(visitor, ClassReader.EXPAND_FRAMES);
 
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(new File("Print.class"));
-                fos.write(writer.toByteArray());
-                fos.flush();
-                fos.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+//            FileOutputStream fos = null;
+//            try {
+//                fos = new FileOutputStream(new File("Print.class"));
+//                fos.write(writer.toByteArray());
+//                fos.flush();
+//                fos.close();
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
 
 
             return writer.toByteArray();

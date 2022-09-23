@@ -32,8 +32,9 @@ public class MyClassVisitor extends ClassVisitor {
             MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
 
             MyMethodAdapter adapter = new MyMethodAdapter(ASM9, mv, access, name, descriptor);
-            adapter.visitCode();
-            return mv;
+//            adapter.visitCode();
+
+            return adapter;
         }
         return super.visitMethod(access, name, descriptor, signature, exceptions);
     }
