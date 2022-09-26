@@ -19,7 +19,6 @@ public class MethodHook {
     private static Long time = 0L;
 
     public static void starthook(String method){
-        System.out.println(method + "out");
         time = System.currentTimeMillis();
     }
 

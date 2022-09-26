@@ -27,6 +27,12 @@ public class Controller extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
+    public void init() throws ServletException {
+        System.out.println("Controller Servlet Init =============");
+        super.init();
+    }
+
+    @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String RequestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
@@ -52,12 +58,6 @@ public class Controller extends HttpServlet {
             Class<?> url = Class.forName(classPath);
             action = (Action) url.newInstance();
             forward = action.execute(request, response);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,5 +74,11 @@ public class Controller extends HttpServlet {
                 pr.close();
             }
         }
+    }
+
+    @Override
+    public void destroy() {
+//        System.out.println("Controller Servlet Destory =============");
+        super.destroy();
     }
 }

@@ -24,15 +24,18 @@ public class MyClassVisitor extends ClassVisitor {
     }
 
     @Override
+    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+        super.visit(version, access, name, signature, superName, interfaces);
+    }
+
+    @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
 
         if( !name.equals("<init>") && !name.equals("<client>")) {
 
-//            System.out.println(name);
             MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
 
             MyMethodAdapter adapter = new MyMethodAdapter(ASM9, mv, access, name, descriptor);
-//            adapter.visitCode();
 
             return adapter;
         }
