@@ -54,6 +54,8 @@ public class Controller extends HttpServlet {
 
         String classPath = prop.getProperty(command);
 
+        System.out.println(Thread.currentThread().getName());
+
         try{
             Class<?> url = Class.forName(classPath);
             action = (Action) url.newInstance();

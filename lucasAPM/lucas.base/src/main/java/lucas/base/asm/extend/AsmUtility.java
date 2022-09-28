@@ -1,7 +1,8 @@
 package lucas.base.asm.extend;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.*;
+import org.objectweb.asm.commons.JSRInlinerAdapter;
+import org.objectweb.asm.tree.*;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -167,7 +168,6 @@ public class AsmUtility {
 
         return parse(classfileBuffer, 0);
     }
-
     public static ClassWrapper parse(byte[] classfileBuffer, int flags) {
         ClassWrapper classWrapper = new ClassWrapper();
         ClassReader reader = new ClassReaderWrapper(classfileBuffer);
@@ -177,29 +177,6 @@ public class AsmUtility {
 
         return classWrapper;
     }
-
-    public static ClassWrapper parse(Object obj) {
-        ClassWrapper classWrapper = new ClassWrapper();
-
-        ClassReader reader = new ClassReaderWrapper(obj.getClass().getName());
-
-        // reader.accept(clazz, new Attribute[0], 0);
-        reader.accept(useJSRInlinerAdapter(classWrapper), new Attribute[0], 0);
-
-        return classWrapper;
-    }
-
-    public static ClassWrapper parse(Class<?> clazz) {
-        ClassWrapper classWrapper = new ClassWrapper();
-
-        ClassReader reader = new ClassReaderWrapper(clazz);
-
-        // reader.accept(clazz, new Attribute[0], 0);
-        reader.accept(useJSRInlinerAdapter(classWrapper), new Attribute[0], 0);
-
-        return classWrapper;
-    }
-
     private static ClassVisitor useJSRInlinerAdapter(ClassVisitor visitor) {
         return new ClassVisitor(Opcodes.ASM9, visitor) {
             @Override
@@ -216,100 +193,6 @@ public class AsmUtility {
                         exceptions);
             }
         };
-    }
-
-    public static byte[] toBytes(Class<?> clazz) {
-        return toBytes(parse(clazz));
-    }
-
-    public static byte[] toBytes(Object obj) {
-        return toBytes(parse(obj));
-    }
-
-    public static byte[] toBytes(ClassWrapper clazz) {
-        return toBytes(clazz, false);
-    }
-
-    public static byte[] toBytes(ClassWrapper clazz, boolean checkVerify) {
-        return toBytes(clazz, checkVerify, false);
-    }
-
-    public static byte[] toBytes(ClassWrapper clazz, boolean checkVerify, boolean isLwst) {
-        int flags = ClassWriter.COMPUTE_MAXS;
-
-        if (clazz.version > Opcodes.V1_5) {
-            flags |= ClassWriter.COMPUTE_FRAMES;
-        }
-
-        ClassWriter classWriter;
-
-        if (isLwst) {
-            classWriter = new ClassWriter(flags);
-        } else {
-            classWriter = new ClassWriterWrapper(flags);
-        }
-
-        // clazz.accept(classWriter);
-        clazz.accept(useJSRInlinerAdapter(classWriter));
-
-        // FIXME Verify 체크를 먼저 할 수 있을까? 현재는 반반임...
-        if (checkVerify) {
-            isValidBinary(clazz.getClassName(), classWriter.toByteArray());
-        }
-
-        return classWriter.toByteArray();
-    }
-
-    public static byte[] toBytesWithValidation(ClassWrapper clazz) {
-        byte[] r = toBytes(clazz);
-        if (!isValidBinary(r)) {
-            throw new RuntimeException();
-        }
-
-        return r;
-    }
-
-    // FIXME ASM8_EXPERIMENTAL can only be used by classes compiled with --enable-preview
-    public static boolean isValidBinary(byte[] bytes) {
-        return isValidBinary(null, bytes);
-    }
-
-    public static boolean isValidBinary(String className, byte[] bytes) {
-        PrintWriter printWriter = null;
-
-        try {
-            StringWriter resultWriter = new StringWriter();
-            printWriter = new PrintWriter(resultWriter);
-
-            //            CheckClassAdapter.verify(new ClassReaderWrapper(bytes), false, printWriter);
-            CheckClassAdapter.verify(new ClassReaderWrapper(bytes), Hooking.CONTEXT.get(), false, printWriter);
-
-            String s = resultWriter.toString();
-
-            if (s != null && s.length() > 0) {
-                if (className != null) {
-                    Logger.debug(I001, className);
-                }
-
-                Logger.trace(I001, resultWriter.toString());
-
-                return false;
-            }
-
-            return true;
-        } catch (Exception exception) {
-            if (className != null) {
-                Logger.debug(I001, className);
-            }
-
-            Logger.debug(I001, exception);
-        } finally {
-            if (printWriter != null) {
-                printWriter.close();
-            }
-        }
-
-        return false;
     }
 
     public static String getTypeName(String description) {
@@ -425,17 +308,17 @@ public class AsmUtility {
         return def;
     }
 
-    public static FieldNode ensureField(ClassWrapper clazz, String fieldName) {
-        FieldNode field = findField(clazz, fieldName, null);
-
-        if (field == null) {
-            new AsmField().addField(clazz, fieldName, Type.getType(Object.class));
-
-            field = findField(clazz, fieldName, null);
-        }
-
-        return field;
-    }
+//    public static FieldNode ensureField(ClassWrapper clazz, String fieldName) {
+//        FieldNode field = findField(clazz, fieldName, null);
+//
+//        if (field == null) {
+//            new AsmField().addField(clazz, fieldName, Type.getType(Object.class));
+//
+//            field = findField(clazz, fieldName, null);
+//        }
+//
+//        return field;
+//    }
 
     public static FieldInsnNode createPUTSTATIC(Type classType, String fieldName, String fieldDescription) {
         return new FieldInsnNode(Opcodes.PUTSTATIC, classType.getInternalName(), fieldName, fieldDescription);
@@ -482,9 +365,9 @@ public class AsmUtility {
     }
 
 
-    public static int hash(MethodNode method) {
-        return HashUtil.hash(method.name + method.desc);
-    }
+//    public static int hash(MethodNode method) {
+//        return HashUtil.hash(method.name + method.desc);
+//    }
 
     public static boolean hasBody(MethodNode method) {
         return method.instructions.size() > 0;

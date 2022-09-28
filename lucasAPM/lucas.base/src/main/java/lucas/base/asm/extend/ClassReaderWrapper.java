@@ -1,9 +1,12 @@
 package lucas.base.asm.extend;
 
+import lucas.base.Hooking;
 import org.objectweb.asm.ClassReader;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import static lucas.base.asm.extend.AsmUtility.getInternalName;
 
 /**
  * packageName    : lucas.base.asm.extend
@@ -77,7 +80,7 @@ public class ClassReaderWrapper extends ClassReader {
         }
         catch (Exception exception)
         {
-            Logger.debug(LogCodeDef.D008, "Class Reader " + exception.getMessage());
+            System.out.println(exception.getStackTrace());
         }
 
         return new byte[0];
@@ -152,13 +155,14 @@ public class ClassReaderWrapper extends ClassReader {
         }
         catch (Exception exception)
         {
-            System.out.println(exception);
+            System.out.println(exception.getStackTrace());
         }
 
         return false;
     }
 
-    private static boolean mockRead(InputStream is) {
+    private static boolean mockRead(InputStream is)
+    {
         return is != null;
     }
 }

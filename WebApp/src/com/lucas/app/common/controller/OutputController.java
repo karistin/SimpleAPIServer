@@ -5,6 +5,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -31,9 +33,20 @@ public class OutputController extends HttpServlet {
     public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out=response.getWriter();
-        out.print("Testing");
+        out.print("Service");
         out.close();
         super.service(request, response);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out=response.getWriter();
+        out.print("GET");
+        out.close();
+
+
+        super.doGet(request, response);
     }
 
     @Override
