@@ -22,7 +22,7 @@ public class ContextListener implements ServletRequestListener {
     Long time = 0L;
     @Override
     public void requestInitialized(ServletRequestEvent sre) {
-        time = System.currentTimeMillis();
+//        time = System.currentTimeMillis();
 //        System.out.println("Client Request");
 
         ServletRequestListener.super.requestInitialized(sre);
@@ -30,7 +30,7 @@ public class ContextListener implements ServletRequestListener {
 
     @Override
     public void requestDestroyed(ServletRequestEvent sre) {
-        System.out.println("Listener : "+sre.getServletRequest().getServletContext().getContextPath()+(System.currentTimeMillis()-time)+"ms");
-//        ServletRequestListener.super.requestDestroyed(sre);
+//        System.out.println("Listener : "+sre.getServletRequest().getServletContext().getContextPath()+(System.currentTimeMillis()-time)+"ms");
+        ServletRequestListener.super.requestDestroyed(sre);
     }
 }
