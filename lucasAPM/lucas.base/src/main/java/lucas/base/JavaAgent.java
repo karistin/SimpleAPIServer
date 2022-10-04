@@ -1,6 +1,5 @@
 package lucas.base;
 
-import lucas.base.log.FileLogger;
 
 import java.lang.instrument.Instrumentation;
 import java.util.logging.Logger;

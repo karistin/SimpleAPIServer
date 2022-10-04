@@ -1,5 +1,7 @@
 package lucas.base.tranacation;
 
+import java.sql.Time;
+
 /**
  * packageName    : lucas.base.Dao
  * fileName       : Transcation
@@ -15,10 +17,14 @@ public class Transcation {
 
     String domain;
     String instance;
+
 //    primary key
     String txid;
     String clientIP;
-    String clientID;
+    long clientID;
+//    사용자 구분 ( IP , 쿠키 응용)
+    Time responseTime;
+
 
 //   HH:MM:SS.ssssss
     long startTime;

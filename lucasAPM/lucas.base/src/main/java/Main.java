@@ -1,6 +1,6 @@
 import lucas.base.tranacation.TranscationId;
 
-import java.util.Date;
+import java.sql.*;
 
 /**
  * packageName    : PACKAGE_NAME
@@ -15,8 +15,33 @@ import java.util.Date;
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println(TranscationId.generateID());
-        System.out.println(System.currentTimeMillis());
-        System.out.println(new Date(System.currentTimeMillis()));
+        Time time;
+        String url = "jdbc:mariadb://localhost:3306/transactionDB?user=root&password=1234";
+
+        String id  = TranscationId.generateID();
+        String clientIp = "127.0.0.1";
+        long responseTime = System.currentTimeMillis();
+        System.out.println(responseTime);
+
+        String insert = "INSERT INTO transaction(txid,clientIp,response_time) values("
+                +id+",INET_ATON(" +clientIp+"),"+responseTime+")";
+
+        Connection conn;
+        ResultSet listofMaps = null;
+        try{
+            Class.forName("org.mariadb.jdbc.Driver");
+            conn = DriverManager.getConnection(url);
+            Statement stat = conn.createStatement();
+//            listofMaps= stat.executeQuery("SELECT * from transaction");
+//            while(listofMaps.next())
+//            {
+//                System.out.println(listofMaps.getTime("start_time"));
+//            }
+
+            stat.executeUpdate(insert);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

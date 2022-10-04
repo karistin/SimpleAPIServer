@@ -1,9 +1,9 @@
 DROP SCHEMA if EXISTS transactionDB;
 CREATE SCHEMA transactionDB DEFAULT CHARACTER SET UTF8;
 use transactionDB;
-CREATE SEQUENCE sequencetxid START with 1 INCREMENT by 1
-    maxvalue 99999
-    CYCLE;
+# CREATE SEQUENCE sequencetxid START with 1 INCREMENT by 1
+#     maxvalue 99999
+#     CYCLE;
 
 
 create table transaction
@@ -11,7 +11,7 @@ create table transaction
     domain varchar(20),
     instance   varchar(20),
 
-    txid       int primary key default (next value for sequencetxid),
+    txid       varchar(32),
     clientIp   INT unsigned,
     clientID    long,
     start_time TIME,
@@ -44,6 +44,9 @@ values ('ENV-TEST' , 	'tom8_jdk9' , INET_ATON('192.168.0.8'), -70353556473177600
 
 insert into transaction(domain, instance,clientIp, clientID, start_time, end_time, collect_time, ERROELIST, applicaion)
 values ('ENV-TEST' , 	'tom8_jdk9' , INET_ATON('192.168.0.8'), -7035355647317760000, '14:27:06.049', '14:27:11.417', '14:27:17.076', null,	'/simula.jsp');
+
+insert into transaction(txid,clientIp,response_time)
+values('2b2d26cfd32b4ef5ac7f4d14ec07bdd7',INET_ATON('127.0.0.1'),1664900415323);
 
 select domain, instance, txid, clientID, INET_NTOA(clientIp), start_time, end_time, collect_time, response_time, sql_time, sql_count, fetch_time, external_time, cpu_time, ERROELIST, applicaion from transaction;
 # select INET_NTOA(clientIp) from transaction;

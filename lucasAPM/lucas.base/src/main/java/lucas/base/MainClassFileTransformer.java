@@ -1,8 +1,6 @@
 package lucas.base;
 
-import lucas.base.asm.extend.AsmUtility;
-import lucas.base.asm.extend.ClassWrapper;
-import lucas.base.asm.extend.MethodWrapper;
+
 
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
@@ -43,20 +41,7 @@ public class MainClassFileTransformer implements ClassFileTransformer {
         }
 
         long now = System.currentTimeMillis();
-        ClassWrapper clazz = AsmUtility.parse(classfileBuffer);
 
-
-        if(clazz.getSuperClassName().contains("HttpServlet"))
-        {
-            System.out.println(clazz.getClassName());
-            System.out.println(clazz.methodWrappers.size());
-            List<MethodWrapper> methodWrappers = clazz.methodWrappers;
-
-            for (MethodWrapper methodWrapper : methodWrappers) {
-                System.out.println(methodWrapper.getNameWithDescription());
-            }
-//            System.out.println(clazz.signature);
-        }
 
 
 
