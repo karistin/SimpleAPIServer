@@ -25,7 +25,7 @@ import java.io.PrintWriter;
 public class OutputController extends HttpServlet {
     @Override
     public void init() throws ServletException {
-        System.out.println("Output Servlet Init =============");
+//        System.out.println("Output Servlet Init =============");
         super.init();
     }
 

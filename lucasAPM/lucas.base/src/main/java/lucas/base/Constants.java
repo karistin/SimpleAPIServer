@@ -14,6 +14,7 @@ package lucas.base;
 public interface Constants {
     String SPECIAL_INIT_METHOD = "<";
     String SPECIAL_CONSTRUCTOR = "<init>";
+    String SPECIAL_CLIENT = "<clinit>";
     String SPECIAL_CONSTRUCTOR_DESCRIPTOR = "()V";
     String JAVA_LANG_OBJECT_CLASS = "java.lang.Object";
 

@@ -2,7 +2,7 @@
 <%
 
   String exampleData = (String) request.getAttribute("ExampleData");
-  System.out.println(request.toString());
+//  System.out.println(request.toString());
 %>
 <html>
 <head>

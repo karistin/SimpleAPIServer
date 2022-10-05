@@ -32,6 +32,7 @@ public class JavaAgent {
         synchronized (LOCK){
             if (JavaAgent.instrumentation != null) {
                 logger.info("Agent already start");
+                return;
             }
 
             JavaAgent.instrumentation.addTransformer(new MainClassFileTransformer(instrumentation));

@@ -16,7 +16,7 @@ import java.io.IOException;
  * -----------------------------------------------------------
  * 2022-09-26        lucas       최초 생성
  */
-//@WebFilter("/*")
+@WebFilter("/*")
 public class doFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -27,6 +27,7 @@ public class doFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         servletRequest.setCharacterEncoding("UTF-8");
 //        System.out.println("Do Filtering");
+
         filterChain.doFilter(servletRequest, servletResponse);
 //        System.out.println("Do Filter After......");
     }

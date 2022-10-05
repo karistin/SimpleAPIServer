@@ -1,6 +1,8 @@
 package lucas.base.tranacation;
 
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * packageName    : lucas.base.Dao
@@ -15,20 +17,33 @@ import java.sql.Time;
  */
 public class Transcation {
 
+    long ThreadId = Thread.currentThread().getId();
+
     String domain;
     String instance;
 
 //    primary key
     String txid;
     String clientIP;
-    long clientID;
+    String ClientID;
+
+//    YYYY-MM-DD HH:MM:SS.ffffff
+    Timestamp startTime;
+    Timestamp endTime;
+//    transaction End
+    Timestamp collectTime;
+//    send to DB
+
+
 //    사용자 구분 ( IP , 쿠키 응용)
-    Time responseTime;
+    long responseTime;
+    long sqlTime;
+    long sqlCount;
+    long fetchTime;
+    long externalTime;
+    long cpuTime;
 
-
-//   HH:MM:SS.ssssss
-    long startTime;
-
-
+    List<String> errorList;
+    String application;
 
 }

@@ -1,6 +1,8 @@
 import lucas.base.tranacation.TranscationId;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * packageName    : PACKAGE_NAME
@@ -15,33 +17,12 @@ import java.sql.*;
  */
 public class Main {
     public static void main(String[] args) {
-        Time time;
-        String url = "jdbc:mariadb://localhost:3306/transactionDB?user=root&password=1234";
 
-        String id  = TranscationId.generateID();
-        String clientIp = "127.0.0.1";
-        long responseTime = System.currentTimeMillis();
-        System.out.println(responseTime);
+        SqlQuery sqlQuery = SqlQuery.getInstance();
+        sqlQuery.connection("transactionDB", "root", "1234");
+//        sqlQuery.excuteCol("start_time", "transaction");
+//        sqlQuery.insertRow(TranscationId.generateID(), "127.0.0.1",System.currentTimeMillis());
+        sqlQuery.insertRow(TranscationId.generateID(),"127.0.0.1", Timestamp.valueOf(LocalDateTime.now()),System.currentTimeMillis());
 
-        String insert = "INSERT INTO transaction(txid,clientIp,response_time) values("
-                +id+",INET_ATON(" +clientIp+"),"+responseTime+")";
-
-        Connection conn;
-        ResultSet listofMaps = null;
-        try{
-            Class.forName("org.mariadb.jdbc.Driver");
-            conn = DriverManager.getConnection(url);
-            Statement stat = conn.createStatement();
-//            listofMaps= stat.executeQuery("SELECT * from transaction");
-//            while(listofMaps.next())
-//            {
-//                System.out.println(listofMaps.getTime("start_time"));
-//            }
-
-            stat.executeUpdate(insert);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }

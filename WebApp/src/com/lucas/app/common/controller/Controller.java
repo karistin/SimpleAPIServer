@@ -28,12 +28,14 @@ public class Controller extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        System.out.println("Controller Servlet Init =============");
+//        System.out.println("Controller Servlet Init =============");
         super.init();
     }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        long time = System.currentTimeMillis();
+
         String RequestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
         String command = RequestURI.substring(contextPath.length());
@@ -54,7 +56,7 @@ public class Controller extends HttpServlet {
 
         String classPath = prop.getProperty(command);
 
-        System.out.println(Thread.currentThread().getName());
+//        System.out.println(Thread.currentThread().getName());
 
         try{
             Class<?> url = Class.forName(classPath);
@@ -76,6 +78,8 @@ public class Controller extends HttpServlet {
                 pr.close();
             }
         }
+
+//        System.out.println("controller : "+(System.currentTimeMillis()-time)+"ms");
     }
 
     @Override
