@@ -34,7 +34,7 @@ public class FilterVisitor extends ClassVisitor {
 
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        System.out.println("descriptor : "+ descriptor + " visible : "+ visible);
+//        System.out.println("descriptor : "+ descriptor + " visible : "+ visible);
 
         return super.visitAnnotation(descriptor, visible);
     }

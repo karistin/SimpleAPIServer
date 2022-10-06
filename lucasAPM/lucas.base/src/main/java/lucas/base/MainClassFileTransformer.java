@@ -8,6 +8,9 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
@@ -46,28 +49,44 @@ public class MainClassFileTransformer implements ClassFileTransformer {
             return classfileBuffer;
         }
 
+//        System.out.println(loader);
+
 //      pacakge/pa/class
         ClassReader classReader = new ClassReader(classfileBuffer);
         ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         ClassVisitor classvisitor = null;
+        List<String> interfaces = List.of(classReader.getInterfaces());
 
 //        httpServlet
         if (classReader.getSuperName().equals("javax/servlet/http/HttpServlet")) {
-            logger.info("Servlet Class: " + className);
+            System.out.println("Servlet Class: " + className);
             classvisitor = new ServletVistior(classWriter, className);
-        }
 
+
+        }
 //        Filter
-        List<String> interfaces = List.of(classReader.getInterfaces());
-        if (!interfaces.isEmpty()) {
+        else if (!interfaces.isEmpty()) {
             for (String interfaceName : interfaces) {
                 if (interfaceName.equals("javax/servlet/Filter")) {
-                    logger.info("Filer Class: " + className);
+                    System.out.println("Filer Class: " + className);
                     classvisitor = new FilterVisitor(classWriter, className);
                 }
             }
 
         }
+        FileOutputStream fos = null;
+            try {
+//                System.out.println(System.getProperties());
+                fos = new FileOutputStream(new File("Print.class"));
+                fos.write(classWriter.toByteArray());
+
+                fos.flush();
+                fos.close();
+            } catch (IOException e) {
+                System.out.println("Class Writing Error ");
+                throw new RuntimeException(e);
+            }
+
 
         classReader.accept(classvisitor, ClassReader.EXPAND_FRAMES);
 

@@ -35,6 +35,8 @@ public class Controller extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        long time = System.currentTimeMillis();
+//        Enter.onEnter(request, response);
+//        System.out.println(request.getClass().getName());
 
         String RequestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
@@ -80,6 +82,8 @@ public class Controller extends HttpServlet {
         }
 
 //        System.out.println("controller : "+(System.currentTimeMillis()-time)+"ms");
+
+        System.out.println(request.getQueryString());
     }
 
     @Override

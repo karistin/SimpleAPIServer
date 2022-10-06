@@ -37,7 +37,7 @@ public class ServletVistior extends ClassVisitor {
 
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        System.out.println("descriptor : "+ descriptor + " visible : "+ visible);
+//        System.out.println("descriptor : "+ descriptor + " visible : "+ visible);
 
         return super.visitAnnotation(descriptor, visible);
     }
@@ -51,14 +51,13 @@ public class ServletVistior extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
 
         MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
-        if(!name.equals(SPECIAL_CONSTRUCTOR) && !name.equals(SPECIAL_CLIENT))
+//        System.out.println(descriptor);
+        if(!name.equals(SPECIAL_CONSTRUCTOR) && !name.equals(SPECIAL_CLIENT) && HttpServletMethodName.isHttpServletMethod(name))
         {
 
-            if(HttpServletMethodName.isHttpServletMethod(name))
-            {
                 ServletMethodVisitor servletMethodVisitor = new ServletMethodVisitor(ASM9,mv, access,name, descriptor);
                 return servletMethodVisitor;
-            }
+
 //            generi method
         }
 

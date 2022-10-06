@@ -35,6 +35,13 @@ project(':lucas.base'){
         implementation group: 'org.ow2.asm', name: 'asm-util', version: '9.3'
         // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
         implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.2.0'
+        // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+//        compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
+
+        // https://mvnrepository.com/artifact/javax.servlet/servlet-api
+        compileOnly group: 'javax.servlet', name: 'servlet-api', version: '2.3'
+
+
 
     }
 }

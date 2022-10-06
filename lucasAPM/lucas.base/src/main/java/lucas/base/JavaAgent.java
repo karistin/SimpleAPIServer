@@ -31,10 +31,8 @@ public class JavaAgent {
     private static void start(String options, Instrumentation instrumentation) {
         synchronized (LOCK){
             if (JavaAgent.instrumentation != null) {
-                logger.info("Agent already start");
-                return;
+                System.out.println("Agent already start");
             }
-
             JavaAgent.instrumentation.addTransformer(new MainClassFileTransformer(instrumentation));
         }
     }

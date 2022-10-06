@@ -21,7 +21,7 @@ public class DoFilterVisitor extends AdviceAdapter {
 
     @Override
     protected void onMethodEnter() {
-        mv.visitMethodInsn();
+//        mv.visitMethodInsn();
 
         super.onMethodEnter();
     }

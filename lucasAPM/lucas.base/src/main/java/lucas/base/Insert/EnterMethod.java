@@ -1,5 +1,9 @@
 package lucas.base.Insert;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+
 /**
  * packageName    : lucas.base.Insert
  * fileName       : EnterMethod
@@ -13,8 +17,50 @@ package lucas.base.Insert;
  */
 public class EnterMethod {
 
-    public static void enterFilter()
-    {
+    private static Long time = 0L;
+    public static void enterServlet(Object req, Object resp) throws NoSuchMethodException {
 
+        Class<?> clazz = req.getClass();
+
+
+//        Method[] clazzMethods = clazz.getDeclaredMethods();
+//        for(Method clazzMethod: clazzMethods)
+//        {
+//            System.out.println(clazzMethod.getName() +" : " );
+//
+//        }
+
+
+        Method URI = (clazz.getDeclaredMethod("getRequestURI"));
+
+//        Method Header = (clazz.getDeclaredMethod("getHeaders"));
+        Method ContentType = (clazz.getDeclaredMethod("getContentType"));
+        Method methods = (clazz.getDeclaredMethod("getMethod"));
+//        Method attribute = (clazz.getDeclaredMethod("getAttribute"));
+//        Method parameterMap = (clazz.getDeclaredMethod("getParameterMap"));
+
+
+
+        try {
+            System.out.println(URI.getName() +" : " + URI.invoke(req));
+//            System.out.println(Header.getName() +" : " + Header.invoke(req));
+            System.out.println(ContentType.getName() +" : " + ContentType.invoke(req));
+            System.out.println(methods.getName() +" : " + methods.invoke(req));
+//            System.out.println(attribute.getName() +" : " + attribute.invoke(req));
+//            System.out.println(parameterMap.getName() +" : " + parameterMap.invoke(req));
+
+
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void enterTime()
+    {
+        time = System.currentTimeMillis();
+    }
+    public static void endServlet()
+    {
+        System.out.println(System.currentTimeMillis() - time +"ms");
     }
 }
