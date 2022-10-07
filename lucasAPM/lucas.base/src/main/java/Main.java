@@ -24,5 +24,8 @@ public class Main {
 //        sqlQuery.insertRow(TranscationId.generateID(), "127.0.0.1",System.currentTimeMillis());
         sqlQuery.insertRow(TranscationId.generateID(),"127.0.0.1", Timestamp.valueOf(LocalDateTime.now()),System.currentTimeMillis());
 
+//        java 8 / 9
+        System.out.println(ClassLoader.getSystemResource("java/lang/Class.class"));
+        System.out.println(3&3);
     }
 }

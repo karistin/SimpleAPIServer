@@ -32,7 +32,7 @@ public class ServletMethodVisitor extends AdviceAdapter {
     @Override
     protected void onMethodEnter() {
 
-        mv.visitMethodInsn(INVOKESTATIC, "lucas/base/Insert/EnterMethod","enterTime", "()V", false);
+//        mv.visitMethodInsn(INVOKESTATIC, "lucas/base/Insert/EnterMethod","enterTime", "()V", false);
 
 
         mv.visitVarInsn(ALOAD, 1);
@@ -45,7 +45,7 @@ public class ServletMethodVisitor extends AdviceAdapter {
 
     @Override
     protected void onMethodExit(int opcode) {
-        mv.visitMethodInsn(INVOKESTATIC, "lucas/base/Insert/EnterMethod", "endServlet", "()V", false);
+//        mv.visitMethodInsn(INVOKESTATIC, "lucas/base/Insert/EnterMethod", "endServlet", "()V", false);
         super.onMethodExit(opcode);
     }
 }

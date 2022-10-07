@@ -1,5 +1,6 @@
 package lucas.base.Insert;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -36,6 +37,7 @@ public class EnterMethod {
 //        Method Header = (clazz.getDeclaredMethod("getHeaders"));
         Method ContentType = (clazz.getDeclaredMethod("getContentType"));
         Method methods = (clazz.getDeclaredMethod("getMethod"));
+//        Method cookie = clazz.getDeclaredMethod()
 //        Method attribute = (clazz.getDeclaredMethod("getAttribute"));
 //        Method parameterMap = (clazz.getDeclaredMethod("getParameterMap"));
 

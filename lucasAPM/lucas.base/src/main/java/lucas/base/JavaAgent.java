@@ -29,12 +29,14 @@ public class JavaAgent {
     }
 
     private static void start(String options, Instrumentation instrumentation) {
-        synchronized (LOCK){
-            if (JavaAgent.instrumentation != null) {
+//        synchronized (LOCK){
+            if (JavaAgent.instrumentation == null) {
                 System.out.println("Agent already start");
+                return;
             }
+
             JavaAgent.instrumentation.addTransformer(new MainClassFileTransformer(instrumentation));
-        }
+//        }
     }
 
     public static Logger getLogger() {

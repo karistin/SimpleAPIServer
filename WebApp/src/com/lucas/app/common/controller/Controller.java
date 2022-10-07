@@ -82,8 +82,8 @@ public class Controller extends HttpServlet {
         }
 
 //        System.out.println("controller : "+(System.currentTimeMillis()-time)+"ms");
-
-        System.out.println(request.getQueryString());
+//        System.out.println(request.getCookies().);
+//        System.out.println(request.getQueryString());
     }
 
     @Override
