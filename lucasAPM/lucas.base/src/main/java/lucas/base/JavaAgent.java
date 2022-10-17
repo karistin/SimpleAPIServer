@@ -14,6 +14,7 @@ import java.util.logging.Logger;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-09-26        lucas       최초 생성
+ *  Permain Class
  */
 public class JavaAgent {
     static Logger logger = Logger.getLogger("Agent");

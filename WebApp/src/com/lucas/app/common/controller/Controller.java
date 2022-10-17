@@ -37,7 +37,7 @@ public class Controller extends HttpServlet {
 //        long time = System.currentTimeMillis();
 //        Enter.onEnter(request, response);
 //        System.out.println(request.getClass().getName());
-
+       
         String RequestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
         String command = RequestURI.substring(contextPath.length());

@@ -2,10 +2,9 @@ package lucas.base;
 
 
 
+import lucas.base.asm.HttpServiceASM;
 import lucas.base.asm.IASM;
 import lucas.base.asm.util.AsmUtil;
-import lucas.base.visitor.filtervisitor.FilterVisitor;
-import lucas.base.visitor.servletvisitor.ServletVistior;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -21,11 +20,9 @@ import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-import static lucas.base.Constants.START_WITH_AGENT;
-import static lucas.base.JavaAgent.logger;
-import static lucas.base.ProductConstants.NON_CONVERT_START_PACKAGE;
+import static lucas.base.constant.Constants.START_WITH_AGENT;
+import static lucas.base.constant.ProductConstants.NON_CONVERT_START_PACKAGE;
 
 /**
  * packageName    : lucas.base
@@ -42,8 +39,9 @@ public class MainClassFileTransformer implements ClassFileTransformer {
 
     private final Instrumentation instrumentation;
     protected static List<IASM> asms = new ArrayList<>();
+//    asm List
 
-//    private Logger.
+    private final static String INSTRUMENT_CLASS = "C:\\Users\\seong\\Desktop\\AgentSalve\\lucasAPM\\BCIResult\\";
 
     private String[] filteringList = {"java", "javax", "org/apache", "org/eclipse","sun","jdk","com/sun", "com/google", "org/jcp" , "org/xml", "org/mariadb"};
 
@@ -54,7 +52,6 @@ public class MainClassFileTransformer implements ClassFileTransformer {
     public static void reload(){
         List<IASM> temp = new ArrayList<>();
         temp.add(new HttpServiceASM());
-
 
         asms = temp;
     }
@@ -73,9 +70,10 @@ public class MainClassFileTransformer implements ClassFileTransformer {
             return classfileBuffer;
         }
 
-//        checking classDesc
-        final ClassDesc classDesc = new ClassDesc();
         ClassReader classReader = new ClassReader(classfileBuffer);
+        final ClassDesc classDesc = new ClassDesc();
+//        classDesc.set(classReader.getAccess(), classReader.getClassName());
+
         classReader.accept(new ClassVisitor(Opcodes.ASM9) {
             @Override
             public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
@@ -90,69 +88,37 @@ public class MainClassFileTransformer implements ClassFileTransformer {
             }
         }, 0 );
 
-
         if (AsmUtil.isInterface(classDesc.access)) {
             return classfileBuffer;
         }
+
+
+
 
         ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         ClassVisitor classvisitor = classWriter;
         List<IASM> workAsms = asms;
 
+
         for (int i = workAsms.size() - 1; i >= 0; i--) {
+
             classvisitor = workAsms.get(i).transform(classvisitor, className, classDesc);
+//          checking workAsms
             if (classvisitor != classWriter) {
                 classReader = new ClassReader(classfileBuffer);
+
                 classReader.accept(classvisitor, ClassReader.EXPAND_FRAMES);
                 classfileBuffer = classWriter.toByteArray();
-
+                byteWriting(classfileBuffer, className);
             }
         }
 
 
-
-
-
-
-
-        List<String> interfaces = List.of(classReader.getInterfaces());
-
-
-//        httpServlet
-        if (classReader.getSuperName().equals("javax/servlet/http/HttpServlet")) {
-            System.out.println("Servlet Class: " + className);
-            classvisitor = new ServletVistior(classWriter, className);
-
-
-        }
-//        Filter
-        else if (!interfaces.isEmpty()) {
-            for (String interfaceName : interfaces) {
-                if (interfaceName.equals("javax/servlet/Filter")) {
-                    System.out.println("Filer Class: " + className);
-                    classvisitor = new FilterVisitor(classWriter, className);
-                }
-            }
-        }
-//        FileOutputStream fos = null;
-//            try {
-////                System.out.println(System.getProperties());
-//                fos = new FileOutputStream(new File("Print.class"));
-//                fos.write(classWriter.toByteArray());
-//
-//                fos.flush();
-//                fos.close();
-//            } catch (IOException e) {
-//                System.out.println("Class Writing Error ");
-//                throw new RuntimeException(e);
-//            }
-
-
-        classReader.accept(classvisitor, ClassReader.EXPAND_FRAMES);
-
-        return classWriter.toByteArray();
+        return classfileBuffer;
     }
 
+
+//    Must Filering Classed
     private boolean classnameFiltering(String className) {
         for (String filtering : filteringList) {
             if (className.toLowerCase().startsWith(filtering)) {
@@ -162,11 +128,32 @@ public class MainClassFileTransformer implements ClassFileTransformer {
         return false;
     }
 
+
+//    className, error
     private boolean ignoreTarget(ClassLoader loader, String className, byte[] classfileBuffer)
     {
         return classfileBuffer == null || className == null || className.startsWith(NON_CONVERT_START_PACKAGE) //
         || className.startsWith("$") || className.contains("$")|| (loader != null && loader.getClass().getName().contains(START_WITH_AGENT));
     }
 
+    private void byteWriting(byte[] bytes, String className) {
+
+
+
+        String [] sp = className.split("/");
+        String fileName =  sp[sp.length -1];
+        String pathName =INSTRUMENT_CLASS+fileName+".class";
+        File file = new File(pathName);
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            fos.write(bytes);
+            fos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

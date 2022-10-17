@@ -25,7 +25,7 @@ public class ContextListener implements ServletRequestListener {
 //        time = System.currentTimeMillis();
 //        System.out.println("Client Request");
 //        System.out.println(sre.getServletRequest().getRemoteAddr().toString());
-
+//        sre.getServletContext().get
         ServletRequestListener.super.requestInitialized(sre);
     }
 
