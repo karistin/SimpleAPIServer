@@ -94,7 +94,6 @@ public class MainClassFileTransformer implements ClassFileTransformer {
 
 
 
-
         ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         ClassVisitor classvisitor = classWriter;
         List<IASM> workAsms = asms;
@@ -103,7 +102,7 @@ public class MainClassFileTransformer implements ClassFileTransformer {
         for (int i = workAsms.size() - 1; i >= 0; i--) {
 
             classvisitor = workAsms.get(i).transform(classvisitor, className, classDesc);
-//          checking workAsms
+
             if (classvisitor != classWriter) {
                 classReader = new ClassReader(classfileBuffer);
 

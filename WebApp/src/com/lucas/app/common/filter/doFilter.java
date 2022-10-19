@@ -16,7 +16,7 @@ import java.io.IOException;
  * -----------------------------------------------------------
  * 2022-09-26        lucas       최초 생성
  */
-@WebFilter("/main.do")
+@WebFilter("*.do")
 public class doFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

@@ -33,7 +33,7 @@ public class Controller extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        long time = System.currentTimeMillis();
 //        Enter.onEnter(request, response);
 //        System.out.println(request.getClass().getName());

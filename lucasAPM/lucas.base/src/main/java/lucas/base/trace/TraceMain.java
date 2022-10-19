@@ -68,7 +68,7 @@ public class TraceMain {
 //            }
             return startHttp(req, res);
         } catch (Throwable t) {
-            System.out.println("Start Filter Error");
+            System.out.println( "Start Filter Error");
             t.printStackTrace();
         }
         return null;
@@ -77,7 +77,7 @@ public class TraceMain {
     private static void initHttp(Object req) {
         synchronized (lock) {
             if (http == null) {
-                http = HttpTraceFactory.create(req);
+                http = HttpTraceFactory.create(req.getClass().getClassLoader(), req);
             }
         }
     }
@@ -94,29 +94,45 @@ public class TraceMain {
 
         ctx.thread = Thread.currentThread();
         ctx.threadId = ctx.thread.getId();
+        ctx.threadName = ctx.thread.getName();
+
         ctx.txid = KeyGen.next();
         ctx.startTime = System.currentTimeMillis();
+        ctx.startCpu = SysJMX.getCurrentThreadCPU();
 
+        ctx._req = req;
+        ctx._res = res;
+        ctx.http = http0;
+        ctx.serviceName = http0.getRequestURI(req);
+
+        ctx.http_method = http0.getMethod(req);
+        ctx.http_query = http0.getQueryString(req);
+        ctx.http_content_type = http0.getContentType(req);
+
+        System.out.println("============================");
+        System.out.println("parameter : "+ http0.getParameter(req, ""));
+        System.out.println("Attribute : "+ http0.getAttribute(req, ""));
+        System.out.println("Header : " + http0.getHeader(req, "Accept"));
+        System.out.println("Connection : " + http0.getHeader(req, "Connection"));
+        System.out.println("Method : " + http0.getMethod(req));
+        System.out.println("URI : " + http0.getRequestURI(req));
+        System.out.println("ID : " + http0.getRequestId(req));
+        System.out.println("IP : " + http0.getRemoteAddr(req));
+        System.out.println("Query : " + http0.getQueryString(req));
+
+//        System.out.println("Cookie : " + http0.getCookie(req , "JSESSIONID"));
 //        ctx.bytes = SysJMX.getCurrentThreadAllocBytes(conf.profile_thread_memory_usage_enabled);
 //        ctx.profile_thread_cputime = conf.profile_thread_cputime_enabled;
 //        if (ctx.profile_thread_cputime) {
-        ctx.startCpu = SysJMX.getCurrentThreadCPU();
 //        }
+
 //
 //        HashedMessageStep step = new HashedMessageStep();
 //        step.time = -1;
-        ctx.threadName = ctx.thread.getName();
 //        step.hash = DataProxy.sendHashedMessage("[driving thread] " + ctx.threadName);
 //        ctx.profile.add(step);
 //
 //        http0.start(ctx, req, res);
-        ctx._req = req;
-        ctx._res = res;
-        ctx.http = http0;
-        System.out.println(http0.getMethod(req));
-        System.out.println(http0.getHeader(req, "Accept"));
-        System.out.println(http0.getRequestURI(req));
-        System.out.println(http0.getRemoteAddr(req));
 
         //
 //        if (ctx.isFullyDiscardService) {

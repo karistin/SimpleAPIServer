@@ -1,5 +1,12 @@
 package lucas.base.proxy;
 
+import lucas.base.JavaAgent;
+import lucas.base.util.HashUtil;
+
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * packageName    : lucas.base.proxy
  * fileName       : LoaderManager
@@ -10,10 +17,11 @@ package lucas.base.proxy;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-10-17        lucas       최초 생성
+ * 연결 싷패
  */
 public class LoaderManager {
 //    private static ClassLoader toolsLoader;
-//    private static IntKeyLinkedMap<ClassLoader> loaders = new IntKeyLinkedMap<ClassLoader>().setMax(10);
+    private static ClassLoader[] loaders;
 //
 //    public synchronized static ClassLoader getToolsLoader() {
 //        if (toolsLoader == null) {
@@ -32,9 +40,9 @@ public class LoaderManager {
 //
 //        return createLoader(toolsLoader, "scouter.tools");
 //    }
-//    public static ClassLoader getHttpLoader(ClassLoader parent) {
-//        return createLoader(parent, "scouter.http");
-//    }
+    public static ClassLoader getHttpLoader(ClassLoader parent) {
+        return createLoader(parent, "scouter.http");
+    }
 //
 //    //TODO del
 //    public static ClassLoader getJdbcLoader(ClassLoader parent) {
@@ -65,25 +73,30 @@ public class LoaderManager {
 //        return createLoader(parent, "scouter.java8");
 //    }
 //
-//    private synchronized static ClassLoader createLoader(ClassLoader parent, String key) {
-//
-//        int hashKey = (parent == null ? 0 : System.identityHashCode(parent));
-//        hashKey = hashKey ^ HashUtil.hash(key);
+    private synchronized static ClassLoader createLoader(ClassLoader parent, String key) {
+//        loader == null 인경우 0 or hash code
+        int hashKey = (parent == null ? 0 : System.identityHashCode(parent));
+        hashKey = hashKey ^ HashUtil.hash(key);
+//        XOR
+//        기존에 등록된 로더에서 찾거나
+//        Set map을 만들어 주어야 한다 .... 골치아픔
 //        ClassLoader loader = loaders.get(hashKey);
-//        if (loader == null) {
-//            try {
-//                byte[] bytes = deployJarBytes(key);
-//                if (bytes != null) {
+        ClassLoader loader = null;
+        if (loader == null) {
+            try {
+                byte[] bytes = deployJarBytes(key);
+                if (bytes != null) {
 //                    loader = new BytesClassLoader(bytes, parent);
 //                    loaders.put(hashKey, loader);
-//                }
-//            } catch (Throwable e) {
-//                Logger.println("A137", "SUBLOADER " + key + " " + e);
-//            }
-//        }
-//        return loader;
-//    }
-//
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
 //    public static ClassLoader appendToSystemOrBootLoader(String key) {
 //        if (JavaAgent.isJava9plus()) {
 //            appendToSystemLoader(JavaAgent.getInstrumentation(), key);
@@ -116,16 +129,18 @@ public class LoaderManager {
 //        }
 //    }
 //
-//    private static byte[] deployJarBytes(String jarname) {
-//        try {
-//            InputStream is = JavaAgent.class.getResourceAsStream("/" + jarname + ".jar");
+    private static byte[] deployJarBytes(String jarname) {
+        try {
+            InputStream is = JavaAgent.class.getResourceAsStream("/" + jarname + ".jar");
+            System.out.println(JavaAgent.class.getResourceAsStream("/" + jarname + ".jar"));
+            byte[] newBytes = null;
 //            byte[] newBytes = FileUtil.readAll(is);
 //            is.close();
 //            Logger.println("NONE", "LoadJarBytes " + jarname + " " + ArrayUtil.len(newBytes) + " bytes");
-//            return newBytes;
-//        } catch (Exception e) {
+            return newBytes;
+        } catch (Exception e) {
 //            Logger.println("NONE", "fail to load jar bytes " + jarname);
-//            return null;
-//        }
-//    }
+            return null;
+        }
+    }
 }

@@ -45,12 +45,15 @@ public class HttpServiceASM implements IASM {
 class HttpServiceCV extends ClassVisitor {
         private static String TARGET_SERVICE = "service";
         private static String TARGET_DOFILTER = "doFilter";
-        private static String TARGET_SIGNATURE = "(Ljavax/servlet/ServletRequest;Ljavax/servlet/ServletResponse;";
+//        javax/servlet/http/HttpServletRequest
+//    bci erroring 추후 해결해야될 과제
+//        private static String TARGET_SIGNATURE_1 = "(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse";
+        private static String TARGET_SIGNATURE_2 = "(Ljavax/servlet/ServletRequest;Ljavax/servlet/ServletResponse;";
         private String className;
         public HttpServiceCV(ClassVisitor cv, String className) {
             super(ASM9, cv);
             this.className = className;
-            System.out.println(className);
+
         }
 
         @Override
@@ -60,8 +63,8 @@ class HttpServiceCV extends ClassVisitor {
                 return mv;
             }
 
-            System.out.println(name + " : " + desc);
-            if (desc.startsWith(TARGET_SIGNATURE)) {
+            if (desc.startsWith(TARGET_SIGNATURE_2))
+            {
                 if (TARGET_SERVICE.equals(name)) {
                     System.out.println("HTTP " + className);
                     return new HttpServiceMV(access, desc, className, mv, true);

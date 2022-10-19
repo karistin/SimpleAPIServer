@@ -33,6 +33,8 @@ public interface IHttpTrace {
     String getRemoteAddr(Object req);
     String getMethod(Object req);
     String getQueryString(Object req);
+
+    String getContentType(Object req);
     Object getAttribute(Object req, String key);
     Enumeration getParameterNames(Object req);
     Enumeration getHeaderNames(Object req);

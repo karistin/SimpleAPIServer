@@ -1,5 +1,6 @@
 package com.lucas.app.common.controller;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -31,6 +32,8 @@ public class OutputController extends HttpServlet {
 
     @Override
     public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+//        IHttpTrace httpTrace = Request.DynamicHttp(request);
+
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out=response.getWriter();
         out.print("Service");

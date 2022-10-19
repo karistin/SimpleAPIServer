@@ -2,6 +2,7 @@ package lucas.base.proxy;
 
 import lucas.base.trace.TraceContext;
 
+import javax.servlet.http.Cookie;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
 
@@ -28,16 +29,23 @@ public class HttpTrace implements IHttpTrace{
     Method queryString = null;
     Method attr = null;
     Method parameter = null;
+    Method contentType = null;
 
     public HttpTrace(Object req) {
         try {
             clazz = req.getClass();
             parmeter = clazz.getDeclaredMethod("getParameter",String.class);
             header = clazz.getDeclaredMethod("getHeader",String.class);
+            cookie = clazz.getDeclaredMethod("getCookies");
             requestURI = clazz.getDeclaredMethod("getRequestURI");
+            requestId = clazz.getDeclaredMethod("getRequestedSessionId");
 //            requestId = clazz.getDeclaredMethod("getRequestId");
             remoteAddr = clazz.getDeclaredMethod("getRemoteAddr");
             method = clazz.getDeclaredMethod("getMethod");
+            queryString = clazz.getDeclaredMethod("getQueryString");
+            attr = clazz.getDeclaredMethod("getAttribute", String.class);
+            parameter = clazz.getDeclaredMethod("getParameter", String.class);
+            contentType = clazz.getDeclaredMethod("getContentType");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,6 +93,16 @@ public class HttpTrace implements IHttpTrace{
 
     @Override
     public String getCookie(Object req, String key) {
+        try {
+            Cookie[] cookies = (Cookie[]) cookie.invoke(req, key);
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(key)) {
+                    return cookie.getValue();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -109,7 +127,11 @@ public class HttpTrace implements IHttpTrace{
 
     @Override
     public String getRequestId(Object req) {
-
+        try {
+            return (String) requestId.invoke(req);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -135,16 +157,41 @@ public class HttpTrace implements IHttpTrace{
 
     @Override
     public String getQueryString(Object req) {
+        try {
+            return (String) queryString.invoke(req);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String getContentType(Object req) {
+        try {
+            return (String) contentType.invoke(req);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public Object getAttribute(Object req, String key) {
+        try {
+            return (String) attr.invoke(req, key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public Enumeration getParameterNames(Object req) {
+        try {
+            return (Enumeration) parameter.invoke(req);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
