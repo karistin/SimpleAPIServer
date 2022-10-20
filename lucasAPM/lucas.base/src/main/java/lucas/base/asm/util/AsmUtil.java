@@ -26,6 +26,10 @@ public class AsmUtil implements Opcodes {
     public static boolean isInterface(int access){
         return (access & ACC_INTERFACE) != 0;
     }
+
+    public static boolean isabstract(int access) {
+        return (access & ACC_ABSTRACT) != 0;
+    }
     public static Type stringType = Type.getType(String.class);
 
 }

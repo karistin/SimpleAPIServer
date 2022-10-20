@@ -34,6 +34,7 @@ public class HttpTrace implements IHttpTrace{
     public HttpTrace(Object req) {
         try {
             clazz = req.getClass();
+
             parmeter = clazz.getDeclaredMethod("getParameter",String.class);
             header = clazz.getDeclaredMethod("getHeader",String.class);
             cookie = clazz.getDeclaredMethod("getCookies");

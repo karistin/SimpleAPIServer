@@ -39,6 +39,7 @@ public class MainClassFileTransformer implements ClassFileTransformer {
 
     private final Instrumentation instrumentation;
     protected static List<IASM> asms = new ArrayList<>();
+    public static boolean writing = false;
 //    asm List
 
     private final static String INSTRUMENT_CLASS = "C:\\Users\\seong\\Desktop\\AgentSalve\\lucasAPM\\BCIResult\\";
@@ -66,9 +67,14 @@ public class MainClassFileTransformer implements ClassFileTransformer {
 
 
 //        class filering
-        if (ignoreTarget(loader, className, classfileBuffer) || classnameFiltering(className)) {
+//        if (ignoreTarget(loader, className, classfileBuffer) || classnameFiltering(className)) {
+//            return classfileBuffer;
+//        }
+
+        if (ignoreTarget(loader, className, classfileBuffer)) {
             return classfileBuffer;
         }
+
 
         ClassReader classReader = new ClassReader(classfileBuffer);
         final ClassDesc classDesc = new ClassDesc();
@@ -108,7 +114,10 @@ public class MainClassFileTransformer implements ClassFileTransformer {
 
                 classReader.accept(classvisitor, ClassReader.EXPAND_FRAMES);
                 classfileBuffer = classWriter.toByteArray();
-                byteWriting(classfileBuffer, className);
+                if(writing){
+                    byteWriting(classfileBuffer, className);
+                    writing = false;
+                }
             }
         }
 

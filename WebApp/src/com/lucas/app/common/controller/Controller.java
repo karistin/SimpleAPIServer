@@ -3,6 +3,8 @@ package com.lucas.app.common.controller;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +32,11 @@ public class Controller extends HttpServlet {
     public void init() throws ServletException {
 //        System.out.println("Controller Servlet Init =============");
         super.init();
+    }
+
+    @Override
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+
     }
 
     @Override

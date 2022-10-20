@@ -31,6 +31,17 @@ public class OutputController extends HttpServlet {
     }
 
     @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out=response.getWriter();
+        out.print("Service");
+        out.close();
+
+        super.service(request, response);
+    }
+
+    @Override
     public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
 //        IHttpTrace httpTrace = Request.DynamicHttp(request);
 
@@ -38,7 +49,7 @@ public class OutputController extends HttpServlet {
         PrintWriter out=response.getWriter();
         out.print("Service");
         out.close();
-        super.service(request, response);
+//        super.service(request, response);
     }
 
     @Override

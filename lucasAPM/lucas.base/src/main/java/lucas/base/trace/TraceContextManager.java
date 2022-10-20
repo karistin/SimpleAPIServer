@@ -22,9 +22,9 @@ public class TraceContextManager {
 
 //    private static SimpleLru<String, Long> customTxidMap = new SimpleLru<String, Long>(10000);
 //
-//    private static final ThreadLocal<TraceContext> local = new ThreadLocal<TraceContext>();
-//    private static final ThreadLocal<Long> txidLocal = new ThreadLocal<Long>();
-//    public static final ThreadLocal<Long> txidByCoroutine = new ThreadLocal<Long>();
+    private static final ThreadLocal<TraceContext> local = new ThreadLocal<TraceContext>();
+    private static final ThreadLocal<Long> txidLocal = new ThreadLocal<Long>();
+    public static final ThreadLocal<Long> txidByCoroutine = new ThreadLocal<Long>();
 //
 //    private static CoroutineDebuggingLocal<TraceContext> coroutineDebuggingLocal = new CoroutineDebuggingLocal<TraceContext>();
 //
@@ -92,11 +92,11 @@ public class TraceContextManager {
 //    }
 //
 //    public static TraceContext getContext(boolean force) {
-//        if (!force && conf.profile_off) {
+//        if (!force) {
 //            return null;
 //        }
 //        Long txid = txidLocal.get();
-//        TraceContext traceContext = txid == null ? null : entryByTxid.get(txid);
+//        TraceContext traceContext = (txid == null ? null : entryByTxid.get(txid));
 //
 //        if (traceContext != null) {
 //            traceContext.getBy = ThreadLocalTxid;
@@ -129,7 +129,7 @@ public class TraceContextManager {
 //
 //        return null;
 //    }
-//
+
 //    public static TraceContext getContextByTxid(long txid) {
 //        return entryByTxid.get(txid);
 //    }

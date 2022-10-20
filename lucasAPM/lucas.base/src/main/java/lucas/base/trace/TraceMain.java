@@ -5,6 +5,8 @@ import lucas.base.proxy.IHttpTrace;
 import lucas.base.util.KeyGen;
 import lucas.base.util.SysJMX;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * packageName    : lucas.base.trace
  * fileName       : TraceMain
@@ -42,6 +44,7 @@ public class TraceMain {
 
     public static Object startHttpService(Object req, Object res) {
         try {
+
 //            TraceContext ctx = TraceContextManager.getContext(true);
 //            if (ctx != null) {
 //                return null;
@@ -49,7 +52,7 @@ public class TraceMain {
 //            if (TraceContextManager.startForceDiscard()) {
 //                return null;
 //            }
-            return startHttp(req, res);
+//            return startHttp(req, res);
         } catch (Throwable t) {
             System.out.println("Start Http Error");
             t.printStackTrace();
@@ -103,22 +106,24 @@ public class TraceMain {
         ctx._req = req;
         ctx._res = res;
         ctx.http = http0;
-        ctx.serviceName = http0.getRequestURI(req);
+//        ctx.serviceName = http0.getRequestURI(req);
+//
+//        ctx.http_method = http0.getMethod(req);
+//        ctx.http_query = http0.getQueryString(req);
+//        ctx.http_content_type = http0.getContentType(req);
 
-        ctx.http_method = http0.getMethod(req);
-        ctx.http_query = http0.getQueryString(req);
-        ctx.http_content_type = http0.getContentType(req);
-
-        System.out.println("============================");
-        System.out.println("parameter : "+ http0.getParameter(req, ""));
-        System.out.println("Attribute : "+ http0.getAttribute(req, ""));
-        System.out.println("Header : " + http0.getHeader(req, "Accept"));
-        System.out.println("Connection : " + http0.getHeader(req, "Connection"));
-        System.out.println("Method : " + http0.getMethod(req));
-        System.out.println("URI : " + http0.getRequestURI(req));
-        System.out.println("ID : " + http0.getRequestId(req));
-        System.out.println("IP : " + http0.getRemoteAddr(req));
-        System.out.println("Query : " + http0.getQueryString(req));
+//        System.out.println("============================");
+//        System.out.println("Thread ID : " + ctx.threadId);
+//        System.out.println("TxID : " + ctx.txid);
+//        System.out.println("parameter : "+ http0.getParameter(req, ""));
+//        System.out.println("Attribute : "+ http0.getAttribute(req, ""));
+//        System.out.println("Header : " + http0.getHeader(req, "Accept"));
+//        System.out.println("Connection : " + http0.getHeader(req, "Connection"));
+//        System.out.println("Method : " + http0.getMethod(req));
+//        System.out.println("URI : " + http0.getRequestURI(req));
+//        System.out.println("ID : " + http0.getRequestId(req));
+//        System.out.println("IP : " + http0.getRemoteAddr(req));
+//        System.out.println("Query : " + http0.getQueryString(req));
 
 //        System.out.println("Cookie : " + http0.getCookie(req , "JSESSIONID"));
 //        ctx.bytes = SysJMX.getCurrentThreadAllocBytes(conf.profile_thread_memory_usage_enabled);
