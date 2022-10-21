@@ -30,11 +30,11 @@ public interface IHttpTrace {
     String getCookie(Object req, String key);
     String getRequestURI(Object req);
     String getRequestId(Object req);
-    String getRemoteAddr(Object req);
-    String getMethod(Object req);
+    String getRemoteAddr();
+    String getMethod();
     String getQueryString(Object req);
 
-    String getContentType(Object req);
+    String getContentType();
     Object getAttribute(Object req, String key);
     Enumeration getParameterNames(Object req);
     Enumeration getHeaderNames(Object req);

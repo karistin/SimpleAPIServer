@@ -16,7 +16,13 @@ import lucas.base.proxy.IHttpTrace;
 public class TraceContext {
     protected TraceContext() {
     }
-
+    public enum GetBy {
+        ThreadLocal,
+        ThreadLocalTxid,
+        ThreadLocalTxidByCoroutine,
+        CoroutineLocal
+    }
+    public GetBy getBy;
     public Object _req;
     public Object _res;
     public IHttpTrace http;

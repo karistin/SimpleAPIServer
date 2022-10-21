@@ -32,7 +32,6 @@ public class Config {
 
     private Connection conn = null;
     private String url = "jdbc:mariadb://localhost:3306/swaig?user=root&password=1234";
-
     public Connection sqlLogin(){
         try{
             Class.forName("org.mariadb.jdbc.Driver");

@@ -8,8 +8,11 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +39,21 @@ public class ExampleDAO {
         return it;
     }
 
+    public ResultSet bookQuery(HttpServletRequest request) {
+        String sqlStr = "select * from books where author = "
+                + "'" + request.getParameter("author") + "'"
+                + " and qty > 0 order by price desc";
+
+        Connection conn = Config.getInstance().sqlLogin();
+        ResultSet rset = null;
+        try {
+            Statement stmt = conn.createStatement();
+            rset = stmt.executeQuery(sqlStr);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return rset;
+    }
     public ArrayList<ExampleDTO> getAllExampleData(){
         List<Map<String, Object>> listofMaps = null;
         Connection conn = Config.getInstance().sqlLogin();

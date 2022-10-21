@@ -51,7 +51,7 @@ class HttpServiceCV extends ClassVisitor {
 //        javax/servlet/http/HttpServletRequest
 //    bci erroring 추후 해결해야될 과제
         private static String TARGET_SIGNATURE_1 = "(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse";
-//        private static String TARGET_SIGNATURE_2 = "(Ljavax/servlet/ServletRequest;Ljavax/servlet/ServletResponse;";
+        private static String TARGET_SIGNATURE_2 = "(Ljavax/servlet/ServletRequest;Ljavax/servlet/ServletResponse;";
         private String className;
         public HttpServiceCV(ClassVisitor cv, String className) {
             super(ASM9, cv);
@@ -66,7 +66,7 @@ class HttpServiceCV extends ClassVisitor {
                 return mv;
             }
 
-            if (desc.startsWith(TARGET_SIGNATURE_1))
+            if (desc.startsWith(TARGET_SIGNATURE_2))
             {
                 if (TARGET_SERVICE.equals(name)) {
                     System.out.println("HTTP " + className);
@@ -109,18 +109,18 @@ class HttpServiceMV extends AdviceAdapter implements Opcodes {
                 mv.visitMethodInsn(INVOKESTATIC , TRACEMAIN , START_FILTER , START_SIGNATURE , false);
             }
 
-            statIdx = newLocal(Type.getType(Object.class));
-            mv.visitVarInsn(Opcodes.ASTORE, statIdx);
-            mv.visitLabel(startFinally);
-            mv.visitVarInsn(Opcodes.ALOAD, statIdx);
+//            statIdx = newLocal(Type.getType(Object.class));
+//            mv.visitVarInsn(Opcodes.ASTORE, statIdx);
+//            mv.visitLabel(startFinally);
+//            mv.visitVarInsn(Opcodes.ALOAD, statIdx);
 
-            mv.visitVarInsn(Opcodes.ALOAD, 1);
-            mv.visitVarInsn(Opcodes.ALOAD, 2);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, TRACEMAIN, REJECT, REJECT_SIGNATURE, false);
-            Label end = new Label();
-            mv.visitJumpInsn(IFNULL, end);
-            mv.visitInsn(Opcodes.RETURN);
-            mv.visitLabel(end);
+//            mv.visitVarInsn(Opcodes.ALOAD, 1);
+//            mv.visitVarInsn(Opcodes.ALOAD, 2);
+//            mv.visitMethodInsn(Opcodes.INVOKESTATIC, TRACEMAIN, REJECT, REJECT_SIGNATURE, false);
+//            Label end = new Label();
+//            mv.visitJumpInsn(IFNULL, end);
+//            mv.visitInsn(Opcodes.RETURN);
+//            mv.visitLabel(end);
             mv.visitCode();
             /*
             *  if (TraceMain.startHttpService(req, resp)==null) {
@@ -145,18 +145,19 @@ class HttpServiceMV extends AdviceAdapter implements Opcodes {
 
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
-        Label endFinally = new Label();
-        mv.visitTryCatchBlock(startFinally, endFinally, endFinally, null);
-        mv.visitLabel(endFinally);
-        mv.visitInsn(DUP);
-        int errIdx = newLocal(Type.getType(Throwable.class));
-        mv.visitVarInsn(Opcodes.ASTORE, errIdx);
-        mv.visitVarInsn(Opcodes.ALOAD, statIdx);
-        mv.visitVarInsn(Opcodes.ALOAD, errIdx);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, TRACEMAIN, END_METHOD, END_SIGNATURE, false);
-        mv.visitInsn(ATHROW);
-        mv.visitMaxs(maxStack + 8, maxLocals + 2);
+//        Label endFinally = new Label();
+//        mv.visitTryCatchBlock(startFinally, endFinally, endFinally, null);
+//        mv.visitLabel(endFinally);
+//        mv.visitInsn(DUP);
+//        int errIdx = newLocal(Type.getType(Throwable.class));
+//        mv.visitVarInsn(Opcodes.ASTORE, errIdx);
+//        mv.visitVarInsn(Opcodes.ALOAD, statIdx);
+//        mv.visitVarInsn(Opcodes.ALOAD, errIdx);
+//        mv.visitMethodInsn(Opcodes.INVOKESTATIC, TRACEMAIN, END_METHOD, END_SIGNATURE, false);
+//        mv.visitInsn(ATHROW);
+//        mv.visitMaxs(maxStack + 8, maxLocals + 2);
 
+        super.visitMaxs(maxStack, maxLocals);
     }
 
     @Override

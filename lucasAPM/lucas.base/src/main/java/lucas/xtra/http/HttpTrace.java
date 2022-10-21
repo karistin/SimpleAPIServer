@@ -72,12 +72,12 @@ public class HttpTrace implements IHttpTrace {
     }
 
     @Override
-    public String getRemoteAddr(Object req) {
+    public String getRemoteAddr() {
         return null;
     }
 
     @Override
-    public String getMethod(Object req) {
+    public String getMethod() {
         return null;
     }
 
@@ -87,7 +87,7 @@ public class HttpTrace implements IHttpTrace {
     }
 
     @Override
-    public String getContentType(Object req) {
+    public String getContentType() {
         return null;
     }
 

@@ -4,6 +4,7 @@ package lucas.base;
 
 import lucas.base.asm.HttpServiceASM;
 import lucas.base.asm.IASM;
+import lucas.base.asm.JDBCDriverASM;
 import lucas.base.asm.util.AsmUtil;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
@@ -53,7 +54,7 @@ public class MainClassFileTransformer implements ClassFileTransformer {
     public static void reload(){
         List<IASM> temp = new ArrayList<>();
         temp.add(new HttpServiceASM());
-
+        temp.add(new JDBCDriverASM());
         asms = temp;
     }
 

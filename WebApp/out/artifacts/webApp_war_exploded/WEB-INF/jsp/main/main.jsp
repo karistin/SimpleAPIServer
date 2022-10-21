@@ -20,10 +20,10 @@ main 페이지의 내용<br>
         <input type="submit" value="확인">
     </form>
 <h3>Web Servlet Testing</h3>
-    <a href="${pageContext.request.contextPath}/output">output</a>
+    <a href="${pageContext.request.contextPath}/WebServlet">Servlet 3.0 </a>
 <h3>Save Cookie</h3>
     <a href="cookieSave.do">Save</a>
-<h3>get Cookie</h3>
-    <a href="getCookie.do">GET</a>
+<h3>query String</h3>
+    <a href="query.do">DBSearch</a>
 </body>
 </html>

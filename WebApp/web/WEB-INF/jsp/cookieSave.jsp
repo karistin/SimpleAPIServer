@@ -16,5 +16,7 @@
     response.addCookie(cookie);
 %>
 <h1> 쿠키 한글 저장 </h1>
+<h3>get Cookie</h3>
+<a href="getCookie.do">GET</a>
 </body>
 </html>

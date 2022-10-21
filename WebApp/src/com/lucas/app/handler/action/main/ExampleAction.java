@@ -23,7 +23,7 @@ public class ExampleAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         Gson gson = new Gson();
-
+        System.out.println(request.getRequestURI());
         request.setAttribute("ExampleData", gson.toJson(ExampleDAO.getInstance().getAllExampleData()));
 
         return "RequestDispatcher:jsp/example.jsp";

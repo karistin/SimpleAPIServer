@@ -3,6 +3,9 @@ package lucas.base.trace;
 import lucas.base.util.SimpleLru;
 
 import java.util.Map;
+import java.util.Set;
+
+import static lucas.base.trace.TraceContext.GetBy.ThreadLocalTxid;
 
 /**
  * packageName    : lucas.base.trace
@@ -33,11 +36,12 @@ public class TraceContextManager {
 //    private static boolean coroutineEnabled;
 //    private static boolean coroutineDebuggingEnabled;
 //
-//    public static int size() {
+    public static int size() {
+        return entryByTxid.size();
+    }
+
+//    public static int getActiveCount() {
 //        return entryByTxid.size();
-//    }
-//
-//    public static int[] getActiveCount() {
 //        int[] act = new int[3];
 //        try {
 //            long now = System.currentTimeMillis();
@@ -74,30 +78,36 @@ public class TraceContextManager {
 //        }
 //        return act;
 //    }
-//
-//    public static Set<Map.Entry<Long, TraceContext>> getContextEntries() {
-//        return entryByTxid.entrySet();
-//    }
-//
-//    public static Set<Map.Entry<Long, TraceContext>> getThreadingContextEntries() {
-//        return entryByThreadId.entrySet();
-//    }
-//
-//    public static Set<Map.Entry<Long, TraceContext>> getDeferredContextEntries() {
-//        return deferredEntry.entrySet();
-//    }
-//
-//    public static TraceContext getContext() {
-//        return getContext(false);
-//    }
-//
-//    public static TraceContext getContext(boolean force) {
-//        if (!force) {
-//            return null;
-//        }
-//        Long txid = txidLocal.get();
-//        TraceContext traceContext = (txid == null ? null : entryByTxid.get(txid));
-//
+
+    public static Set<Map.Entry<Long, TraceContext>> getContextEntries() {
+        return entryByTxid.entrySet();
+    }
+
+    public static Set<Map.Entry<Long, TraceContext>> getThreadingContextEntries() {
+        return entryByThreadId.entrySet();
+    }
+
+    public static Set<Map.Entry<Long, TraceContext>> getDeferredContextEntries() {
+        return deferredEntry.entrySet();
+    }
+
+    public static TraceContext getContext() {
+        return getContext(false);
+    }
+
+
+    public static TraceContext getContext(boolean force) {
+        if (!force) {
+            return null;
+        }
+        /*
+        *  thread local var
+        *
+        * */
+
+        Long txid = txidLocal.get();
+        TraceContext traceContext = (txid == null ? null : entryByTxid.get(txid));
+
 //        if (traceContext != null) {
 //            traceContext.getBy = ThreadLocalTxid;
 //            return traceContext;
@@ -112,31 +122,25 @@ public class TraceContextManager {
 //                return traceContext;
 //            }
 //        }
-//
+
 //        traceContext = local.get();
 //        if (traceContext != null) {
-//            traceContext.getBy = ThreadLocal;
+//            traceContext.getBy = local;
 //            return traceContext;
 //        }
-//
-//        if (coroutineDebuggingEnabled) {
-//            traceContext = getCoroutineContext();
-//            if (traceContext != null) {
-//                traceContext.getBy = CoroutineLocal;
-//                return traceContext;
-//            }
-//        }
-//
-//        return null;
-//    }
+
+
+
+        return null;
+    }
 
 //    public static TraceContext getContextByTxid(long txid) {
 //        return entryByTxid.get(txid);
 //    }
 //
-//    public static TraceContext getContextByThreadId(long key) {
-//        return entryByThreadId.get(key);
-//    }
+    public static TraceContext getContextByThreadId(long key) {
+        return entryByThreadId.get(key);
+    }
 //
 //    public static TraceContext getDeferredContext(long key) {
 //        return deferredEntry.get(key);
@@ -166,11 +170,11 @@ public class TraceContextManager {
 //        ctx.ctxid = customTxid;
 //        customTxidMap.put(customTxid, txid);
 //    }
-//
-//    public static Long getLocalTxid() {
-//        return txidLocal.get();
-//    }
-//
+
+    public static Long getLocalTxid() {
+        return txidLocal.get();
+    }
+
 //    public static void clearForceDiscard() {
 //        if(!conf._xlog_hard_sampling_enabled) {
 //            return;
@@ -225,21 +229,20 @@ public class TraceContextManager {
 //        return discard;
 //    }
 //
-//    public static void start(TraceContext o) {
-//        local.set(o);
-//        txidLocal.set(o.txid);
-//        entryByTxid.put(o.txid, o);
-//
-//        if (!o.isReactiveStarted) {
-//            entryByThreadId.put(o.threadId, o);
-//        }
-//    }
-//
-//    public static void takeoverTxid(TraceContext o, long oldTxid) {
-//        txidLocal.set(o.txid);
-//        entryByTxid.remove(oldTxid);
-//        entryByTxid.put(o.txid, o);
-//    }
+    public static void start(TraceContext o) {
+        local.set(o);
+        txidLocal.set(o.txid);
+        entryByTxid.put(o.txid, o);
+
+        entryByThreadId.put(o.threadId, o);
+
+    }
+
+    public static void takeoverTxid(TraceContext o, long oldTxid) {
+        txidLocal.set(o.txid);
+        entryByTxid.remove(oldTxid);
+        entryByTxid.put(o.txid, o);
+    }
 //
 //    public static void startByCoroutine(TraceContext o) {
 //        coroutineEnabled = true;

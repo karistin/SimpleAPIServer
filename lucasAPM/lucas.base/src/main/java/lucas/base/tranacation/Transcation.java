@@ -17,7 +17,6 @@ import java.util.List;
  */
 public class Transcation {
 
-    long ThreadId = Thread.currentThread().getId();
 
     String domain;
     String instance;

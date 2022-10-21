@@ -34,17 +34,14 @@ public class Controller extends HttpServlet {
         super.init();
     }
 
-    @Override
-    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 
-    }
 
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        long time = System.currentTimeMillis();
 //        Enter.onEnter(request, response);
 //        System.out.println(request.getClass().getName());
-       
+//        System.out.println("Controller : " + request.getQueryString());
         String RequestURI = request.getRequestURI();
         String contextPath = request.getContextPath();
         String command = RequestURI.substring(contextPath.length());

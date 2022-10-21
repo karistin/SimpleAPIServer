@@ -40,9 +40,9 @@ public class LoaderManager {
 //
 //        return createLoader(toolsLoader, "scouter.tools");
 //    }
-    public static ClassLoader getHttpLoader(ClassLoader parent) {
-        return createLoader(parent, "scouter.http");
-    }
+//    public static ClassLoader getHttpLoader(ClassLoader parent) {
+//        return createLoader(parent, "scouter.http");
+//    }
 //
 //    //TODO del
 //    public static ClassLoader getJdbcLoader(ClassLoader parent) {
@@ -73,29 +73,29 @@ public class LoaderManager {
 //        return createLoader(parent, "scouter.java8");
 //    }
 //
-    private synchronized static ClassLoader createLoader(ClassLoader parent, String key) {
-//        loader == null 인경우 0 or hash code
-        int hashKey = (parent == null ? 0 : System.identityHashCode(parent));
-        hashKey = hashKey ^ HashUtil.hash(key);
-//        XOR
-//        기존에 등록된 로더에서 찾거나
-//        Set map을 만들어 주어야 한다 .... 골치아픔
-//        ClassLoader loader = loaders.get(hashKey);
-        ClassLoader loader = null;
-        if (loader == null) {
-            try {
-                byte[] bytes = deployJarBytes(key);
-                if (bytes != null) {
-//                    loader = new BytesClassLoader(bytes, parent);
-//                    loaders.put(hashKey, loader);
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
-    }
+//    private synchronized static ClassLoader createLoader(ClassLoader parent, String key) {
+////        loader == null 인경우 0 or hash code
+//        int hashKey = (parent == null ? 0 : System.identityHashCode(parent));
+//        hashKey = hashKey ^ HashUtil.hash(key);
+////        XOR
+////        기존에 등록된 로더에서 찾거나
+////        Set map을 만들어 주어야 한다 .... 골치아픔
+////        ClassLoader loader = loaders.get(hashKey);
+//        ClassLoader loader = null;
+//        if (loader == null) {
+//            try {
+//                byte[] bytes = deployJarBytes(key);
+//                if (bytes != null) {
+////                    loader = new BytesClassLoader(bytes, parent);
+////                    loaders.put(hashKey, loader);
+//                }
+//            } catch (Throwable e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        return null;
+//    }
 
 //    public static ClassLoader appendToSystemOrBootLoader(String key) {
 //        if (JavaAgent.isJava9plus()) {
@@ -129,18 +129,18 @@ public class LoaderManager {
 //        }
 //    }
 //
-    private static byte[] deployJarBytes(String jarname) {
-        try {
-            InputStream is = JavaAgent.class.getResourceAsStream("/" + jarname + ".jar");
-            System.out.println(JavaAgent.class.getResourceAsStream("/" + jarname + ".jar"));
-            byte[] newBytes = null;
-//            byte[] newBytes = FileUtil.readAll(is);
-//            is.close();
-//            Logger.println("NONE", "LoadJarBytes " + jarname + " " + ArrayUtil.len(newBytes) + " bytes");
-            return newBytes;
-        } catch (Exception e) {
-//            Logger.println("NONE", "fail to load jar bytes " + jarname);
-            return null;
-        }
-    }
+//    private static byte[] deployJarBytes(String jarname) {
+//        try {
+//            InputStream is = JavaAgent.class.getResourceAsStream("/" + jarname + ".jar");
+//            System.out.println(JavaAgent.class.getResourceAsStream("/" + jarname + ".jar"));
+//            byte[] newBytes = null;
+////            byte[] newBytes = FileUtil.readAll(is);
+////            is.close();
+////            Logger.println("NONE", "LoadJarBytes " + jarname + " " + ArrayUtil.len(newBytes) + " bytes");
+//            return newBytes;
+//        } catch (Exception e) {
+////            Logger.println("NONE", "fail to load jar bytes " + jarname);
+//            return null;
+//        }
+//    }
 }
