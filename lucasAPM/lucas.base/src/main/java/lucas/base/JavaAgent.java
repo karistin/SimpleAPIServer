@@ -30,6 +30,7 @@ public class JavaAgent {
     }
 
     private static void start(String options, Instrumentation instrumentation) {
+
 //        synchronized (LOCK){
             if (JavaAgent.instrumentation == null) {
                 System.out.println("Agent already start");

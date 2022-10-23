@@ -43,6 +43,7 @@ public class Controller extends HttpServlet {
 //        System.out.println(request.getClass().getName());
 //        System.out.println("Controller : " + request.getQueryString());
         String RequestURI = request.getRequestURI();
+
         String contextPath = request.getContextPath();
         String command = RequestURI.substring(contextPath.length());
 

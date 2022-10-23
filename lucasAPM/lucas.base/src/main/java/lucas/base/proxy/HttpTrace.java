@@ -20,7 +20,6 @@ import java.util.Enumeration;
  */
 public class HttpTrace implements IHttpTrace{
     Class<?> clazz = null;
-    Object object = null;
     Method parmeter = null;
     Method header = null;
     Method cookie = null;
@@ -61,6 +60,7 @@ public class HttpTrace implements IHttpTrace{
             contentType = (clazz.getDeclaredMethod("getContentType"));
             contenType = (String) contentType.invoke(req);
         } catch (Exception e) {
+            System.out.println("["+this.getClass().getName()+"]"+"Reflection Error");
             e.printStackTrace();
         }
     }
@@ -85,6 +85,7 @@ public class HttpTrace implements IHttpTrace{
 
     }
 
+
     @Override
     public String getParameter(Object req, String key) {
         try{
@@ -106,12 +107,12 @@ public class HttpTrace implements IHttpTrace{
     }
 
     @Override
-    public String getRequestURI(Object req) {
+    public String getRequestURI() {
         return uri;
     }
 
     @Override
-    public String getRequestId(Object req) {
+    public String getRequestId() {
         return null;
     }
 
@@ -127,7 +128,7 @@ public class HttpTrace implements IHttpTrace{
     }
 
     @Override
-    public String getQueryString(Object req) {
+    public String getQueryString() {
         return null;
     }
 
@@ -138,7 +139,7 @@ public class HttpTrace implements IHttpTrace{
     }
 
     @Override
-    public Object getAttribute(Object req, String key) {
+    public Object getAttribute(String key) {
         return null;
     }
 

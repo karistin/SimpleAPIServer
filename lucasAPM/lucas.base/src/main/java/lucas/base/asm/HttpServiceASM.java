@@ -32,7 +32,7 @@ public class HttpServiceASM implements IASM {
 
     public HttpServiceASM() {
         servlets.add("javax/servlet/http/HttpServlet");
-        servlets.add("weblogic/servlet/jsp/JspBase");
+//        servlets.add("weblogic/servlet/jsp/JspBase");
     }
 
     @Override
@@ -48,9 +48,8 @@ public class HttpServiceASM implements IASM {
 class HttpServiceCV extends ClassVisitor {
         private static String TARGET_SERVICE = "service";
         private static String TARGET_DOFILTER = "doFilter";
-//        javax/servlet/http/HttpServletRequest
-//    bci erroring 추후 해결해야될 과제
-        private static String TARGET_SIGNATURE_1 = "(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse";
+
+//        private static String TARGET_SIGNATURE_1 = "(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse";
         private static String TARGET_SIGNATURE_2 = "(Ljavax/servlet/ServletRequest;Ljavax/servlet/ServletResponse;";
         private String className;
         public HttpServiceCV(ClassVisitor cv, String className) {

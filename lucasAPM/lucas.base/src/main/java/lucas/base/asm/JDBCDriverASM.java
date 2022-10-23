@@ -17,7 +17,7 @@ import org.objectweb.asm.Opcodes;
  */
 public class JDBCDriverASM implements IASM, Opcodes {
 
-    JDBCDriverASM(){
+    public JDBCDriverASM(){
 
     }
 

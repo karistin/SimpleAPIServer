@@ -14,6 +14,8 @@ import lucas.base.proxy.IHttpTrace;
  * 2022-10-17        lucas       최초 생성
  */
 public class TraceContext {
+    public boolean endHttpProcessingStarted = false;
+
     protected TraceContext() {
     }
     public enum GetBy {
@@ -67,4 +69,38 @@ public class TraceContext {
     public int sqlCount;
     public int sqlTime;
     public String sqltext;
+
+    @Override
+    public String toString() {
+        return "TraceContext{" +
+                "endHttpProcessingStarted=" + endHttpProcessingStarted +
+                ", getBy=" + getBy +
+                ", _req=" + _req +
+                ", _res=" + _res +
+                ", http=" + http +
+                ", parent=" + parent +
+                ", txid=" + txid +
+                ", ctxid='" + ctxid + '\'' +
+                ", thread=" + thread +
+                ", threadId=" + threadId +
+                ", gxid=" + gxid +
+                ", startTime=" + startTime +
+                ", startCpu=" + startCpu +
+                ", latestCpu=" + latestCpu +
+                ", bytes=" + bytes +
+                ", latestBytes=" + latestBytes +
+                ", status=" + status +
+                ", serviceHash=" + serviceHash +
+                ", serviceName='" + serviceName + '\'' +
+                ", remoteIp='" + remoteIp + '\'' +
+                ", threadName='" + threadName + '\'' +
+                ", error=" + error +
+                ", http_method='" + http_method + '\'' +
+                ", http_query='" + http_query + '\'' +
+                ", http_content_type='" + http_content_type + '\'' +
+                ", sqlCount=" + sqlCount +
+                ", sqlTime=" + sqlTime +
+                ", sqltext='" + sqltext + '\'' +
+                '}';
+    }
 }
