@@ -28,11 +28,6 @@ public class Controller extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    @Override
-    public void init() throws ServletException {
-//        System.out.println("Controller Servlet Init =============");
-        super.init();
-    }
 
 
 
@@ -91,9 +86,5 @@ public class Controller extends HttpServlet {
 //        System.out.println(request.getQueryString());
     }
 
-    @Override
-    public void destroy() {
-//        System.out.println("Controller Servlet Destory =============");
-        super.destroy();
-    }
+
 }

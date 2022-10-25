@@ -1,4 +1,3 @@
-import lucas.base.tranacation.TranscationId;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -22,7 +21,7 @@ public class Main {
         sqlQuery.connection("transactionDB", "root", "1234");
 //        sqlQuery.excuteCol("start_time", "transaction");
 //        sqlQuery.insertRow(TranscationId.generateID(), "127.0.0.1",System.currentTimeMillis());
-        sqlQuery.insertRow(TranscationId.generateID(),"127.0.0.1", Timestamp.valueOf(LocalDateTime.now()),System.currentTimeMillis());
+//        sqlQuery.insertRow(TranscationId.generateID(),"127.0.0.1", Timestamp.valueOf(LocalDateTime.now()),System.currentTimeMillis());
 
 //        java 8 / 9
         System.out.println(ClassLoader.getSystemResource("java/lang/Class.class"));

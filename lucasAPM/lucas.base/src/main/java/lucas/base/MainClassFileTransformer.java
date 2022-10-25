@@ -79,21 +79,7 @@ public class MainClassFileTransformer implements ClassFileTransformer {
 
         ClassReader classReader = new ClassReader(classfileBuffer);
         final ClassDesc classDesc = new ClassDesc();
-//        classDesc.set(classReader.getAccess(), classReader.getClassName());
-
-        classReader.accept(new ClassVisitor(Opcodes.ASM9) {
-            @Override
-            public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-                classDesc.set(version, access, name, signature, superName, interfaces);
-                super.visit(version, access, name, signature, superName, interfaces);
-            }
-
-            @Override
-            public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-                classDesc.annotation += descriptor;
-                return super.visitAnnotation(descriptor, visible);
-            }
-        }, 0 );
+        classDesc.set(classReader.getAccess(), classReader.getClassName(), classReader.getSuperName(), classReader.getInterfaces());
 
         if (AsmUtil.isInterface(classDesc.access)) {
             return classfileBuffer;
@@ -111,8 +97,7 @@ public class MainClassFileTransformer implements ClassFileTransformer {
             classvisitor = workAsms.get(i).transform(classvisitor, className, classDesc);
 
             if (classvisitor != classWriter) {
-                classReader = new ClassReader(classfileBuffer);
-
+//                classReader = new ClassReader(classfileBuffer);
                 classReader.accept(classvisitor, ClassReader.EXPAND_FRAMES);
                 classfileBuffer = classWriter.toByteArray();
                 if(writing){

@@ -18,10 +18,7 @@ import java.io.IOException;
  */
 @WebFilter("/Id.do")
 public class doFilter implements Filter {
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
-    }
+
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -30,10 +27,8 @@ public class doFilter implements Filter {
 
         filterChain.doFilter(servletRequest, servletResponse);
 //        System.out.println("Do Filter After......");
+
     }
 
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
-    }
+
 }

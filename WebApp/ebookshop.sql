@@ -18,3 +18,4 @@ insert into books values (1004, 'A Cup of Java', 'Kumar', 55.55, 55);
 insert into books values (1005, 'A Teaspoon of Java', 'Kevin Jones', 66.66, 66);
 
 select * from books;
+

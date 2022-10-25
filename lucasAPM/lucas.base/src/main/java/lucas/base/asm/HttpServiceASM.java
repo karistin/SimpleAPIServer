@@ -37,7 +37,7 @@ public class HttpServiceASM implements IASM {
 
     @Override
     public ClassVisitor transform(ClassVisitor cv, String className, ClassDesc classDesc) {
-        if ( classDesc.checkInterfaces("javax/servlet/Filter") || servlets.contains(className)) {
+        if ( className.equals("javax/servlet/http/HttpServlet")) {
             return new HttpServiceCV(cv, className);
         }
 
@@ -64,17 +64,24 @@ class HttpServiceCV extends ClassVisitor {
             if (mv == null) {
                 return mv;
             }
-
-            if (desc.startsWith(TARGET_SIGNATURE_2))
+            if(desc.startsWith(TARGET_SIGNATURE_2))
             {
-                if (TARGET_SERVICE.equals(name)) {
+                if (name.equals(TARGET_SERVICE)) {
                     System.out.println("HTTP " + className);
                     return new HttpServiceMV(access, desc, className, mv, true);
-                } else if (TARGET_DOFILTER.equals(name)) {
-                    System.out.println("FILTER " + className);
-                    return new HttpServiceMV(access, desc,className,  mv, false);
                 }
+
             }
+//            if (desc.startsWith(TARGET_SIGNATURE_2))
+//            {
+//                if (TARGET_SERVICE.equals(name)) {
+//                    System.out.println("HTTP " + className);
+//                    return new HttpServiceMV(access, desc, className, mv, true);
+//                } else if (TARGET_DOFILTER.equals(name)) {
+//                    System.out.println("FILTER " + className);
+//                    return new HttpServiceMV(access, desc,className,  mv, false);
+//                }
+//            }
             return mv;
         }
     }
@@ -85,10 +92,11 @@ class HttpServiceMV extends AdviceAdapter implements Opcodes {
         private final static String START_FILTER = "startHttpFilter";
         private static final String START_SIGNATURE = "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;";
         private final static String END_METHOD = "endHttpService";
-        private static final String END_SIGNATURE = "(Ljava/lang/Object;Ljava/lang/Throwable;)V";
+        private static final String END_SIGNATURE = "()V";
         private final static String REJECT = "reject";
         private static final String REJECT_SIGNATURE = "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;";
         private boolean httpservlet;
+
         private int statIdx;
         private Label startFinally = new Label();
         public HttpServiceMV(int access, String desc,String name, MethodVisitor mv, boolean httpservlet) {
@@ -96,9 +104,9 @@ class HttpServiceMV extends AdviceAdapter implements Opcodes {
             this.httpservlet = httpservlet;
         }
 
-        @Override
-        protected void onMethodEnter() {
 
+        @Override
+        public void visitCode() {
 
             mv.visitVarInsn(Opcodes.ALOAD, 1);
             mv.visitVarInsn(Opcodes.ALOAD, 2);
@@ -108,8 +116,13 @@ class HttpServiceMV extends AdviceAdapter implements Opcodes {
                 mv.visitMethodInsn(INVOKESTATIC , TRACEMAIN , START_FILTER , START_SIGNATURE , false);
             }
 
-//            statIdx = newLocal(Type.getType(Object.class));
-//            mv.visitVarInsn(Opcodes.ASTORE, statIdx);
+            statIdx = newLocal(Type.getType(Object.class));
+            mv.visitVarInsn(Opcodes.ASTORE, statIdx);
+            super.visitCode();
+        }
+
+
+
 //            mv.visitLabel(startFinally);
 //            mv.visitVarInsn(Opcodes.ALOAD, statIdx);
 
@@ -120,48 +133,16 @@ class HttpServiceMV extends AdviceAdapter implements Opcodes {
 //            mv.visitJumpInsn(IFNULL, end);
 //            mv.visitInsn(Opcodes.RETURN);
 //            mv.visitLabel(end);
-            mv.visitCode();
-            /*
-            *  if (TraceMain.startHttpService(req, resp)==null) {
-            *
-            *   ....
-            *
-            *  }
-            *
-            * */
 
-        }
 
-    @Override
-    public void visitInsn(int opcode) {
-        if ((opcode >= IRETURN && opcode <= RETURN)) {
-            mv.visitVarInsn(Opcodes.ALOAD, statIdx);
-            mv.visitInsn(Opcodes.ACONST_NULL);
-            mv.visitMethodInsn(Opcodes.INVOKESTATIC, TRACEMAIN, END_METHOD, END_SIGNATURE, false);
-        }
-        super.visitInsn(opcode);
-    }
-
-    @Override
-    public void visitMaxs(int maxStack, int maxLocals) {
-//        Label endFinally = new Label();
-//        mv.visitTryCatchBlock(startFinally, endFinally, endFinally, null);
-//        mv.visitLabel(endFinally);
-//        mv.visitInsn(DUP);
-//        int errIdx = newLocal(Type.getType(Throwable.class));
-//        mv.visitVarInsn(Opcodes.ASTORE, errIdx);
-//        mv.visitVarInsn(Opcodes.ALOAD, statIdx);
-//        mv.visitVarInsn(Opcodes.ALOAD, errIdx);
-//        mv.visitMethodInsn(Opcodes.INVOKESTATIC, TRACEMAIN, END_METHOD, END_SIGNATURE, false);
-//        mv.visitInsn(ATHROW);
-//        mv.visitMaxs(maxStack + 8, maxLocals + 2);
-
-        super.visitMaxs(maxStack, maxLocals);
-    }
 
     @Override
         protected void onMethodExit(int opcode) {
             MainClassFileTransformer.writing = true;
+
+//            mv.visitVarInsn(Opcodes.ALOAD, statIdx);
+//            mv.visitInsn(Opcodes.ACONST_NULL);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, TRACEMAIN, END_METHOD, END_SIGNATURE, false);
             super.onMethodExit(opcode);
         }
 }

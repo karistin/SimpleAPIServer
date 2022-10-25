@@ -15,37 +15,25 @@ package lucas.base;
  */
 public class ClassDesc {
 
-    public int version;
+
     public int access;
     public String name;
     public String signature;
     public String superName;
     public String[] interfaces;
     public String annotation;
-    public Class classBeingRedefined;
-    public boolean isMapImpl;
 
-    /**
-     * Set.
-     *
-     * @param version    java version
-     * @param access     access
-     * @param name       class name
-     * @param signature
-     * @param superName  parent
-     * @param interfaces interfaces
-     */
-    public void set(int version, int access, String name, String signature, String superName, String[] interfaces) {
-        this.version = version;
+
+
+    public void set( int access, String name, String superName, String[] interfaces) {
         this.access = access;
         this.name = name;
-        this.signature = signature;
         this.superName = superName;
         this.interfaces = interfaces;
     }
     public boolean checkSuperName(String superName)
     {
-        return this.superName == superName ? true: false;
+        return this.superName.equals(superName);
     }
 
     public boolean checkInterfaces(String interfaceName) {
