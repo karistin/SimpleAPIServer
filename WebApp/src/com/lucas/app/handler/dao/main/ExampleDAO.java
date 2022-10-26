@@ -49,6 +49,7 @@ public class ExampleDAO {
         try {
             Statement stmt = conn.createStatement();
             rset = stmt.executeQuery(sqlStr);
+            conn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -61,6 +62,7 @@ public class ExampleDAO {
         try {
             QueryRunner queryRunner = new QueryRunner();
             listofMaps = queryRunner.query(conn, "SELECT * FROM `Example`", new MapListHandler());
+            conn.close();
         }catch (SQLException e){
             e.printStackTrace();
         }finally {

@@ -37,9 +37,16 @@ public class HttpServiceASM implements IASM {
 
     @Override
     public ClassVisitor transform(ClassVisitor cv, String className, ClassDesc classDesc) {
-        if ( className.equals("javax/servlet/http/HttpServlet")) {
+//        org.apache.catalina.core.ApplicationHttpRequest 이자식
+        if (className.equals("org/apache/catalina/core/ApplicationFilterChain")) {
+            return cv;
+        }
+        if ( className.equals("javax/servlet/http/HttpServlet") || classDesc.checkInterfaces("javax/servlet/Filter")) {
             return new HttpServiceCV(cv, className);
         }
+//        if ( className.equals("javax/servlet/http/HttpServlet") ) {
+//            return new HttpServiceCV(cv, className);
+//        }
 
         return cv;
     }
@@ -64,24 +71,17 @@ class HttpServiceCV extends ClassVisitor {
             if (mv == null) {
                 return mv;
             }
-            if(desc.startsWith(TARGET_SIGNATURE_2))
+
+            if (desc.startsWith(TARGET_SIGNATURE_2))
             {
-                if (name.equals(TARGET_SERVICE)) {
+                if (TARGET_SERVICE.equals(name)) {
                     System.out.println("HTTP " + className);
                     return new HttpServiceMV(access, desc, className, mv, true);
+                } else if (TARGET_DOFILTER.equals(name)) {
+                    System.out.println("FILTER " + className);
+                    return new HttpServiceMV(access, desc,className,  mv, false);
                 }
-
             }
-//            if (desc.startsWith(TARGET_SIGNATURE_2))
-//            {
-//                if (TARGET_SERVICE.equals(name)) {
-//                    System.out.println("HTTP " + className);
-//                    return new HttpServiceMV(access, desc, className, mv, true);
-//                } else if (TARGET_DOFILTER.equals(name)) {
-//                    System.out.println("FILTER " + className);
-//                    return new HttpServiceMV(access, desc,className,  mv, false);
-//                }
-//            }
             return mv;
         }
     }

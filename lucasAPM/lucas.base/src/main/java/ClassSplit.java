@@ -25,5 +25,11 @@ public class ClassSplit {
         System.out.println(stringList.get(0));
 
         System.out.println(stringList.size());
+        ThreadLocal<Integer> inte = new ThreadLocal<>();
+        inte.set(123);
+        System.out.println(inte.get());
+        inte.set(23423);
+        System.out.println(inte.get());
+        System.out.println(inte.get());
     }
 }

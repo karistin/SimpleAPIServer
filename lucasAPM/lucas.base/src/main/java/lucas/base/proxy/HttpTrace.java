@@ -33,7 +33,7 @@ public class HttpTrace implements IHttpTrace{
     Method contentType = null;
     String methodString = "";
     String address = "";
-    String contenType = "";
+    String contentTypeString = "";
 
     String uri = "";
 
@@ -47,18 +47,24 @@ public class HttpTrace implements IHttpTrace{
 //            header = object.getClass().getDeclaredMethod("getHeader",String.class);
 //            cookie = object.getClass().getDeclaredMethod("getCookies");
             requestURI = clazz.getDeclaredMethod("getRequestURI");
+            requestURI.setAccessible(true);
             uri = (String) requestURI.invoke(req);
 //            requestId = object.getClass().getDeclaredMethod("getRequestedSessionId");
 ////            requestId = clazz.getDeclaredMethod("getRequestId");
-            remoteAddr = clazz.getDeclaredMethod("getRemoteAddr");
-            address = (String) remoteAddr.invoke(req);
+//            remoteAddr = clazz.getDeclaredMethod("getRemoteAddr");
+//            remoteAddr.setAccessible(true);
+//            address = (String) remoteAddr.invoke(req);
+//
             method = clazz.getDeclaredMethod("getMethod");
+            method.setAccessible(true);
             methodString = (String) method.invoke(req);
 //            queryString = object.getClass().getDeclaredMethod("getQueryString");
 //            attr = object.getClass().getDeclaredMethod("getAttribute", String.class);
 //            parameter = object.getClass().getDeclaredMethod("getParameter", String.class);
-            contentType = (clazz.getDeclaredMethod("getContentType"));
-            contenType = (String) contentType.invoke(req);
+//            contentType = (clazz.getDeclaredMethod("getContentType"));
+//            contentType.setAccessible(true);
+//            contentTypeString = (String) contentType.invoke(req);
+
         } catch (Exception e) {
             System.out.println("["+this.getClass().getName()+"]"+"Reflection Error");
             e.printStackTrace();
@@ -135,7 +141,7 @@ public class HttpTrace implements IHttpTrace{
     @Override
     public String getContentType() {
 
-        return contenType;
+        return contentTypeString;
     }
 
     @Override

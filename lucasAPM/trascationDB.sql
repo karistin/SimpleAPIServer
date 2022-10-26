@@ -8,29 +8,46 @@ use transactionDB;
 
 create table transaction
 (
-    domain varchar(20),
-    instance   varchar(20),
-
-    txid       varchar(32),
-    clientIp   INT unsigned,
-    clientID    long,
-    start_time TIMESTAMP(3),
-    end_time   TIME,
-    collect_time TIME,
-
-    response_time long default 0,
-    sql_time long default 0,
-    sql_count long default 0,
-    fetch_time long default 0,
-    external_time long default 0,
-    cpu_time long default 0,
-
-# errorList가 있으면
-    ERROELIST json,
-#    쿠키가 있으면
-    applicaion varchar(20)
+#     domain varchar(20),
+#     instance   varchar(20),
+    txid              varchar(30) primary key,
+    threadId          long,
+    startTime         long,
+    startCpu          long,
+    latestCpu         long,
+    lastestTime       long,
+    endTime           long,
+    endCpu            long,
+    serviceName       varchar(30),
+    remoteIp          varchar(30),
+    error             int,
+    http_method       varchar(30),
+    http_query        varchar(30),
+    http_content_type varchar(30),
+    sqlCount          int,
+    sqlTime           int,
+    sqlText           varchar(30)
+#
+#     clientIp   INT unsigned,
+#     clientID    long,
+#     start_time long,
+#     end_time   TIME,
+#     collect_time TIME,
+#
+#     response_time long default 0,
+#     sql_time long default 0,
+#     sql_count long default 0,
+#     fetch_time long default 0,
+#     external_time long default 0,
+#     cpu_time long default 0,
+#
+# # errorList가 있으면
+#     ERROELIST json,
+# #    쿠키가 있으면
+#     applicaion varchar(20)
 
 );
+
 
 
 # HH:MM:SS.ssssss
@@ -50,5 +67,7 @@ create table transaction
 #
 # select domain, instance, txid, clientID, INET_NTOA(clientIp), start_time, end_time, collect_time, response_time, sql_time, sql_count, fetch_time, external_time, cpu_time, ERROELIST, applicaion from transaction;
 # # select INET_NTOA(clientIp) from transaction;
-INSERT INTO transaction(txid,clientIp,start_time,response_time) values('2b0baf04f7b248efaf9584769a4d4def',INET_ATON('127.0.0.1'),'2022-10-05 11:23:43.34354',1664936623344);
+# INSERT INTO transaction(txid,clientIp,start_time,response_time) values('2b0baf04f7b248efaf9584769a4d4def',INET_ATON('127.0.0.1'),'2022-10-05 11:23:43.34354',1664936623344);
 select * from transaction
+
+# insert into

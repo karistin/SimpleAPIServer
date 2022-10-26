@@ -136,19 +136,19 @@ public class MainClassFileTransformer implements ClassFileTransformer {
 
         String [] sp = className.split("/");
         String fileName =  sp[sp.length -1];
-//        String pathName =INSTRUMENT_CLASS+fileName+".class";
-        String pathName =INSTRUMENT_PATH_HOME+fileName+".class";
+        String pathName =INSTRUMENT_CLASS+fileName+".class";
+//        String pathName =INSTRUMENT_PATH_HOME+fileName+".class";
 
         File file = new File(pathName);
-        if(file.exists())
-        {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("File not create");
-                throw new RuntimeException(e);
-            }
-        }
+//        if(file.exists())
+//        {
+//            try {
+//                file.createNewFile();
+//            } catch (IOException e) {
+//                System.out.println("File not create");
+//                throw new RuntimeException(e);
+//            }
+//        }
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);

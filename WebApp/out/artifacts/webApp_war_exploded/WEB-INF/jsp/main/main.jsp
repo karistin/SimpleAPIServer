@@ -26,7 +26,7 @@ main 페이지의 내용<br>
 <h3>query String</h3>
     <a href="query.do">DBSearch</a>
 <h3>CURD Testing</h3>
-    <a href="${pageContext.request.contextPath}/Member">CURD 3.0</a>
+    <a href="form.do">CURD 3.0</a>
 
 </body>
 </html>

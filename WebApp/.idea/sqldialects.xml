@@ -4,6 +4,5 @@
     <file url="file://$PROJECT_DIR$/ebookshop.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/com/lucas/app/handler/dao/main/ExampleDAO.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/swaig.sql" dialect="MariaDB" />
-    <file url="file://$PROJECT_DIR$/t_member.sql" dialect="MariaDB" />
   </component>
 </project>

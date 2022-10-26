@@ -14,27 +14,21 @@ import lucas.base.proxy.IHttpTrace;
  * 2022-10-17        lucas       최초 생성
  */
 public class TraceContext {
-    public boolean endHttpProcessingStarted = false;
 
     protected TraceContext() {
     }
-    public enum GetBy {
-        ThreadLocal,
-        ThreadLocalTxid,
-        ThreadLocalTxidByCoroutine,
-        CoroutineLocal
-    }
-    public GetBy getBy;
+
+
     public Object _req;
     public Object _res;
     public IHttpTrace http;
 
     public TraceContext parent;
     public long txid;
-    public String ctxid;
+//    public String ctxid;
+//    public long gxid;
     public Thread thread;
     public long threadId;
-    public long gxid;
 
 
     // profile Temp
@@ -45,16 +39,17 @@ public class TraceContext {
     public long startTime;
     public long startCpu;
     public long latestCpu;
+    public long lastestTime;
 
-    public long bytes;
-    public long latestBytes;
-    public int status;
+    public long endTime;
+    public long endCpu;
 
-//    // service
-//    public byte xType;
-//    public XLogDiscardTypes.XLogDiscard discardType;
+//    public long bytes;
+//    public long latestBytes;
+//    public int status;
 
-    public int serviceHash;
+
+//    public int serviceHash;
     public String serviceName;
     public String remoteIp;
     public String threadName;
@@ -73,24 +68,19 @@ public class TraceContext {
     @Override
     public String toString() {
         return "TraceContext{" +
-                "endHttpProcessingStarted=" + endHttpProcessingStarted +
-                ", getBy=" + getBy +
-                ", _req=" + _req +
+                "_req=" + _req +
                 ", _res=" + _res +
                 ", http=" + http +
                 ", parent=" + parent +
                 ", txid=" + txid +
-                ", ctxid='" + ctxid + '\'' +
                 ", thread=" + thread +
                 ", threadId=" + threadId +
-                ", gxid=" + gxid +
                 ", startTime=" + startTime +
                 ", startCpu=" + startCpu +
                 ", latestCpu=" + latestCpu +
-                ", bytes=" + bytes +
-                ", latestBytes=" + latestBytes +
-                ", status=" + status +
-                ", serviceHash=" + serviceHash +
+                ", lastestTime=" + lastestTime +
+                ", endTime=" + endTime +
+                ", endCpu=" + endCpu +
                 ", serviceName='" + serviceName + '\'' +
                 ", remoteIp='" + remoteIp + '\'' +
                 ", threadName='" + threadName + '\'' +
