@@ -21,6 +21,8 @@ main 페이지의 내용<br>
     </form>
 <h3>Web Servlet Testing</h3>
     <a href="${pageContext.request.contextPath}/WebServlet">Servlet 3.0 </a>
+<h3>Connection Pool</h3>
+    <a href="${pageContext.request.contextPath}/ConnectionPool">Connection Pool  </a>
 <h3>Save Cookie</h3>
     <a href="cookieSave.do">Save</a>
 <h3>query String</h3>

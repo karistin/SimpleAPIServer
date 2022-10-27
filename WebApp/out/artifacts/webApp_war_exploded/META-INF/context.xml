@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+    <Resource
+        name = "jdbc/mariadb"
+        auth="Container"
+        type="javax.sql.DataSource"
+        driverClassName="org.mariadb.jdbc.Driver"
+        url="jdbc:mariadb://127.0.0.1:3306:swaig"
+        username="root"
+        password="1234"
+        maxActive="20"
+        maxIdle="10"
+        maxWait="5000"
+        closeMethod = "close"/>
+</Context>
