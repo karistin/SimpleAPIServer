@@ -38,9 +38,9 @@ public class TraceMain {
 //        다른 쓰래드에서 호출되는 경우
 
         ctx = new TraceContext();
-        ctx.thread = Thread.currentThread();
-        ctx.threadId = ctx.thread.getId();
-        ctx.threadName = ctx.thread.getName();
+//        ctx.thread = Thread.currentThread();
+//        ctx.threadId = ctx.thread.getId();
+//        ctx.threadName = ctx.thread.getName();
 
         ctx.txid = KeyGen.next();
         ctx.startTime = System.currentTimeMillis();
@@ -91,7 +91,7 @@ public class TraceMain {
         try (PreparedStatement pstmt = con.prepareStatement(query)){
 
             pstmt.setString(1, String.valueOf(ctx.txid));
-            pstmt.setLong(2, ctx.threadId);
+//            pstmt.setLong(2, ctx.threadId);
             pstmt.setLong(3, ctx.startTime);
             pstmt.setLong(4, ctx.startCpu);
             pstmt.setLong(5, ctx.latestCpu);

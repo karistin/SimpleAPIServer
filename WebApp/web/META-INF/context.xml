@@ -5,7 +5,7 @@
         auth="Container"
         type="javax.sql.DataSource"
         driverClassName="org.mariadb.jdbc.Driver"
-        url="jdbc:mariadb://127.0.0.1:3306:swaig"
+        url="jdbc:mariadb://127.0.0.1:3306/swaig"
         username="root"
         password="1234"
         maxActive="20"

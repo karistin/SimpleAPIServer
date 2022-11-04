@@ -51,9 +51,9 @@ public class HttpTrace implements IHttpTrace{
             uri = (String) requestURI.invoke(req);
 //            requestId = object.getClass().getDeclaredMethod("getRequestedSessionId");
 ////            requestId = clazz.getDeclaredMethod("getRequestId");
-//            remoteAddr = clazz.getDeclaredMethod("getRemoteAddr");
-//            remoteAddr.setAccessible(true);
-//            address = (String) remoteAddr.invoke(req);
+            remoteAddr = clazz.getDeclaredMethod("getRemoteAddr");
+            remoteAddr.setAccessible(true);
+            address = (String) remoteAddr.invoke(req);
 //
             method = clazz.getDeclaredMethod("getMethod");
             method.setAccessible(true);
