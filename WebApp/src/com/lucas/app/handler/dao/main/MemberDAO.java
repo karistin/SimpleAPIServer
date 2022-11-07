@@ -3,8 +3,10 @@ package com.lucas.app.handler.dao.main;
 
 
 import com.lucas.app.common.sql.Config;
+import com.lucas.app.common.sql.DBConnector;
 import com.lucas.app.handler.dto.MemberDTO;
 
+import javax.naming.NamingException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,28 +22,36 @@ public class MemberDAO {
     }
     public List<MemberDTO> listMembers(){
         List<MemberDTO> list = new ArrayList<>();
-        Connection conn = Config.getInstance().sqlLogin();
-        String query = "select * from t_member ";
-        ResultSet res;
-        try (Statement stat = conn.createStatement();){
-            res = stat.executeQuery(query);
-            while (res.next()) {
-                String id = res.getString("id");
-                String pwd = res.getString("pwd");
-                String name = res.getString("name");
-                String email = res.getString("email");
-                Date joinDate = res.getDate("joinDate");
-                MemberDTO memberDTO = new MemberDTO();
-                memberDTO.setId(id);
-                memberDTO.setPwd(pwd);
-                memberDTO.setName(name);
-                memberDTO.setEmail(email);
-                memberDTO.setJoinDate(joinDate);
-                list.add(memberDTO);
+//        Connection conn = Config.getInstance().sqlLogin();
+        try{
+            Connection conn = DBConnector.getConnection();
+            String query = "select * from t_member ";
+            ResultSet res;
+            try (Statement stat = conn.createStatement();){
+                res = stat.executeQuery(query);
+                while (res.next()) {
+                    String id = res.getString("id");
+                    String pwd = res.getString("pwd");
+                    String name = res.getString("name");
+                    String email = res.getString("email");
+                    Date joinDate = res.getDate("joinDate");
+                    MemberDTO memberDTO = new MemberDTO();
+                    memberDTO.setId(id);
+                    memberDTO.setPwd(pwd);
+                    memberDTO.setName(name);
+                    memberDTO.setEmail(email);
+                    memberDTO.setJoinDate(joinDate);
+                    list.add(memberDTO);
+                }
+                res.close();
+                conn.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-            res.close();
-            conn.close();
+
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (NamingException e) {
             throw new RuntimeException(e);
         }
         return list;
@@ -49,7 +59,7 @@ public class MemberDAO {
 
     public void addMember(MemberDTO memberDTO) {
         try {
-            Connection conn = Config.getInstance().sqlLogin();
+            Connection conn = DBConnector.getConnection();
             String id = memberDTO.getId();
 
             String pwd = memberDTO.getPwd();
@@ -76,7 +86,7 @@ public class MemberDAO {
 
     public void delMember(String id) {
         try {
-            Connection conn = Config.getInstance().sqlLogin();
+            Connection conn = DBConnector.getConnection();
             String query = "delete from t_member" + " where id =?";
             PreparedStatement psmt = conn.prepareStatement(query);
             psmt.setString(1, id);
@@ -90,7 +100,7 @@ public class MemberDAO {
 
     public boolean idCheck(MemberDTO vo) {
         try{
-            Connection conn = Config.getInstance().sqlLogin();
+            Connection conn = DBConnector.getConnection();
             String query = "select id from t_member" + " where id =?";
             PreparedStatement psmt = conn.prepareStatement(query);
 
@@ -104,7 +114,7 @@ public class MemberDAO {
             }
             psmt.close();
             conn.close();
-        } catch (SQLException e) {
+        } catch (SQLException | NamingException e) {
             throw new RuntimeException(e);
         }
         return true;

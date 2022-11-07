@@ -26,9 +26,9 @@ public class TraceContextManager {
     private static final ThreadLocal<TraceContext> local = new ThreadLocal<TraceContext>();
     private static final ThreadLocal<Long> txidLocal = new ThreadLocal<Long>();
     private static final ThreadLocal<Long> threadId = new ThreadLocal<>();
-//    public static int size() {
-//        return entryByTxid.size();
-//    }
+    public static int size() {
+        return entryByThreadId.size();
+    }
 
 //    public static Set<Map.Entry<Long, TraceContext>> getContextEntries() {
 //        return entryByTxid.entrySet();

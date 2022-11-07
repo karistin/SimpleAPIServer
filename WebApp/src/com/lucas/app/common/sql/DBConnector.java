@@ -19,6 +19,14 @@ import java.sql.SQLException;
  * 2022-10-27        lucas       최초 생성
  */
 public class DBConnector {
+    private DBConnector(){}
+    private static class Singleton{
+        private static final DBConnector instance = new DBConnector();
+    }
+
+    public static DBConnector getInstance() {
+        return Singleton.instance;
+    }
     public static Connection getConnection() throws NamingException, SQLException {
 //        Context initCtx = new InitialContext();
 //        Context envCtx = (Context) initCtx.lookup("java:comp/env");

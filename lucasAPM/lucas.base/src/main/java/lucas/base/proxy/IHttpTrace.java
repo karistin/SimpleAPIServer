@@ -28,13 +28,14 @@ public interface IHttpTrace {
     String getParameter(Object req, String key);
     String getHeader(Object req, String key);
     String getCookie(Object req, String key);
-    String getRequestURI();
-    String getRequestId();
-    String getRemoteAddr();
-    String getMethod();
-    String getQueryString();
+    String getRequestURI(Object req);
+    String getRequestId(Object req);
+    String getRemoteAddr(Object req);
+    String getMethod(Object req);
+    String getQueryString(Object req);
 
-    String getContentType();
+    String getServerName(Object req);
+    String getContentType(Object req);
     Object getAttribute(String key);
     Enumeration getParameterNames(Object req);
     Enumeration getHeaderNames(Object req);

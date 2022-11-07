@@ -4,7 +4,12 @@ import lucas.base.trace.TraceContext;
 
 import javax.servlet.http.Cookie;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
 
 /**
@@ -17,12 +22,13 @@ import java.util.Enumeration;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-10-17        lucas       최초 생성
+ *
+ * org.apache.catalina.connector.RequestFacade 가정
  */
 public class HttpTrace implements IHttpTrace{
     Class<?> clazz = null;
-    Method parmeter = null;
-    Method header = null;
-    Method cookie = null;
+
+    Method serverName = null;
     Method requestURI = null;
     Method requestId = null;
     Method remoteAddr = null;
@@ -31,45 +37,43 @@ public class HttpTrace implements IHttpTrace{
     Method attr = null;
     Method parameter = null;
     Method contentType = null;
-    String methodString = "";
-    String address = "";
-    String contentTypeString = "";
-
-    String uri = "";
 
     public HttpTrace(Object req) {
         try {
             clazz = req.getClass();
-//            Constructor<?> constructor = clazz.getConstructor();
-//            object = constructor.newInstance();
-//
-//            parmeter = object.getClass().getDeclaredMethod("getParameter",String.class);
-//            header = object.getClass().getDeclaredMethod("getHeader",String.class);
-//            cookie = object.getClass().getDeclaredMethod("getCookies");
+            Method[] meths = clazz.getDeclaredMethods();
+
+//            System.out.println( "[ "+LocalDateTime.now() + " ]"+ Thread.currentThread().getName()+" : "+clazz.getName());
+//            for (Method me : meths) {
+//                System.out.println(me.getName());
+//            }
+
             requestURI = clazz.getDeclaredMethod("getRequestURI");
             requestURI.setAccessible(true);
-            uri = (String) requestURI.invoke(req);
-//            requestId = object.getClass().getDeclaredMethod("getRequestedSessionId");
-////            requestId = clazz.getDeclaredMethod("getRequestId");
+
+            requestId = clazz.getDeclaredMethod("getRequestedSessionId");
+            requestId.setAccessible(true);
+
             remoteAddr = clazz.getDeclaredMethod("getRemoteAddr");
             remoteAddr.setAccessible(true);
-            address = (String) remoteAddr.invoke(req);
-//
+
             method = clazz.getDeclaredMethod("getMethod");
             method.setAccessible(true);
-            methodString = (String) method.invoke(req);
-//            queryString = object.getClass().getDeclaredMethod("getQueryString");
-//            attr = object.getClass().getDeclaredMethod("getAttribute", String.class);
-//            parameter = object.getClass().getDeclaredMethod("getParameter", String.class);
-//            contentType = (clazz.getDeclaredMethod("getContentType"));
-//            contentType.setAccessible(true);
-//            contentTypeString = (String) contentType.invoke(req);
+
+            queryString = clazz.getDeclaredMethod("getQueryString");
+            queryString.setAccessible(true);
+
+
+            serverName = clazz.getDeclaredMethod("getServerName");
+            contentType = clazz.getDeclaredMethod("getContentType");
+
 
         } catch (Exception e) {
             System.out.println("["+this.getClass().getName()+"]"+"Reflection Error");
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void start(TraceContext ctx, Object req, Object res) {
@@ -91,14 +95,17 @@ public class HttpTrace implements IHttpTrace{
 
     }
 
+    @Override
+    public String getServerName(Object req) {
+        try {
+            return (String) serverName.invoke(req);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public String getParameter(Object req, String key) {
-        try{
-            return (String) parmeter.invoke(req,key);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return null;
     }
 
@@ -113,35 +120,53 @@ public class HttpTrace implements IHttpTrace{
     }
 
     @Override
-    public String getRequestURI() {
-        return uri;
+    public String getRequestURI(Object req) {
+        try {
+            return String.valueOf(requestURI.invoke(req));
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public String getRequestId() {
+    public String getRequestId(Object req) {
         return null;
     }
 
     @Override
-    public String getRemoteAddr() {
-
-        return address;
+    public String getRemoteAddr(Object req) {
+        try {
+            return String.valueOf(remoteAddr.invoke(req));
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public String getMethod() {
-        return methodString;
+    public String getMethod(Object req) {
+        try {
+            return (String) method.invoke(req);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public String getQueryString() {
-        return null;
+    public String getQueryString(Object req) {
+        try {
+            return (String) queryString.invoke(req);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public String getContentType() {
-
-        return contentTypeString;
+    public String getContentType(Object req) {
+        try {
+            return (String) contentType.invoke(req);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -158,5 +183,4 @@ public class HttpTrace implements IHttpTrace{
     public Enumeration getHeaderNames(Object req) {
         return null;
     }
-
 }

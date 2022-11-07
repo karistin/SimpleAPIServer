@@ -36,6 +36,7 @@ public class Config {
         try{
             Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(url);
+
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("DB 연결 실패. mariaDB의 아이디 비밀번호가 Config 클래스와 일치하는지 확인해주세요.");

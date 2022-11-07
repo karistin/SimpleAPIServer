@@ -27,6 +27,10 @@ public class OutputController extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        System.out.println(request.getClass().getName());
+//        System.out.println(request.getRequestURI());
+//        System.out.println(request.getRequestURL());
+//        System.out.println(request.getRemoteAddr());
 
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out=response.getWriter();
