@@ -24,12 +24,13 @@ public class DBConnector {
         private static final DBConnector instance = new DBConnector();
     }
 
+
     public static DBConnector getInstance() {
         return Singleton.instance;
     }
     public static Connection getConnection() throws NamingException, SQLException {
-//        Context initCtx = new InitialContext();
-//        Context envCtx = (Context) initCtx.lookup("java:comp/env");
+        Context initCtx = new InitialContext();
+        Context envCtx = (Context) initCtx.lookup("java:comp/env");
         InitialContext initalContext = new InitialContext();
         DataSource ds = (DataSource) initalContext.lookup("java:comp/env/jdbc/mariadb");
 //        System.out.println(ds.);

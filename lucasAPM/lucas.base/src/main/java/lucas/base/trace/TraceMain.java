@@ -105,41 +105,42 @@ public class TraceMain {
         String query = "";
 
         query = "insert into transaction (txid, ResponseTime, CpuTime, SqlTime, serviceName ,Error) values(?, ?, ?, ?, ?, ?)";
-//        try (PreparedStatement pstmt = con.prepareStatement(query)) {
-//            pstmt.setString(1, String.valueOf(ctx.txid));
-//            pstmt.setLong(2, ctx.lastestTime);
-//            pstmt.setLong(3, ctx.latestCpu);
-//            pstmt.setLong(4, ctx.sqlTime);
-//            pstmt.setString(5, ctx.serviceName);
-//            pstmt.setInt(6, ctx.error);
+        try (PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, String.valueOf(ctx.txid));
+            pstmt.setLong(2, ctx.lastestTime);
+            pstmt.setLong(3, ctx.latestCpu);
+            pstmt.setLong(4, ctx.sqlTime);
+            pstmt.setString(5, ctx.serviceName);
+            pstmt.setInt(6, ctx.error);
+            pstmt.executeUpdate();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        ctx.enTime = Timestamp.valueOf(LocalDateTime.now());
+//        query = "insert into transactionprofile (tPxid, startTime, collectTime, endTime, CpuTime ,ResponseTime, serviceName, remoteIp, " +
+//                "error, http_method, http_query, http_content_type, sqlCount, sqlTime, sqlText) " +
+//                "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+//        try (PreparedStatement pstmt = con.prepareStatement(query)){
+//            pstmt.setString(1, String.valueOf(ctx.txid+1));
+//            pstmt.setTimestamp(2, ctx.stTime);
+//            pstmt.setTimestamp(3, ctx.collectTime);
+//            pstmt.setTimestamp(4, ctx.enTime);
+//            pstmt.setLong(5, ctx.latestCpu);
+//            pstmt.setLong(6, ctx.lastestTime);
+//            pstmt.setString(7, ctx.serviceName);
+//            pstmt.setString(8, ctx.remoteIp);
+//            pstmt.setInt(9, ctx.error);
+//            pstmt.setString(10, ctx.http_method);
+//            pstmt.setString(11, ctx.http_query);
+//            pstmt.setString(12, ctx.http_content_type);
+//            pstmt.setInt(13, ctx.sqlCount);
+//            pstmt.setLong(14, ctx.sqlTime);
+//            pstmt.setString(15, ctx.sqltext);
 //            pstmt.executeUpdate();
 //        } catch (SQLException e) {
-//            e.printStackTrace();
+//            throw new RuntimeException(e);
 //        }
-        ctx.enTime = Timestamp.valueOf(LocalDateTime.now());
-        query = "insert into transactionprofile (tPxid, startTime, collectTime, endTime, CpuTime ,ResponseTime, serviceName, remoteIp, " +
-                "error, http_method, http_query, http_content_type, sqlCount, sqlTime, sqlText) " +
-                "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        try (PreparedStatement pstmt = con.prepareStatement(query)){
-            pstmt.setString(1, String.valueOf(ctx.txid+1));
-            pstmt.setTimestamp(2, ctx.stTime);
-            pstmt.setTimestamp(3, ctx.collectTime);
-            pstmt.setTimestamp(4, ctx.enTime);
-            pstmt.setLong(5, ctx.latestCpu);
-            pstmt.setLong(6, ctx.lastestTime);
-            pstmt.setString(7, ctx.serviceName);
-            pstmt.setString(8, ctx.remoteIp);
-            pstmt.setInt(9, ctx.error);
-            pstmt.setString(10, ctx.http_method);
-            pstmt.setString(11, ctx.http_query);
-            pstmt.setString(12, ctx.http_content_type);
-            pstmt.setInt(13, ctx.sqlCount);
-            pstmt.setLong(14, ctx.sqlTime);
-            pstmt.setString(15, ctx.sqltext);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
 //        Config.getInstance().insertTx(String.valueOf(ctx.txid),ctx.lastestTime,ctx.latestCpu, ctx.sqlTime, ctx.serviceName, ctx.remoteIp,  ctx.error);
 

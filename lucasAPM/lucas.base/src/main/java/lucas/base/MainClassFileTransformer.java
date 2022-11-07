@@ -43,8 +43,8 @@ public class MainClassFileTransformer implements ClassFileTransformer {
     public static boolean writing = false;
 //    asm List
 
-//    private final static String INSTRUMENT_CLASS = "C:\\Users\\seong\\Desktop\\AgentSalve\\lucasAPM\\BCIResult\\";
-    private final static String INSTRUMENT_PATH_HOME = "C:\\Users\\seong\\Desktop\\agent-slave\\lucasAPM\\BCIResult\\";
+    private final static String INSTRUMENT_CLASS = "C:\\Users\\seong\\Desktop\\AgentSalve\\lucasAPM\\BCIResult\\";
+//    private final static String INSTRUMENT_PATH_HOME = "C:\\Users\\seong\\Desktop\\agent-slave\\lucasAPM\\BCIResult\\";
     private String[] filteringList = {"java", "javax", "org/apache", "org/eclipse","sun","jdk","com/sun", "com/google", "org/jcp" , "org/xml", "org/mariadb"};
 
     static{
@@ -136,7 +136,7 @@ public class MainClassFileTransformer implements ClassFileTransformer {
 
         String [] sp = className.split("/");
         String fileName =  sp[sp.length -1];
-        String pathName =INSTRUMENT_PATH_HOME+fileName+".class";
+        String pathName =INSTRUMENT_CLASS+fileName+".class";
 //        String pathName =INSTRUMENT_PATH_HOME+fileName+".class";
 
         File file = new File(pathName);

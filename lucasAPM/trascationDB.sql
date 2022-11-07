@@ -20,7 +20,7 @@ create table transactionprofile
     remoteIp          varchar(30),
     error             int,
     http_method       varchar(30),
-    http_query        varchar(30),
+    http_query        varchar(60),
     http_content_type varchar(30),
     sqlCount          int,
     sqlTime           long,

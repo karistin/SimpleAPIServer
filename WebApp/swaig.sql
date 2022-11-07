@@ -25,5 +25,5 @@ BEGIN
 end;;
 delimiter ;
 
-call auto_inset(2000)
+call auto_inset(100)
 
