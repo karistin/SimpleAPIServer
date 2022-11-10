@@ -21,7 +21,7 @@ import java.util.List;
  * 2022-11-09        lucas       최초 생성
  */
 
-@Service
+
 public interface ResponseService  {
 
 

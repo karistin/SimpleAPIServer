@@ -1,5 +1,6 @@
 package com.lucas.osapi.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.influxdb.annotation.Column;
@@ -7,6 +8,7 @@ import org.influxdb.annotation.Measurement;
 
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
+
 
 /**
  * packageName    : com.lucas.osapi.entity
@@ -21,54 +23,41 @@ import java.util.concurrent.TimeUnit;
  */
 @Getter
 @Setter
-@Measurement(name = "CpuInfo", database = "TimeSeries", retentionPolicy = "autogen", timeUnit = TimeUnit.SECONDS)
+@Builder
+@Measurement(name = "CpuInfo", database = "TimeSeries", retentionPolicy = "autogen", timeUnit = TimeUnit.MILLISECONDS)
 public class Cpuinfo {
-    @Column(name = "time")
-    private Instant time;
+
+    @Column(name = "uid", tag = true)
+    private long uid;
 
     @Column(name = "host", tag = true)
     private String hostname;
 
-    /* unsigend int */
-    @Column(name = "user")
-    private int user;
-
-    @Column(name = "nice")
-    private int nice;
-
-    @Column(name = "system")
-    private int system;
-
-    @Column(name = "idle")
-    private int idle;
-
-    @Column(name = "iowait")
-    private int iowait;
-
-    @Column(name = "irq")
-    private int irq;
-
-    @Column(name = "softirq")
-    private int softirq;
-
-    @Column(name = "steal")
-    private int steal;
-
-    @Column(name = "guest")
-    private int guest;
-
-    @Column(name = "guest_nice")
-    private int guest_nice;
-
     @Column(name = "cpuUsage")
     private float cpuUsage;
 
-    @Column(name = "cpuSysUsage")
-    private float cpuSysUsage;
+    @Column(name = "userUsage")
+    private float userUsage;
 
-    @Column(name = "cpuUserUsage")
-    private float cpuUserUage;
+    @Column(name = "sysUsage")
+    private float sysUsage;
 
-    @Column(name = "cpuIdleUsage")
-    private float cpuIdleUsage;
+    @Column(name = "niceUsage")
+    private float niceUsage;
+
+    @Column(name = "idleUsage")
+    private float idleUsage;
+
+    @Column(name = "waitIoUsage")
+    private float waitIoUsage;
+
+    @Column(name = "stealUsage")
+    private float stealUage;
+
+    @Column(name = "irqUsage")
+    private float irqUsage;
+
+    @Column(name = "sofrIrqUsage")
+    private float softIrqUsage;
+
 }

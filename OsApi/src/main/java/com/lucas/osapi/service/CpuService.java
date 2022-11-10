@@ -6,6 +6,8 @@ import com.lucas.osapi.model.response.ListResult;
 import com.lucas.osapi.model.response.SingleResult;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * packageName    : com.lucas.osapi.service
  * fileName       : CpuService
@@ -30,19 +32,27 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CpuService {
 
+
+
+
     /*
-    * select * from cpu where host='{uid}' order by desc LIMIT 1
+    * select * from cpu where uid='{uid}' order by desc LIMIT 1
     * uid 입력후
     *  */
 
-    SingleResult<Cpuinfo> getSysUsageByName(ServerPoint server);
+    Cpuinfo getCpuAllByUid(long uid);
+
+
+    List<Cpuinfo> getCpuUsageByuid(long uid);
 
     /*
      *  select TOP("idle",5), *  FROM cpu
      *  return Cpuinfo . hostname
      * */
 
+    ListResult<Cpuinfo> findTopCpuUsage();
 
-    ListResult<Cpuinfo> findAllSysUsage();
+    ListResult<Cpuinfo> findAllCpuUsage();
+
 
 }

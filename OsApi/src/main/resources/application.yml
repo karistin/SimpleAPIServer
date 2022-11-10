@@ -2,6 +2,6 @@ spring:
   influxdb:
     url: http://localhost:8086
     username: admin
-    password: admin123
-    database: OsData
-    retenion-policy: default-policy
+    password: admin
+    database: Cpuinfo
+    retention-policy: autogen

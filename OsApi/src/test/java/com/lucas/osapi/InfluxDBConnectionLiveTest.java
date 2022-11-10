@@ -135,7 +135,6 @@ public class InfluxDBConnectionLiveTest {
 
     @Test
     public void influxDBwritePOJO()  {
-
         InfluxDB connection = connectDatabase();
 
         String dbName = "myTimeseries";
