@@ -39,7 +39,6 @@ public class InfluxDBConfigureTest {
         InfluxDB influxDB = factory.getConnection();
         InfluxDBTemplate<Point> influxDBTemplate = influxDBConfiguration.influxDBTemplate(factory);
 
-        influxDBTemplate.
-        assertEquals(influxDB.ping().getVersion(), influxDBTemplate.ping().getVersion());
+
     }
 }

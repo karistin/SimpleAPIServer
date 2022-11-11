@@ -8,12 +8,14 @@ import com.lucas.osapi.model.response.SingleResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
+import org.influxdb.dto.QueryResult;
 import org.influxdb.impl.InfluxDBResultMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * packageName    : com.lucas.osapi.service
@@ -56,12 +58,13 @@ public class CpuServiceImpl implements CpuService {
 //    }
 
     @Override
-    public SingleResult<Cpuinfo> getCpuAllByUid(long uid) {
+    public Cpuinfo getCpuAllByUid(long uid) {
+//        QueryResult query = influxDBTemplate.query("select * from cpu where uid");
         return null;
     }
 
     @Override
-    public SingleResult<Cpuinfo> getCpuUsageByuid(long uid) {
+    public List<Cpuinfo> getCpuUsageByuid(long uid) {
         return null;
     }
 

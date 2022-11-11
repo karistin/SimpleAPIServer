@@ -3,5 +3,5 @@ spring:
     url: http://localhost:8086
     username: admin
     password: admin
-    database: Cpuinfo
+    database: OsData
     retention-policy: autogen

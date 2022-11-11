@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class Cpuinfo {
 
     @Column(name = "uid", tag = true)
-    private long uid;
+    private String uid;
 
     @Column(name = "host", tag = true)
     private String hostname;
@@ -60,4 +60,21 @@ public class Cpuinfo {
     @Column(name = "sofrIrqUsage")
     private float softIrqUsage;
 
+
+    @Override
+    public String toString() {
+        return "Cpuinfo{" +
+                "uid='" + uid + '\'' +
+                ", hostname='" + hostname + '\'' +
+                ", cpuUsage=" + cpuUsage +
+                ", userUsage=" + userUsage +
+                ", sysUsage=" + sysUsage +
+                ", niceUsage=" + niceUsage +
+                ", idleUsage=" + idleUsage +
+                ", waitIoUsage=" + waitIoUsage +
+                ", stealUage=" + stealUage +
+                ", irqUsage=" + irqUsage +
+                ", softIrqUsage=" + softIrqUsage +
+                '}';
+    }
 }
