@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+
 /**
  * packageName    : com.lucas.osapi.controller
  * fileName       : CpuController
@@ -26,11 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
  * -----------------------------------------------------------
  * 2022-11-09        lucas       최초 생성
  */
-@Api(tags = {"Cpu"})
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/v1/cpuinfo")
+@Api(tags = {"Cpu"})
 public class CpuController {
 
     private final ResponseServiceImpl responseService;
@@ -56,7 +59,7 @@ public class CpuController {
     }
 
     @ApiOperation(value = "모든 CPU Usage 조회", notes = "모든 CPU Usage 반환")
-    @GetMapping(value = "/cpuinfo/top")
+    @GetMapping(value = "/cpuinfo/All")
     public ListResult<Cpuinfo> findAllCpuUsage() {
         return cpuService.findAllCpuUsage();
     }

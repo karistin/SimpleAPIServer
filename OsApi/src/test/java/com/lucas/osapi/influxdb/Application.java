@@ -34,7 +34,7 @@ import static java.lang.Thread.sleep;
 
 
 @Slf4j
-@SpringBootApplication
+//@SpringBootApplication
 public class Application implements CommandLineRunner {
 
     @Autowired
@@ -54,7 +54,6 @@ public class Application implements CommandLineRunner {
         List<Cpuinfo> cpuinfoList = new ArrayList<>();
         while(true){
             Cpuinfo cpuinfo = Cpuinfo.builder()
-//                                      .uid(String.valueOf(rand.nextLong()))
                                      .uid("serverA")
                                       .hostname("serverA")
                                       .cpuUsage(rand.nextFloat()*100)

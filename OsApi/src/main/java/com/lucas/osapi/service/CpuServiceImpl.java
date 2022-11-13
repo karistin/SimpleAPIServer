@@ -2,19 +2,16 @@ package com.lucas.osapi.service;
 
 
 import com.lucas.osapi.entity.Cpuinfo;
-import com.lucas.osapi.entity.ServerPoint;
 import com.lucas.osapi.model.response.ListResult;
-import com.lucas.osapi.model.response.SingleResult;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
+import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
 import org.influxdb.impl.InfluxDBResultMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -36,40 +33,35 @@ public class CpuServiceImpl implements CpuService {
     @Autowired
     private InfluxDBTemplate<Point> influxDBTemplate;
 
-
-
-//    @Override
-//    public ListResult<Cpuinfo> findTopCpuUsage() {
-//        log.info(influxDBTemplate.ping().getVersion());
-//        log.info(influxDBTemplate.getDatabase());
-//        influxDBTemplate.createDatabase();
-//        Cpuinfo cpuinfo = Cpuinfo.builder()
-//                                 .uid(123123123)
-//                                 .hostname("Server1")
-//                                 .sysUsage(13.2f)
-//                                 .userUsage(23.3f)
-//                                 .niceUsage(34.3f)
-//                                 .idleUsage(33.2f)
-//                                         .build();
-//
-//        final Point p = Point.measurementByPOJO(cpuinfo.getClass()).addFieldsFromPOJO(cpuinfo).build();
-//        influxDBTemplate.write(p);
-//        return null;
-//    }
-
     @Override
     public Cpuinfo getCpuAllByUid(long uid) {
-//        QueryResult query = influxDBTemplate.query("select * from cpu where uid");
         return null;
     }
 
     @Override
     public List<Cpuinfo> getCpuUsageByuid(long uid) {
+//        QueryResult queryResult = influxDBTemplate.query(new Query("select * from cpu where uid="+uid+" order by desc LIMIT 1"));
+
         return null;
     }
 
     @Override
     public ListResult<Cpuinfo> findTopCpuUsage() {
+
+        influxDBTemplate.createDatabase();
+
+        QueryResult queryResult = influxDBTemplate.query(new Query("select * from CpuInfo where uid = 'serverA' order by time desc limit 5", influxDBTemplate.getDatabase()));
+//        influxDBTemplate.query(q, 10, queryResult -> logger.info(queryResult.toString()));
+        log.info(queryResult.toString());
+//        List<QueryResult.Result> queryList= queryResult.getResults();
+//        final Query q = new Query("SELECT * FROM cpu GROUP BY tenant", influxDBTemplate.getDatabase());
+        InfluxDBResultMapper mapper = new InfluxDBResultMapper();
+//        queryResult.toString();
+        List<Cpuinfo> cpuinfoList = mapper.toPOJO(queryResult, Cpuinfo.class);
+//        log.info(String.valueOf(cpuinfo.get(0).getCpuUsage()));
+//        for (Cpuinfo cpuinfo : cpuinfoList) {
+//            log.info(String.valueOf(cpuinfo.getCpuUsage()));
+//        }
         return null;
     }
 

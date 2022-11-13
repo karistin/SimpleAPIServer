@@ -29,7 +29,7 @@ import java.util.List;
  *
  * */
 
-@Service
+
 public interface CpuService {
 
 

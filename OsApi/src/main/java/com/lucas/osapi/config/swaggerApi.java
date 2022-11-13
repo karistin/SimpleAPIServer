@@ -2,6 +2,7 @@ package com.lucas.osapi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -22,25 +23,25 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * 2022-11-10        lucas       최초 생성
  */
 
-@Configuration
-@EnableSwagger2
+//@Configuration
+//@EnableSwagger2
 public class swaggerApi {
 
-    @Bean
-    public Docket swaggerApi(){
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(swaggerInfo()).select()
-                .apis(RequestHandlerSelectors.basePackage("com.lucas.osapi.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .useDefaultResponseMessages(false);
-    }
-
-    private ApiInfo swaggerInfo(){
-        return new ApiInfoBuilder().title("Spring API Documentation")
-                .description("Server API Integrate Documentation")
-                .license("lucas")
-                .licenseUrl("https://lucas.org")
-                .version("1")
-                .build();
-    }
+//    @Bean
+//    public Docket swaggerApi(){
+//        return new Docket(DocumentationType.SWAGGER_2).apiInfo(swaggerInfo()).select()
+//                .apis(RequestHandlerSelectors.basePackage("com.lucas.osapi.controller"))
+//                .paths(PathSelectors.any())
+//                .build()
+//                .useDefaultResponseMessages(false);
+//    }
+//
+//    private ApiInfo swaggerInfo(){
+//        return new ApiInfoBuilder().title("Spring API Documentation")
+//                .description("Server API Integrate Documentation")
+//                .license("lucas")
+//                .licenseUrl("https://lucas.org")
+//                .version("1")
+//                .build();
+//    }
 }
