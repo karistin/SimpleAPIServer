@@ -1,6 +1,8 @@
 package com.lucas.osapi;
 
 import com.lucas.osapi.Entity.Cpu;
+import com.lucas.osapi.entity.Cpuinfo;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
@@ -134,6 +136,19 @@ public class InfluxDBConnectionLiveTest {
     }
 
     @Test
+    public void influxDBReadPOJO(){
+        InfluxDB connection = connectDatabase();
+
+        String dbName = "OsData";
+        QueryResult queryResult = connection.query(new Query("select * from CpuInfo where uid = 'serverA' order by time desc limit 5", dbName));
+        InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
+        List<Cpuinfo> cpuList = resultMapper.toPOJO(queryResult, Cpuinfo.class);
+        for (Cpuinfo cpuinfo : cpuList) {
+            log.info(String.valueOf(cpuinfo.getCpuUsage()));
+        }
+    }
+
+    @Test
     public void influxDBwritePOJO()  {
         InfluxDB connection = connectDatabase();
 
@@ -152,7 +167,7 @@ public class InfluxDBConnectionLiveTest {
 
 //        log.info(cpuList.toString());
 
-        Point point = Point.measurementByPOJO(cpu.getClass()).addFieldsFromPOJO(cpu).build();
+        Point point = Point.measurementByPOJO(Cpu.class).addFieldsFromPOJO(cpu).build();
 
         InfluxDBMapper influxDBMapper = new InfluxDBMapper(connection);
         influxDBMapper.save(cpu);

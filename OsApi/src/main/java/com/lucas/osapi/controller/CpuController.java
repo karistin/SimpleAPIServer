@@ -48,14 +48,13 @@ public class CpuController {
     @ApiOperation(value = "cpu Usage 조회",notes = "특정 호스트의 cpu usage 확인")
     @GetMapping(value = "/cpuinfo/{uid}/usage")
     public SingleResult<Cpuinfo> getCpuUsageByuid(@ApiParam(value = "UserId",required = true) @PathVariable long uid) {
-//        return cpuService.getCpuUsageByuid(uid);
-        return null;
+        return responseService.getSingleResult(cpuService.getCpuUsageByuid(uid));
     }
 
     @ApiOperation(value = "상위 5개 CPU Usage 조회", notes = "최상단 5개의 CPU Usage 반환")
     @GetMapping(value = "/cpuinfo/top")
     public ListResult<Cpuinfo> findTopCpuUsage() {
-        return cpuService.findTopCpuUsage();
+        return responseService.getListResult(cpuService.findTopCpuUsage());
     }
 
     @ApiOperation(value = "모든 CPU Usage 조회", notes = "모든 CPU Usage 반환")

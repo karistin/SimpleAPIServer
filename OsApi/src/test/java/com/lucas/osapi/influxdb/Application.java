@@ -5,7 +5,11 @@ import com.lucas.osapi.entity.Cpuinfo;
 import com.lucas.osapi.entity.MemoryInfo;
 import com.lucas.osapi.entity.NetworkInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.influxdb.InfluxDB;
 import org.influxdb.dto.Point;
+import org.influxdb.dto.Query;
+import org.influxdb.dto.QueryResult;
+import org.influxdb.impl.InfluxDBResultMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,11 +18,14 @@ import org.springframework.data.influxdb.InfluxDBTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Thread.sleep;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * packageName    : com.lucas.osapi.influxdb
@@ -34,57 +41,66 @@ import static java.lang.Thread.sleep;
 
 
 @Slf4j
-//@SpringBootApplication
+@SpringBootApplication
 public class Application implements CommandLineRunner {
 
+    List<String> hostnameList = new ArrayList<>(
+            Arrays.asList("serverA","serverB","serverC", "serverD", "serverE", "serverF", "serverI")
+    );
     @Autowired
     private InfluxDBTemplate<Point> influxDBTemplate;
 
     @Override
     public void run(String... args) throws Exception {
-
         influxDBTemplate.createDatabase();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss.SSS");
+//        assertEquals(influxDBTemplate.getDatabase(), "OsData");
+//        insertData();
+//        InfluxDB influxDB = influxDBTemplate.getConnection();
+        outputData();
+    }
+
+
+
+    private void outputData() throws InterruptedException {
+        while(true) {
+            Query query = new Query("select cpuUsage from CpuInfo group by uid limit 1 tz('Asia/Seoul')", influxDBTemplate.getDatabase());
+            QueryResult queryResult = influxDBTemplate.getConnection().query(query);
+//            log.info(queryResult.toString());
+//        List<QueryResult.Result> results = queryResult.getResults();
+            InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
+            List<Cpuinfo> cpuinfoList = resultMapper.toPOJO(queryResult, Cpuinfo.class );
+            for (Cpuinfo cpuinfo : cpuinfoList) {
+                log.info(cpuinfo.getUid() + " : "+cpuinfo.getCpuUsage());
+            }
+            log.info("========================================================");
+            sleep(3000);
+        }
+    }
+    private void insertData() throws InterruptedException {
+
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss.SSS");
 //        int testDataCount = 20;
         Random rand = new Random();
         long seed = System.currentTimeMillis();
         rand.setSeed(seed);
 
 
-        List<Cpuinfo> cpuinfoList = new ArrayList<>();
-        while(true){
-            Cpuinfo cpuinfo = Cpuinfo.builder()
-                                     .uid("serverA")
-                                      .hostname("serverA")
-                                      .cpuUsage(rand.nextFloat()*100)
-                                      .userUsage(rand.nextFloat()*100)
-                                      .sysUsage(rand.nextFloat()*100)
-                                      .niceUsage(rand.nextFloat()*100)
-                                      .idleUsage(rand.nextFloat()*100)
-                                      .waitIoUsage(rand.nextFloat()*100)
-                                      .stealUage(rand.nextFloat()*100)
-                                      .irqUsage(rand.nextFloat()*100)
-                                      .softIrqUsage(rand.nextFloat()*100)
-                                      .build();
-            MemoryInfo memoryInfo = MemoryInfo.builder()
-                                              .uid("serverA").hostname("serverA")
-                                              .memoryTotal(rand.nextLong())
-                                              .memoryUsed(rand.nextLong())
-                                              .memoryFree(rand.nextLong())
-                                              .build();
+        while(true) {
 
-            NetworkInfo networkInfo;
-            log.info(cpuinfo.toString());
-            log.info(memoryInfo.toString());
-            Point.measurement("test").time(System.currentTimeMillis(),TimeUnit.MILLISECONDS);
-            influxDBTemplate.write(Point.measurementByPOJO(cpuinfo.getClass()).addFieldsFromPOJO(cpuinfo)
-                    .build());
-            influxDBTemplate.write(Point.measurementByPOJO(memoryInfo.getClass()).addFieldsFromPOJO(memoryInfo)
-                                        .build());
-            sleep(5000);
+            List<Cpuinfo> cpuinfoList = new ArrayList<>();
 
+            for (String hostname : hostnameList) {
+                Cpuinfo cpuinfo = new Cpuinfo();
+                cpuinfo.setUid(hostname);
+                cpuinfo.setHostname(hostname);
+                cpuinfo.setCpuUsage(Math.floor(rand.nextDouble()*10000)/100);
+                influxDBTemplate.write(Point.measurementByPOJO(Cpuinfo.class).addFieldsFromPOJO(cpuinfo).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
+            }
+
+//            influxDBTemplate.write(Point.measurementByPOJO(MemoryInfo.class).addFieldsFromPOJO(memoryInfo)
+//                                        .build());
+            sleep(3000);
         }
-
 
     }
 

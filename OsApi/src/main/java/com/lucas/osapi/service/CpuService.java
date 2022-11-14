@@ -1,10 +1,7 @@
 package com.lucas.osapi.service;
 
 import com.lucas.osapi.entity.Cpuinfo;
-import com.lucas.osapi.entity.ServerPoint;
 import com.lucas.osapi.model.response.ListResult;
-import com.lucas.osapi.model.response.SingleResult;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -31,27 +28,33 @@ import java.util.List;
 
 
 public interface CpuService {
-
-
-
-
+/*
+* TODO: 특정 기간의 uid의 CPU사용량 가져오기
+*
+* */
     /*
-    * select * from cpu where uid='{uid}' order by desc LIMIT 1
-    * uid 입력후
+    * Time now()
+    * uid가 가지고 있는 Cpu data 출력
     *  */
-
     Cpuinfo getCpuAllByUid(long uid);
 
-
+    /*
+    * Time now()
+    * 특정 uid가 사용하는 CPU 사용량 구하기
+    * */
     List<Cpuinfo> getCpuUsageByuid(long uid);
 
     /*
-     *  select TOP("idle",5), *  FROM cpu
-     *  return Cpuinfo . hostname
+     *  Time now()
+     *  CPU 사용량 상위 5개 출력
      * */
 
-    ListResult<Cpuinfo> findTopCpuUsage();
+    List<Cpuinfo> findTopCpuUsage();
 
+    /*
+    * Time now()
+    * 모든 CPU의  사용량 구하기
+    * */
     ListResult<Cpuinfo> findAllCpuUsage();
 
 

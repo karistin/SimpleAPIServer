@@ -21,52 +21,71 @@ import java.util.concurrent.TimeUnit;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-11-09        lucas       최초 생성
+ *  Tags are automatically converted to strings, since tags are strings to influxdb Supported values for fields are boolean,
+ *  int, long, double, Boolean, Integer, Long, Double. The time field should be of type instant.
  */
+
 @Getter
 @Setter
-@Builder
-@Measurement(name = "CpuInfo", database = "OsData", retentionPolicy = "autogen", timeUnit = TimeUnit.MILLISECONDS)
+@Measurement(name = "CpuInfo", database = "OsData")
 public class Cpuinfo {
+//    time, cpuUsage, host, idleUsage, irqUsage, niceUsage, sofrIrqUsage, stealUsage, sysUsage, uid, userUsage, waitIoUsage
 
     @TimeColumn
     @Column(name = "time")
     private Instant time;
 
     @Column(name = "cpuUsage")
-    private float cpuUsage;
+    private double cpuUsage;
 
+    @Column(name = "uid", tag = true)
+    private String uid;
     @Column(name = "host")
     private String hostname;
 
     @Column(name = "idleUsage")
-    private float idleUsage;
+    private double idleUsage;
 
 
     @Column(name = "irqUsage")
-    private float irqUsage;
+    private double irqUsage;
 
     @Column(name = "niceUsage")
-    private float niceUsage;
+    private double niceUsage;
 
     @Column(name = "sofrIrqUsage")
-    private float softIrqUsage;
+    private double softIrqUsage;
 
     @Column(name = "stealUsage")
-    private float stealUage;
+    private double stealUage;
 
     @Column(name = "sysUsage")
-    private float sysUsage;
+    private double sysUsage;
 
 
-    @Column(name = "uid")
-    private String uid;
 
     @Column(name = "userUsage")
-    private float userUsage;
+    private double userUsage;
 
 
     @Column(name = "waitIoUsage")
-    private float waitIoUsage;
+    private double waitIoUsage;
 
-
+    @Override
+    public String toString() {
+        return "Cpuinfo{" +
+                "time=" + time +
+                ", cpuUsage=" + cpuUsage +
+                ", hostname='" + hostname + '\'' +
+                ", idleUsage=" + idleUsage +
+                ", irqUsage=" + irqUsage +
+                ", niceUsage=" + niceUsage +
+                ", softIrqUsage=" + softIrqUsage +
+                ", stealUage=" + stealUage +
+                ", sysUsage=" + sysUsage +
+                ", uid='" + uid + '\'' +
+                ", userUsage=" + userUsage +
+                ", waitIoUsage=" + waitIoUsage +
+                '}';
+    }
 }

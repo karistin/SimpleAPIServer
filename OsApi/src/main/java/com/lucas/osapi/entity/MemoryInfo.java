@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
+import org.influxdb.annotation.TimeColumn;
 
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +20,11 @@ import java.util.concurrent.TimeUnit;
 @Builder
 @Measurement(name = "MemoryInfo", database = "TimeSeries", retentionPolicy = "autogen", timeUnit = TimeUnit.MILLISECONDS)
 public class MemoryInfo {
+
+    @TimeColumn
+    @Column(name = "time")
+    private Instant time;
+
     @Column(name = "host", tag = true)
     private String uid;
 
