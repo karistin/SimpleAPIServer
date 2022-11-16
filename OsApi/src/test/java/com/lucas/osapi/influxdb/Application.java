@@ -2,10 +2,7 @@ package com.lucas.osapi.influxdb;
 
 
 import com.lucas.osapi.entity.Cpuinfo;
-import com.lucas.osapi.entity.MemoryInfo;
-import com.lucas.osapi.entity.NetworkInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.influxdb.InfluxDB;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
@@ -16,7 +13,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
