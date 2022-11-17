@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
+
 /**
  * packageName    : com.lucas.osapi.model.response
  * fileName       : CommonResult
@@ -18,6 +20,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommonResult {
+
+    @ApiModelProperty(value = "API서버 시간값(UTC)")
+    private long time;
 
     @ApiModelProperty(value = "응답 성공 여부 : true/false")
     private boolean success;

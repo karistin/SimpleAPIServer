@@ -56,6 +56,7 @@ public class ResponseServiceImpl implements ResponseService{
         result.setSuccess(false);
         result.setCode(CommonResponse.FAIL.getCode());
         result.setMsg(CommonResponse.FAIL.getMsg());
+        result.setTime(System.currentTimeMillis());
         return result;
     }
 
@@ -63,5 +64,6 @@ public class ResponseServiceImpl implements ResponseService{
         result.setSuccess(true);
         result.setCode(CommonResponse.SUCCESS.getCode());
         result.setMsg(CommonResponse.SUCCESS.getMsg());
+        result.setTime(System.currentTimeMillis());
     }
 }

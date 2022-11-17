@@ -1,7 +1,6 @@
 package generic;
 
-import lombok.Getter;
-import lombok.Setter;
+
 
 /**
  * packageName    : generic
@@ -14,12 +13,25 @@ import lombok.Setter;
  * -----------------------------------------------------------
  * 2022-11-16        lucas       최초 생성
  */
-@Getter
-@Setter
+
 public class man <T>{
 
     private T name;
     private T bloodtype;
 
+    public T getName() {
+        return name;
+    }
 
+    public void setName(T name) {
+        this.name = name;
+    }
+
+    public T getBloodtype() {
+        return bloodtype;
+    }
+
+    public void setBloodtype(T bloodtype) {
+        this.bloodtype = bloodtype;
+    }
 }

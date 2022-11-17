@@ -1,8 +1,8 @@
 package com.lucas.osapi.service;
 
 
+import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.CpuUsage;
-import com.lucas.osapi.entity.Cpuinfo;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
@@ -12,6 +12,7 @@ import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,7 @@ import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.select;
 
 @Slf4j
 @Service
-public class CpuUsageService implements MetricService<CpuUsage, String> {
+public class CpuUsageService implements MetricService<CpuUsage, CpuInfo, String> {
 
     @Autowired
     private InfluxDBTemplate<Point> influxDBTemplate;
@@ -52,20 +53,10 @@ public class CpuUsageService implements MetricService<CpuUsage, String> {
     * */
 
     @Override
-    public List<CpuUsage> findAll() {
-        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2 tz('Asia/Seoul')";
+    public List<CpuUsage> findList() {
+        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
         QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<CpuUsage> cpuinfoList = resultMapper.toPOJO(queryResult, CpuUsage.class);
-        List<CpuUsage> cpuUsageList = new ArrayList<>();
-//        for (CpuUsage cpuinfo : cpuinfoList) {
-//            CpuUsage cpuUsage = new CpuUsage();
-//            cpuUsage.setMean();
-//            cpuUsage.add(CpuUsage.builder()
-//                            .time(cpuinfo.getTime())
-//                            .cpuUsage(cpuinfo.getCpuUsage())
-//                            .uid(cpuinfo.getUid()).build());
-//        }
-        return cpuinfoList;
+        return resultMapper.toPOJO(queryResult, CpuUsage.class);
     }
 
     /*
@@ -73,34 +64,61 @@ public class CpuUsageService implements MetricService<CpuUsage, String> {
     * TODO : query 수정
     * */
     @Override
-    public List<CpuUsage> findTop() {
-        String query =  "select cpuUsage,hostname from CpuInfo group by uid limit 1 tz('Asia/Seoul')";
+    public Optional<List<CpuUsage>> findTop() {
+        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
         QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<CpuUsage> cpuUsage = new ArrayList<>();
-        resultMapper.toPOJO(queryResult, Cpuinfo.class);
-        return cpuUsage;
+        List<CpuUsage> cpuUsage = resultMapper.toPOJO(queryResult, CpuUsage.class);
+        if (cpuUsage.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<CpuUsage> topValue = new ArrayList<>();
+
+        if(cpuUsage.size() > 5){
+            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getMean).reversed()).limit(5)
+                    .forEach(topValue::add);
+        }else {
+            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getMean).reversed())
+                    .forEach(topValue::add);
+        }
+        return Optional.of(topValue);
     }
 
     @Override
     public Optional<Double> findAverage() {
-        return Optional.empty();
+        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
+        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        List<CpuUsage> cpuUsage = resultMapper.toPOJO(queryResult, CpuUsage.class);
+        return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getMean).average().orElse(Double.NaN));
     }
 
     @Override
     public Optional<Double> findMax() {
-        return Optional.empty();
+        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
+        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        List<CpuUsage> cpuUsage = resultMapper.toPOJO(queryResult, CpuUsage.class);
+        return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getMean).max().orElse(Double.NaN));
     }
 
     @Override
     public Optional<Double> findMin() {
-        return Optional.empty();
+        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
+        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        List<CpuUsage> cpuUsage = resultMapper.toPOJO(queryResult, CpuUsage.class);
+        return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getMean).min().orElse(Double.NaN));
     }
 
     @Override
-    public Optional<CpuUsage> findById(String id) {
-        String query =  "select cpuUsage, uid,hostname from CpuInfo where uid='"+id+"' limit 1 tz('Asia/Seoul')";
+    public Optional<CpuUsage> findByIdUsage(String uid) {
+        String query = "select uid, mean from (select MEAN(cpuUsage) from CpuInfo group by uid limit 2) where uid='"+uid+"'";
         QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-//        return Optional.ofNullable(resultMapper.toPOJO(queryResult, Cpuinfo.class).get(0));
-        return Optional.empty();
+        return Optional.ofNullable(resultMapper.toPOJO(queryResult, CpuUsage.class).get(0));
+    }
+
+    @Override
+    public Optional<CpuInfo> findById(String uid) {
+        String query = "select * from CpuInfo where uid='"+uid+"' limit 1";
+        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        return Optional.ofNullable(resultMapper.toPOJO(queryResult, CpuInfo.class).get(0));
     }
 }

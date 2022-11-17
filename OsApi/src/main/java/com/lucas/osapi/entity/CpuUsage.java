@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 import org.influxdb.annotation.TimeColumn;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 
@@ -24,10 +25,6 @@ import java.time.Instant;
 @Setter
 @Measurement(name = "CpuInfo",database = "OsData")
 public class CpuUsage {
-
-    @TimeColumn
-    @Column(name = "time")
-    private Instant time;
 
     @Column(name = "mean")
     private double mean;
