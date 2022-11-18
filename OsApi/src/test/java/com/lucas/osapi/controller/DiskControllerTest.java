@@ -29,6 +29,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-11-17        lucas       최초 생성
+ * DB 설정한 값이 있으면 => 호출
+ * Mock 객체인가
  */
 
 @AutoConfigureMockMvc
@@ -55,6 +57,18 @@ class DiskControllerTest {
         log.info(response.getContentAsString());
     }
 
+    /*
+    *
+    * 16:36:03.622 [main] INFO  c.l.o.controller.DiskControllerTest -
+    * {"time":1668756963546,"success":true,"code":0,"msg":"Success","list":
+    * [{"mean":51.093666169895705,"diskinfo":null,"uid":"serverB"},
+    * {"mean":51.07435171385994,"diskinfo":null,"uid":"serverG"},
+    * {"mean":50.18628912071534,"diskinfo":null,"uid":"serverF"},
+    * {"mean":49.87833084947839,"diskinfo":null,"uid":"serverC"},
+    * {"mean":49.536631892697535,"diskinfo":null,"uid":"serverE"}]}
+    *
+    * Mock 객체로 테스트 만들기!!
+    * */
     @Test
     void findTop() throws Exception{
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/v1/diskinfo/top")
@@ -67,6 +81,7 @@ class DiskControllerTest {
                                                   .andReturn()
                                                   .getResponse();
         log.info(response.getContentAsString());
+
     }
 
     @Test

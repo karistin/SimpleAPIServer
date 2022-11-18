@@ -1,18 +1,34 @@
 package com.lucas.osapi.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lucas.osapi.advice.ExceptionAdvice;
+import com.lucas.osapi.entity.CpuInfo;
+import com.lucas.osapi.entity.CpuUsage;
+import com.lucas.osapi.model.response.ListResult;
+import com.lucas.osapi.service.CpuUsageService;
+import com.lucas.osapi.service.ResponseServiceImpl;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Validate;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,7 +39,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,12 +63,11 @@ import static org.junit.jupiter.api.Assertions.*;
  *  TODO : https://stackoverflow.com/questions/35380387/unit-test-for-programs-that-uses-influxdb
  *  influxdb dependcy how to ?
  */
-
-@AutoConfigureMockMvc
 @NoArgsConstructor
 @RunWith(SpringJUnit4ClassRunner.class)
-@Slf4j
+@AutoConfigureMockMvc
 @SpringBootTest
+@Slf4j
 class CpuControllerTest {
 
     /*
@@ -59,119 +80,48 @@ class CpuControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
+
+
+
+    @Autowired
+    private CpuController cpuController;
+
 
     @Test
-    void findList() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/v1/cpuinfo/list")
-                .contentType(MediaType.ALL)
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8.displayName());
-        MockHttpServletResponse response = mockMvc.perform(requestBuilder)
-               .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn()
-                .getResponse();
-        log.info(response.getContentAsString());
+    @DisplayName("findList api test")
+    void findListApi() throws Exception {
+
+        MockHttpServletResponse response = mockMvc.perform(get("/v1/cpuinfo/list")
+                                                          .contentType("application/json"))
+                                                  .andExpect(status().isOk()).andReturn().getResponse();
+//        assertThat(response.getContentAsString()).
+//        );
+
+
     }
 
     @Test
-    void findTop() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/v1/cpuinfo/top")
-                                                              .contentType(MediaType.ALL)
-                                                              .accept(MediaType.APPLICATION_JSON)
-                                                              .characterEncoding(StandardCharsets.UTF_8.displayName());
-        MockHttpServletResponse response = mockMvc.perform(requestBuilder)
-                                                  .andExpect(MockMvcResultMatchers.status().isOk())
-                                                  .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                                                  .andReturn()
-                                                  .getResponse();
-        log.info(response.getContentAsString());
+    @DisplayName("findList type check")
+    void findListType() throws Exception {
+//        ListResult<CpuUsage> listResult = cpuController.findList();
+//        MockHttpServletResponse response = mockMvc.perform(get("/v1/cpuinfo/list")
+//                                                          .contentType("application/json"))
+//                                                  .andExpect(status().isOk()).andReturn().getResponse();
+//        assertThat(response.getContentAsString()).ig(
+//                objectMapper.writeValueAsString(listResult).
+//        );
     }
 
     @Test
-    void findAverage() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/v1/cpuinfo/average")
-                                                              .contentType(MediaType.ALL)
-                                                              .accept(MediaType.APPLICATION_JSON)
-                                                              .characterEncoding(StandardCharsets.UTF_8.displayName());
-        MockHttpServletResponse response = mockMvc.perform(requestBuilder)
-                                                  .andExpect(MockMvcResultMatchers.status().isOk())
-                                                  .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                                                  .andReturn()
-                                                  .getResponse();
-        log.info(response.getContentAsString());
-    }
+    @DisplayName("find by Id")
+    void findByIdUsage() throws Exception {
 
-    @Test
-    void findMax() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/v1/cpuinfo/max")
-                                                              .contentType(MediaType.ALL)
-                                                              .accept(MediaType.APPLICATION_JSON)
-                                                              .characterEncoding(StandardCharsets.UTF_8.displayName());
-        MockHttpServletResponse response = mockMvc.perform(requestBuilder)
-                                                  .andExpect(MockMvcResultMatchers.status().isOk())
-                                                  .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                                                  .andReturn()
-                                                  .getResponse();
-        log.info(response.getContentAsString());
+        MockHttpServletResponse response = mockMvc.perform(get("/v1/cpuinfo/{uid}","foo")
+                                                          .contentType("application/json"))
+                                                  .andExpect(status().is5xxServerError()).andReturn().getResponse();
     }
-
-    @Test
-    void findMin() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/v1/cpuinfo/min")
-                                                              .contentType(MediaType.ALL)
-                                                              .accept(MediaType.APPLICATION_JSON)
-                                                              .characterEncoding(StandardCharsets.UTF_8.displayName());
-        MockHttpServletResponse response = mockMvc.perform(requestBuilder)
-                                                  .andExpect(MockMvcResultMatchers.status().isOk())
-                                                  .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                                                  .andReturn()
-                                                  .getResponse();
-        log.info(response.getContentAsString());
-    }
-
-    @Test
-    void findByIdUsage() throws Exception{
-        RequestBuilder failRequest = MockMvcRequestBuilders.get("/v1/cpuinfo/foo/usage")
-                                                           .contentType(MediaType.ALL)
-                                                           .accept(MediaType.APPLICATION_JSON)
-                                                           .characterEncoding(StandardCharsets.UTF_8.displayName());
-        MockHttpServletResponse response = mockMvc.perform(failRequest)
-                                                  .andExpect(MockMvcResultMatchers.status().is5xxServerError())
-                                                  .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                                                  .andReturn()
-                                                  .getResponse();
-        RequestBuilder successRequset = MockMvcRequestBuilders.get("/v1/cpuinfo/serverA")
-                                                              .contentType(MediaType.ALL)
-                                                              .accept(MediaType.APPLICATION_JSON)
-                                                              .characterEncoding(StandardCharsets.UTF_8.displayName());
-        response = mockMvc.perform(successRequset)
-                          .andExpect(MockMvcResultMatchers.status().isOk())
-                          .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                          .andReturn()
-                          .getResponse();
-    }
-    @Test
-    void findById() throws Exception {
-        RequestBuilder failRequest = MockMvcRequestBuilders.get("/v1/cpuinfo/foo")
-                                                              .contentType(MediaType.ALL)
-                                                              .accept(MediaType.APPLICATION_JSON)
-                                                              .characterEncoding(StandardCharsets.UTF_8.displayName());
-        MockHttpServletResponse response = mockMvc.perform(failRequest)
-                                                  .andExpect(MockMvcResultMatchers.status().is5xxServerError())
-                                                  .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                                                  .andReturn()
-                                                  .getResponse();
-        RequestBuilder successRequset = MockMvcRequestBuilders.get("/v1/cpuinfo/serverA")
-                                                              .contentType(MediaType.ALL)
-                                                              .accept(MediaType.APPLICATION_JSON)
-                                                              .characterEncoding(StandardCharsets.UTF_8.displayName());
-        response = mockMvc.perform(successRequset)
-                          .andExpect(MockMvcResultMatchers.status().isOk())
-                          .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                          .andReturn()
-                          .getResponse();
-    }
-
 
 }

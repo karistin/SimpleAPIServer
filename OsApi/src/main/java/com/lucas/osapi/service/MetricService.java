@@ -15,6 +15,7 @@ import java.util.Optional;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-11-16        lucas       최초 생성
+ * 서비스 분리
  */
 public interface MetricService<T1, T2, ID> {
     InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();

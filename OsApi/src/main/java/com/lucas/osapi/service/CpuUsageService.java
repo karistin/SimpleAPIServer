@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
+import org.influxdb.querybuilder.BuiltQuery;
+import org.influxdb.querybuilder.QueryStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.select;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-11-09        lucas       최초 생성
+ *  커리문 repo
  */
 
 @Slf4j
@@ -54,6 +57,7 @@ public class CpuUsageService implements MetricService<CpuUsage, CpuInfo, String>
 
     @Override
     public List<CpuUsage> findList() {
+//        Query query = BuiltQuery.QueryBuilder.
         String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
         QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
         return resultMapper.toPOJO(queryResult, CpuUsage.class);

@@ -30,6 +30,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testAnnotationProcessor  'org.projectlombok:lombok'
+    implementation (group: "com.github.java-json-tools", name: "json-schema-validator", version: "2.2.14");
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'

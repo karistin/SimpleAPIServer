@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-11-17        lucas       최초 생성
+ * 엔티티 => repo
+ * 서비스 => model
  */
 @Slf4j
 @RequiredArgsConstructor
