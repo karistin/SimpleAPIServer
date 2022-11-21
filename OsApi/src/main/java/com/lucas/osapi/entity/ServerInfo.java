@@ -28,7 +28,6 @@ public class ServerInfo {
     @Column(name = "time")
     private Instant time;
 
-
     @Column(name = "uid", tag = true)
     private String uid;
 

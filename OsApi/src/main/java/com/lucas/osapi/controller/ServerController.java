@@ -1,11 +1,10 @@
 package com.lucas.osapi.controller;
 
-import com.lucas.osapi.entity.MemUsage;
-import com.lucas.osapi.model.response.ListResult;
 import com.lucas.osapi.model.response.SingleResult;
-import com.lucas.osapi.service.MemUsageService;
+import com.lucas.osapi.service.ResponseService;
 import com.lucas.osapi.service.ResponseServiceImpl;
-import com.lucas.osapi.service.ServerInfoService;
+import com.lucas.osapi.service.ServerListService;
+import com.lucas.osapi.service.ServerListServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/v1/server")
 @Api(tags = {"Server"})
 public class ServerController {
-    private final ResponseServiceImpl responseService;
-    private final ServerInfoService serverInfoService;
+    private final ResponseService responseService;
+    private final ServerListService serverInfoService;
 
     @ApiOperation(value = "serverCount", notes = "모든 호스트들의 count")
     @GetMapping(value = "/count")

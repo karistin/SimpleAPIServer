@@ -5,6 +5,8 @@ import com.lucas.osapi.entity.CpuUsage;
 import com.lucas.osapi.model.response.ListResult;
 import com.lucas.osapi.model.response.SingleResult;
 import com.lucas.osapi.service.CpuUsageService;
+import com.lucas.osapi.service.CpuUsageServiceimpl;
+import com.lucas.osapi.service.ResponseService;
 import com.lucas.osapi.service.ResponseServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,10 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 /**
  * packageName    : com.lucas.osapi.controller
@@ -40,7 +39,7 @@ import javax.validation.Valid;
 @Api(tags = {"CpuInfo"})
 public class CpuController {
 
-    private final ResponseServiceImpl responseService;
+    private final ResponseService responseService;
     private final CpuUsageService cpuUsageService;
 
     @ApiOperation(value = "findList", notes = "모든 호스트들의 CPU의 사용량을 가져온다.")

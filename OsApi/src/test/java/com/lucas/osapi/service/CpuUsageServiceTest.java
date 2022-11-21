@@ -1,15 +1,19 @@
 package com.lucas.osapi.service;
 
+import com.lucas.osapi.entity.CpuUsage;
 import lombok.NoArgsConstructor;
-import org.junit.Before;
+import org.influxdb.dto.Point;
+import org.influxdb.dto.Pong;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,25 +34,33 @@ import static org.junit.jupiter.api.Assertions.*;
 class CpuUsageServiceTest {
 
     @Autowired
-    private CpuUsageService cpuUsageService;
+    private InfluxDBTemplate<Point> influxDBTemplate;
+
+    @Autowired
+    private CpuUsageServiceimpl cpuUsageService;
 
     @Mock
-    private CpuUsageService cpuUsageServiceMock;
+    private CpuUsageServiceimpl cpuUsageServiceMock;
 
 
     @Test
+    void pingDB(){
+        Pong pong = influxDBTemplate.ping();
+        assertTrue(pong.isGood());
+    }
+    @Test
     void findTop() {
-        cpuUsageService.findTop();
-        /*
-        * 컬럼 수 만 비교
-        * 2개인지
-        *
-        * */
+        Optional<List<CpuUsage>> cpuUsageList = cpuUsageService.findTop();
+        assertTrue(cpuUsageList.isPresent());
+        assertEquals(cpuUsageList.get().size(), 5);
+        cpuUsageList.get().forEach(cpuUsage -> assertNotNull(cpuUsage.getMean()));
+
     }
 
     @Test
     void findTopMock() {
-//        when(cpuUsageServiceMock.findTop()).;
+//        when(cpuUsageServiceMock.findTop());
+//        TODO : MOCK
         /*
         * when get that
         * */

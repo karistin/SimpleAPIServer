@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'com.jayway.jsonpath:json-path:2.4.0'
+}
+
+test {
+    useJUnitPlatform()
+}

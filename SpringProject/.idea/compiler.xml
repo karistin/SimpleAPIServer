@@ -7,8 +7,8 @@
     <bytecodeTargetLevel>
       <module name="basic.aotMain" target="11" />
       <module name="basic.aotTest" target="11" />
-      <module name="JavaStudy.main" target="11" />
-      <module name="JavaStudy.test" target="11" />
+      <module name="JavaStudy.schema.main" target="11" />
+      <module name="JavaStudy.schema.test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -13,6 +13,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/JavaStudy" />
+            <option value="$PROJECT_DIR$/JavaStudy/Influxdb" />
+            <option value="$PROJECT_DIR$/JavaStudy/JsonPath" />
+            <option value="$PROJECT_DIR$/JavaStudy/SchemaValidation" />
+            <option value="$PROJECT_DIR$/JavaStudy/generic" />
           </set>
         </option>
       </GradleProjectSettings>

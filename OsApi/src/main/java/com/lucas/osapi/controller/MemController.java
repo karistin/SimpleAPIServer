@@ -1,11 +1,12 @@
 package com.lucas.osapi.controller;
 
-import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.MemInfo;
 import com.lucas.osapi.entity.MemUsage;
 import com.lucas.osapi.model.response.ListResult;
 import com.lucas.osapi.model.response.SingleResult;
 import com.lucas.osapi.service.MemUsageService;
+import com.lucas.osapi.service.MemUsageServiceimpl;
+import com.lucas.osapi.service.ResponseService;
 import com.lucas.osapi.service.ResponseServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/v1/meminfo")
 @Api(tags = {"meminfo"})
 public class MemController {
-    private final ResponseServiceImpl responseService;
+    private final ResponseService responseService;
 
     private final MemUsageService memUsageService;
 
