@@ -1,6 +1,7 @@
 package entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
@@ -28,8 +29,6 @@ import java.time.Instant;
 @Measurement(name = "CpuInfo", database = "OsData")
 public class CpuInfo {
 //    time, cpuUsage, host, idleUsage, irqUsage, niceUsage, sofrIrqUsage, stealUsage, sysUsage, uid, userUsage, waitIoUsage
-
-
     @TimeColumn
     @Column(name = "time")
     private Instant time;

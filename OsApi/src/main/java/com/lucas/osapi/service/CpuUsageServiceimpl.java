@@ -36,8 +36,8 @@ import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.select;
 @Service
 public class CpuUsageServiceimpl implements CpuUsageService {
 
-    @Autowired
-    private InfluxDBTemplate<Point> influxDBTemplate;
+//    @Autowired
+//    private InfluxDBTemplate<Point> influxDBTemplate;
 
     @Autowired
     private CpuRepo cpuRepo;
@@ -119,8 +119,7 @@ public class CpuUsageServiceimpl implements CpuUsageService {
     public Optional<CpuUsage> findByIdUsage(String uid) {
 //        String query = "select uid, mean from (select MEAN(cpuUsage) from CpuInfo group by uid limit 2) where uid='"+uid+"'";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return Optional.ofNullable(resultMapper.toPOJO(cpuRepo.query("select uid, mean from (select MEAN(cpuUsage) from CpuInfo group by uid limit 2) where uid='"+uid+"'"),
-                CpuUsage.class).get(0));
+        return Optional.ofNullable(resultMapper.toPOJO(cpuRepo.findByIdUsage(uid), CpuUsage.class).get(0));
     }
 
     @Override

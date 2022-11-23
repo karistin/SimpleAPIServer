@@ -2,6 +2,7 @@ package com.lucas.osapi.service;
 
 import com.lucas.osapi.entity.MemInfo;
 import com.lucas.osapi.entity.MemUsage;
+import com.lucas.osapi.repo.influxDB.MemRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
@@ -29,21 +30,24 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class MemUsageServiceimpl implements MemUsageService {
+//    @Autowired
+//    private InfluxDBTemplate<Point> influxDBTemplate;
+
     @Autowired
-    private InfluxDBTemplate<Point> influxDBTemplate;
+    private MemRepo memRepo;
 
     @Override
     public List<MemUsage> findList() {
-        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
-        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return resultMapper.toPOJO(queryResult, MemUsage.class);
+//        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
+//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        return resultMapper.toPOJO(memRepo.findList(), MemUsage.class);
     }
 
     @Override
     public Optional<List<MemUsage>> findTop() {
-        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
-        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<MemUsage> memUsage = resultMapper.toPOJO(queryResult, MemUsage.class);
+//        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
+//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        List<MemUsage> memUsage = resultMapper.toPOJO(memRepo.findList(), MemUsage.class);
         if (memUsage.isEmpty()) {
             return Optional.empty();
         }
@@ -62,39 +66,39 @@ public class MemUsageServiceimpl implements MemUsageService {
 
     @Override
     public Optional<Double> findAverage() {
-        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
-        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<MemUsage> memUsage = resultMapper.toPOJO(queryResult, MemUsage.class);
+//        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
+//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        List<MemUsage> memUsage = resultMapper.toPOJO(memRepo.findList(), MemUsage.class);
         return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMean).average().orElseThrow());
     }
 
     @Override
     public Optional<Double> findMax() {
-        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
-        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<MemUsage> memUsage = resultMapper.toPOJO(queryResult, MemUsage.class);
+//        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
+//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        List<MemUsage> memUsage = resultMapper.toPOJO(memRepo.findList(), MemUsage.class);
         return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMean).max().orElseThrow());
     }
 
     @Override
     public Optional<Double> findMin() {
-        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
-        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<MemUsage> memUsage = resultMapper.toPOJO(queryResult, MemUsage.class);
+//        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
+//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        List<MemUsage> memUsage = resultMapper.toPOJO(memRepo.findList(), MemUsage.class);
         return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMean).min().orElseThrow());
     }
 
     @Override
     public Optional<MemUsage> findByIdUsage(String uid) {
-        String query = "select uid, mean from (select MEAN(memUsage) from MemInfo group by uid limit 2) where uid='"+uid+"'";
-        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return Optional.ofNullable(resultMapper.toPOJO(queryResult, MemUsage.class).get(0));
+//        String query = "select uid, mean from (select MEAN(memUsage) from MemInfo group by uid limit 2) where uid='"+uid+"'";
+//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        return Optional.ofNullable(resultMapper.toPOJO(memRepo.findById(uid), MemUsage.class).get(0));
     }
 
     @Override
     public Optional<MemInfo> findById(String uid) {
-        String query = "select * from MemInfo where uid='"+uid+"' limit 1";
-        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return Optional.ofNullable(resultMapper.toPOJO(queryResult, MemInfo.class).get(0));
+//        String query = "select * from MemInfo where uid='"+uid+"' limit 1";
+//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+        return Optional.ofNullable(resultMapper.toPOJO(memRepo.findById(uid), MemInfo.class).get(0));
     }
 }

@@ -6,6 +6,7 @@ import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Point;
+import org.influxdb.dto.Pong;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,38 +34,48 @@ public class insertMain {
     );
 
     public static void main(String[] args) throws InterruptedException {
-        final String serverURL = "http://127.0.0.1:8086", username = "root", password = "root";
+        final String serverURL = "http://127.0.0.1:8086", username = "user1", password = "1234";
         String databases = "OsData";
         InfluxDB influxDB = InfluxDBFactory.connect(serverURL);
         influxDB.setDatabase(databases);
 
 
         Runtime.getRuntime().addShutdownHook(new Thread(influxDB::close));
-        influxDB.enableBatch(
-                BatchOptions.DEFAULTS
-                        .threadFactory(runnable -> {
-                            Thread thread = new Thread(runnable);
-                            thread.setDaemon(true);
-                            return thread;
-                        })
-        );
-
+//        influxDB.enableBatch(
+//                BatchOptions.DEFAULTS
+//                        .threadFactory(runnable -> {
+//                            Thread thread = new Thread(runnable);
+//                            thread.setDaemon(true);
+//                            return thread;
+//                        })
+//        );
+//
 
 
         Random rand = new Random();
         long seed = System.currentTimeMillis();
         rand.setSeed(seed);
 
+        Pong pong = influxDB.ping();
+        if (!pong.isGood()) {
+            System.out.println("Connect error");
+            return;
+        }
 
         while(true) {
-
-            List<CpuInfo> cpuinfoList = new ArrayList<>();
 
             for (String hostname : hostnameList) {
                 CpuInfo cpuinfo = new CpuInfo();
                 cpuinfo.setUid(hostname);
                 cpuinfo.setHostname(hostname);
                 cpuinfo.setCpuUsage(Math.floor(rand.nextDouble()*10000)/100);
+
+//                influxDB.write(Point.measurement("CpuInfo")
+//                        .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+//                        .tag("uid",hostname)
+//                        .addField("Hostname",hostname)
+//                        .addField("cpuUsage",Math.floor(rand.nextDouble()*10000)/100)
+//                        .build());
 
                 MemInfo memInfo = new MemInfo();
                 memInfo.setUid(hostname);
@@ -95,7 +106,7 @@ public class insertMain {
                 influxDB.write(Point.measurementByPOJO(MemInfo.class).addFieldsFromPOJO(memInfo).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
                 influxDB.write(Point.measurementByPOJO(DiskInfo.class).addFieldsFromPOJO(diskInfo).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
                 influxDB.write(Point.measurementByPOJO(ServerInfo.class).addFieldsFromPOJO(serverInfo).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
-
+                System.out.println(cpuinfo.toString());
             }
             sleep(3000);
         }

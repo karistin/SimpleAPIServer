@@ -1,5 +1,7 @@
 package com.lucas.osapi.repo.influxDB;
 
+import org.influxdb.dto.QueryResult;
+
 /**
  * packageName    : com.lucas.osapi.repo.influxDB
  * fileName       : DiskRepo
@@ -12,4 +14,7 @@ package com.lucas.osapi.repo.influxDB;
  * 2022-11-21        lucas       최초 생성
  */
 public interface DiskRepo extends InfluxDBRepo{
+    QueryResult findbyIdIops(String key);
+    QueryResult findbyIdInode(String key);
+    QueryResult findbyIdUsage(String key);
 }

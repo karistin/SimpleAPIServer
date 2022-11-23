@@ -19,4 +19,5 @@ import org.springframework.stereotype.Repository;
 public interface InfluxDBRepo extends TimeRepository<QueryResult, String> {
 
     QueryResult query(String query);
+
 }

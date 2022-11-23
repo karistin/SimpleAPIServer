@@ -33,16 +33,31 @@ public class MemRepoImpl implements MemRepo{
 
     @Override
     public QueryResult findList() {
-        Query query = select().mean(mainCol).from(influxDBTemplate.getDatabase(), tableName)
-                              .groupBy(tagKey).limit(2);
-        return influxDBTemplate.getConnection().query(query);
+//        Query query = select().mean(mainCol).from(influxDBTemplate.getDatabase(), tableName)
+//                              .groupBy(tagKey).limit(2);
+        return influxDBTemplate.getConnection().query(new Query("select mean(memUsage) from (select memUsage from MemInfo group by uid order by time DESC limit 2 ) group by uid order by time DESC",influxDBTemplate.getDatabase()));
+    }
+
+    @Override
+    public QueryResult findbyIdIops(String key) {
+        return null;
+    }
+
+    @Override
+    public QueryResult findbyIdInode(String key) {
+        return null;
+    }
+
+    @Override
+    public QueryResult findbyIdUsage(String key) {
+        return influxDBTemplate.getConnection().query(new Query("select mean(memUsage) from (select memUsage from MemInfo where uid='"+key+"' order by time DESC limit 2 )  order by time desc",influxDBTemplate.getDatabase()));
     }
 
     @Override
     public QueryResult findById(String key) {
-        Query query = select().from(influxDBTemplate.getDatabase(), tableName)
-                              .where(eq(tagKey,key)).limit(1);
-        return influxDBTemplate.getConnection().query(query);
+//        Query query = select().from(influxDBTemplate.getDatabase(), tableName)
+//                              .where(eq(tagKey,key)).limit(1);
+        return influxDBTemplate.getConnection().query(new Query("select * from DiskInfo where uid ='\"+key+\"'order by time desc limit 1",influxDBTemplate.getDatabase()));
     }
 
     @Override
