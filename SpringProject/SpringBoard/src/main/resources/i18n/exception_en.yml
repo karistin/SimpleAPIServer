@@ -5,3 +5,6 @@ unKnown:
 userNotFound:
   code: "-1000"
   msg: "This member not exist"
+emailSigninFailed:
+  code: "-1001"
+  msg: "Your account does not exist or your email or password is incorrect."
