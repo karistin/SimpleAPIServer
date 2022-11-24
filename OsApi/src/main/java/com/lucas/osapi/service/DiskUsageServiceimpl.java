@@ -5,8 +5,6 @@ import com.lucas.osapi.entity.DiskUsage;
 import com.lucas.osapi.repo.influxDB.DiskRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
-import org.influxdb.dto.Query;
-import org.influxdb.dto.QueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -86,6 +85,13 @@ public class DiskUsageServiceimpl implements DiskUsageService {
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
         List<DiskUsage> memUsage = resultMapper.toPOJO(diskRepo.findList(), DiskUsage.class);
         return Optional.of(memUsage.stream().mapToDouble(DiskUsage::getMean).min().orElseThrow());
+    }
+
+    @Override
+    public Optional<Map<String, String>> findByIdIops(String uid) {
+//        resultMapper.toPOJO(diskRepo.)
+
+        return null;
     }
 
     @Override

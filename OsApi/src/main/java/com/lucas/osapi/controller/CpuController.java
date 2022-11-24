@@ -72,7 +72,7 @@ public class CpuController {
         return responseService.getSingleResult(cpuUsageService.findMin().orElseThrow(Exception::new));
     }
 
-    @ApiOperation(value = "findById",notes = "특정 호스트 사용량")
+    @ApiOperation(value = "findById",notes = "특정 호스트 usage")
     @GetMapping(value = "/{uid}/usage")
     public SingleResult<CpuUsage> findByIdUsage(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
         return responseService.getSingleResult(cpuUsageService.findByIdUsage(uid).orElseThrow(Exception::new));
@@ -83,4 +83,6 @@ public class CpuController {
     public SingleResult<CpuInfo> findById(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
         return responseService.getSingleResult(cpuUsageService.findById(uid).orElseThrow(Exception::new));
     }
+
+
 }

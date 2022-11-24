@@ -31,6 +31,9 @@ public interface MetricService<T1, T2, ID> {
      * select * from T(Measurement) group by {{tag}} limit 5;의 각각의 평균
      *
      * */
+
+
+
     Optional<List<T1>> findTop();
 
 

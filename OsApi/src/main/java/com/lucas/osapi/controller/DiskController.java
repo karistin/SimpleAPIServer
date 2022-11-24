@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * packageName    : com.lucas.osapi.controller
  * fileName       : DiskController
@@ -47,6 +49,15 @@ public class DiskController {
         return responseService.getListResult(diskUsageService.findList());
     }
 
+
+    @ApiOperation(value = "findUsageList", notes = "모든 호스트들의 정보를 가져온다.")
+    @GetMapping(value = "/list/usage")
+    public ListResult<DiskUsage> findUsageList() {
+        return responseService.getListResult(diskUsageService.findList());
+    }
+
+
+
     @ApiOperation(value = "findTop", notes = "모든 호스트들중 Disk사용량 상위 5개를 가져온다.")
     @GetMapping(value = "/top")
     public ListResult<DiskUsage> findTop() throws Exception {
@@ -75,6 +86,12 @@ public class DiskController {
     @GetMapping(value = "/{uid}/usage")
     public SingleResult<DiskUsage> findByIdUsage(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
         return responseService.getSingleResult(diskUsageService.findByIdUsage(uid).orElseThrow(Exception::new));
+    }
+
+    @ApiOperation(value = "findById", notes = "특정 호스트의 IOPS Usage")
+    @GetMapping(value = "/{uid}/iops")
+    public SingleResult<Map<String, String>> findByIdIops(@ApiParam(value = "uid", required = true)@PathVariable String uid) throws Exception{
+        return responseService.getSingleResult(diskUsageService.findByIdIops(uid).orElseThrow(Exception::new));
     }
 
     @ApiOperation(value = "findById",notes = "특정 호스트 모든 데이터")

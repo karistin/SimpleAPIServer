@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Repository;
 
+import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.addTime;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.eq;
+import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.gt;
+import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.now;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.select;
+import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.time;
 
 /**
  * packageName    : com.lucas.osapi.repo.influxDB
@@ -32,17 +36,18 @@ public class CpuRepoImpl implements CpuRepo {
 
     @Override
     public QueryResult findList() {
-//        select mean(cpuUsage) from (select cpuUsage from CpuInfo group by uid order by time DESC limit 2 ) group by uid order by time DESC
-//        Query query = select().mean(mainCol).from(influxDBTemplate.getDatabase(), tableName)
-//                              .groupBy(tagKey).limit(2);
-        return influxDBTemplate.getConnection().query(new Query("select mean(cpuUsage) from (select cpuUsage from CpuInfo group by uid order by time DESC limit 2 ) group by uid order by time DESC",influxDBTemplate.getDatabase()));
+//        select mean(cpuUsage) from CpuInfo where time > now() - 30m group by time(10s), uid
+        Query query = select().mean(mainCol).from(influxDBTemplate.getDatabase(), tableName)
+                .where("time > now() - 1h").groupBy("time(10s), "+tagKey);
+        return influxDBTemplate.getConnection().query(new Query("select mean(cpuUsage) from CpuInfo where time > now() - 30m group by time(10s), uid",influxDBTemplate.getDatabase()));
     }
 
     @Override
     public QueryResult findByIdUsage(String key) {
 //        Query query = select().from(influxDBTemplate.getDatabase(), tableName)
 //                              .where(eq(tagKey,key)).limit(1);
-        return influxDBTemplate.getConnection().query(new Query("select mean(cpuUsage) from (select cpuUsage from CpuInfo where uid='"+key+"' order by time DESC limit 2 )  order by time desc",influxDBTemplate.getDatabase()));
+//        return influxDBTemplate.getConnection().query(new Query("select mean(cpuUsage) from (select cpuUsage from CpuInfo where uid='"+key+"' order by time DESC limit 2 )  order by time desc",influxDBTemplate.getDatabase()));
+        return influxDBTemplate.getConnection().query(new Query("select mean(cpuUsage) from CpuInfo where uid ='"+key+"' and time > now() - 1h group by time(10s) ",influxDBTemplate.getDatabase()));
     }
 
     @Override
