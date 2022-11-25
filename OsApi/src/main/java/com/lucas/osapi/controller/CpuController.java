@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * packageName    : com.lucas.osapi.controller
@@ -71,6 +72,7 @@ public class CpuController {
     public SingleResult<Double>  findMin() throws Exception {
         return responseService.getSingleResult(cpuUsageService.findMin().orElseThrow(Exception::new));
     }
+
 
     @ApiOperation(value = "findById",notes = "특정 호스트 usage")
     @GetMapping(value = "/{uid}/usage")

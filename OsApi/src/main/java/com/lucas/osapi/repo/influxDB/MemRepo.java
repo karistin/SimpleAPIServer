@@ -12,6 +12,7 @@ import org.influxdb.dto.QueryResult;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2022-11-21        lucas       최초 생성
+ * TODO : method naming
  */
 public interface MemRepo extends InfluxDBRepo {
     QueryResult findbyIdIops(String key);
