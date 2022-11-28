@@ -2,6 +2,7 @@ package com.lucas.osapi.repo.influxDB;
 
 import com.lucas.osapi.repo.TimeRepository;
 import org.influxdb.dto.QueryResult;
+import org.influxdb.impl.InfluxDBResultMapper;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,8 +17,10 @@ import org.springframework.stereotype.Repository;
  * 2022-11-21        lucas       최초 생성
  */
 
-public interface InfluxDBRepo extends TimeRepository<QueryResult, String> {
+public interface InfluxDBRepo extends TimeRepository<QueryResult> {
 
     QueryResult query(String query);
+
+
 
 }

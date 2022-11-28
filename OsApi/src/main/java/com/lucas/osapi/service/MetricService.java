@@ -56,6 +56,5 @@ public interface MetricService<T1, T2, ID> {
      *  Disk => I/O(%)
      * */
 
-    Optional<T1> findByIdUsage(ID uid);
     Optional<T2> findById(ID uid);
 }

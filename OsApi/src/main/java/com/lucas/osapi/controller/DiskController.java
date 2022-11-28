@@ -82,11 +82,11 @@ public class DiskController {
         return responseService.getSingleResult(diskUsageService.findMin().orElseThrow(Exception::new));
     }
 
-    @ApiOperation(value = "findById",notes = "특정 호스트 사용량")
-    @GetMapping(value = "/{uid}/usage")
-    public SingleResult<DiskUsage> findByIdUsage(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
-        return responseService.getSingleResult(diskUsageService.findByIdUsage(uid).orElseThrow(Exception::new));
-    }
+//    @ApiOperation(value = "findById",notes = "특정 호스트 사용량")
+//    @GetMapping(value = "/{uid}/usage")
+//    public SingleResult<DiskUsage> findByIdUsage(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
+//        return responseService.getSingleResult(diskUsageService.findByIdUsage(uid).orElseThrow(Exception::new));
+//    }
 
     @ApiOperation(value = "findById", notes = "특정 호스트의 IOPS Usage")
     @GetMapping(value = "/{uid}/iops")

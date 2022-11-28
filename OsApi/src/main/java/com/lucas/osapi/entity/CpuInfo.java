@@ -7,6 +7,8 @@ import org.influxdb.annotation.Measurement;
 import org.influxdb.annotation.TimeColumn;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * packageName    : com.lucas.osapi.entity
@@ -37,7 +39,7 @@ public class CpuInfo {
 
     @Column(name = "uid", tag = true)
     private String uid;
-    @Column(name = "host")
+    @Column(name = "hostname")
     private String hostname;
 
     @Column(name = "idleUsage")
@@ -50,7 +52,7 @@ public class CpuInfo {
     @Column(name = "niceUsage")
     private double niceUsage;
 
-    @Column(name = "sofrIrqUsage")
+    @Column(name = "softIrqUsage")
     private double softIrqUsage;
 
     @Column(name = "stealUsage")
@@ -59,7 +61,14 @@ public class CpuInfo {
     @Column(name = "sysUsage")
     private double sysUsage;
 
+    @Column(name = "cpuLoad15min")
+    private double cpuLoad15;
 
+    @Column(name = "cpuLoad1min")
+    private double cpuLoad1;
+
+    @Column(name = "cpuLoad5min")
+    private double cpuLoad5;
 
     @Column(name = "userUsage")
     private double userUsage;
@@ -68,21 +77,4 @@ public class CpuInfo {
     @Column(name = "waitIoUsage")
     private double waitIoUsage;
 
-    @Override
-    public String toString() {
-        return "CpuInfo{" +
-                "time=" + time +
-                ", cpuUsage=" + cpuUsage +
-                ", hostname='" + hostname + '\'' +
-                ", idleUsage=" + idleUsage +
-                ", irqUsage=" + irqUsage +
-                ", niceUsage=" + niceUsage +
-                ", softIrqUsage=" + softIrqUsage +
-                ", stealUage=" + stealUage +
-                ", sysUsage=" + sysUsage +
-                ", uid='" + uid + '\'' +
-                ", userUsage=" + userUsage +
-                ", waitIoUsage=" + waitIoUsage +
-                '}';
-    }
 }

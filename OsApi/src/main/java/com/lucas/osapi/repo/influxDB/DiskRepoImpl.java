@@ -61,6 +61,11 @@ public class DiskRepoImpl implements DiskRepo{
     }
 
     @Override
+    public QueryResult findByIdRange(String key, String time) {
+        return null;
+    }
+
+    @Override
     public QueryResult query(String query) {
         return influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
     }

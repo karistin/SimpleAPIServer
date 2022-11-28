@@ -14,5 +14,5 @@ import org.influxdb.dto.QueryResult;
  * 2022-11-21        lucas       최초 생성
  */
 public interface CpuRepo extends InfluxDBRepo {
-    QueryResult findByIdUsage(String key);
+
 }

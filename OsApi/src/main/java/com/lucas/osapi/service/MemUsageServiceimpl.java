@@ -88,12 +88,12 @@ public class MemUsageServiceimpl implements MemUsageService {
         return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMean).min().orElseThrow());
     }
 
-    @Override
-    public Optional<MemUsage> findByIdUsage(String uid) {
-//        String query = "select uid, mean from (select MEAN(memUsage) from MemInfo group by uid limit 2) where uid='"+uid+"'";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return Optional.ofNullable(resultMapper.toPOJO(memRepo.findById(uid), MemUsage.class).get(0));
-    }
+//    @Override
+//    public Optional<MemUsage> findByIdUsage(String uid) {
+////        String query = "select uid, mean from (select MEAN(memUsage) from MemInfo group by uid limit 2) where uid='"+uid+"'";
+////        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+//        return Optional.ofNullable(resultMapper.toPOJO(memRepo.findById(uid), MemUsage.class).get(0));
+//    }
 
     @Override
     public Optional<MemInfo> findById(String uid) {

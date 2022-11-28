@@ -15,7 +15,5 @@ import org.influxdb.dto.QueryResult;
  * TODO : method naming
  */
 public interface MemRepo extends InfluxDBRepo {
-    QueryResult findbyIdIops(String key);
-    QueryResult findbyIdInode(String key);
-    QueryResult findbyIdUsage(String key);
+
 }

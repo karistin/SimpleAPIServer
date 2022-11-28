@@ -74,11 +74,11 @@ public class CpuController {
     }
 
 
-    @ApiOperation(value = "findById",notes = "특정 호스트 usage")
-    @GetMapping(value = "/{uid}/usage")
-    public SingleResult<CpuUsage> findByIdUsage(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
-        return responseService.getSingleResult(cpuUsageService.findByIdUsage(uid).orElseThrow(Exception::new));
-    }
+//    @ApiOperation(value = "findById",notes = "특정 호스트 usage")
+//    @GetMapping(value = "/{uid}/usage")
+//    public SingleResult<CpuUsage> findByIdUsage(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
+//        return responseService.getSingleResult(cpuUsageService.findByIdUsage(uid).orElseThrow(Exception::new));
+//    }
 
     @ApiOperation(value = "findById",notes = "특정 호스트 모든 데이터")
     @GetMapping(value = "/{uid}")

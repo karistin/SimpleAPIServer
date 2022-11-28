@@ -1,12 +1,16 @@
 import entity.CpuInfo;
 import entity.DiskInfo;
 import entity.MemInfo;
+import entity.NetworkInfo;
+import entity.ProcessInfo;
 import entity.ServerInfo;
 import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Point;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +35,8 @@ public class insertMain {
     static List<String> hostnameList = new ArrayList<>(
             Arrays.asList("serverA","serverB","serverC", "serverD", "serverE", "serverF", "serverG","serverH")
     );
+    private String GiGa = "GiB";
+
 
     public static void main(String[] args) throws InterruptedException {
         final String serverURL = "http://127.0.0.1:8086", username = "root", password = "root";
@@ -52,42 +58,145 @@ public class insertMain {
 
 
         Random rand = new Random();
-        long seed = System.currentTimeMillis();
-        rand.setSeed(seed);
+
+
 
 
         while(true) {
-
+            long seed = System.currentTimeMillis();
+            rand.setSeed(seed);
             List<CpuInfo> cpuinfoList = new ArrayList<>();
 
             for (String hostname : hostnameList) {
                 CpuInfo cpuinfo = new CpuInfo();
                 cpuinfo.setUid(hostname);
                 cpuinfo.setHostname(hostname);
-                cpuinfo.setCpuUsage(Math.floor(rand.nextDouble()*10000)/100);
+                double usage = (20+(20) * rand.nextDouble());
+                cpuinfo.setCpuUsage(usage);
+                cpuinfo.setSysUsage(usage/2);
+                cpuinfo.setUserUsage(usage/2);
+                cpuinfo.setIdleUsage(100 - usage);
+
+                cpuinfo.setNiceUsage(0);
+                cpuinfo.setIrqUsage(10*rand.nextDouble());
+                cpuinfo.setSoftIrqUsage(10*rand.nextDouble());
+                cpuinfo.setStealUage(10*rand.nextDouble());
+                cpuinfo.setIrqUsage(10*rand.nextDouble());
+                cpuinfo.setWaitIoUsage(10*rand.nextDouble());
+
+//                only linux
+                cpuinfo.setCpuLoad1((2) * rand.nextDouble());
+                cpuinfo.setCpuLoad5((2) * rand.nextDouble());
+                cpuinfo.setCpuLoad15((2) * rand.nextDouble());
+
 
                 MemInfo memInfo = new MemInfo();
                 memInfo.setUid(hostname);
                 memInfo.setHostname(hostname);
-                memInfo.setMemUsage(Math.floor(rand.nextDouble()*10000)/100);
-                memInfo.setMemUsageByteAll("1231232132");
-                memInfo.setMemUsageByteFree("123123232");
+                usage = (5+(20) * rand.nextDouble());
+                memInfo.setMemUsage(usage);
+//                KB
+                double mem = 7.894967;
+                memInfo.setMemUsageByteAll(mem +"GiB");
+                memInfo.setMemUsageByteFree(mem*0.5 +"GiB");
+                memInfo.setMemUsageByteCached(mem*0.3 +"GiB");
+                memInfo.setMemUsageByteBuffers(mem*0.1 +"GiB");
+                memInfo.setMemUsageByteUsed(mem*0.2 +"GiB");
+                memInfo.setMemAvilable(memInfo.getMemUsageByteFree());
+
+                //MiB
+                memInfo.setMemSReclaimable((36+(60) * rand.nextDouble()) + "MiB");
+                memInfo.setMemSUnreclaim(45+(75) * rand.nextDouble() + "MiB");
+                memInfo.setMemSlab(80+(120) * rand.nextDouble() + "MiB");
+
+                memInfo.setMemSwapUsed(rand.nextDouble());
+                memInfo.setMemSwapUsedByte(rand.nextDouble() + "Byte");
+                memInfo.setMemPageFault((42) * rand.nextDouble() + "K");
+
+
 
                 DiskInfo diskInfo = new DiskInfo();
+
                 diskInfo.setUid(hostname);
                 diskInfo.setHostname(hostname);
-                diskInfo.setDiskUsage(Math.floor(rand.nextDouble()*10000)/100);
-                diskInfo.setDiskinfo("/");
+
+                diskInfo.setDiskDeviceId("/dev/sdd");
+                diskInfo.setDiskFileSystem("ext4");
+                diskInfo.setDiskMountPoint("/");
+                diskInfo.setDiskMountOptions("rw");
+                diskInfo.setDiskBlockSize("4KiB");
+
+                diskInfo.setDiskUsage(10 + 50*rand.nextDouble());
+                diskInfo.setDiskIOPSRead(0.2*rand.nextDouble());
+                diskInfo.setDiskIOPSWrite(2*rand.nextDouble());
+                diskInfo.setDiskBpsRead(20 * rand.nextDouble()+"KiB");
+                diskInfo.setDiskBpsWrite(20 * rand.nextDouble() +"KiB");
+                diskInfo.setDiskUsedSpace(30*rand.nextDouble());
+                diskInfo.setDiskUsedSpaceByte(30*rand.nextDouble() + "GiB");
+                diskInfo.setDiskQueuelength(0);
+                diskInfo.setDiskInodeUsed(5*rand.nextDouble());
+                diskInfo.setDiskFreeSpacePercentage(80+10*rand.nextDouble());
+                diskInfo.setDiskFreeSpaceByte(300*rand.nextDouble() + "GiB");
+
+                NetworkInfo networkInfo = new NetworkInfo();
+                networkInfo.setUid(hostname);
+                networkInfo.setHostname(hostname);
+                networkInfo.setNetworkInterface("eth0");
+                networkInfo.setTrafficIn(10*rand.nextDouble()+"Kib");
+                networkInfo.setTrafficOut(10*rand.nextDouble()+"Kib");
+
+                networkInfo.setPacketIn(3*rand.nextDouble());
+                networkInfo.setPacketOut(6*rand.nextDouble());
+
+                networkInfo.setErrorIn(0);
+                networkInfo.setErrorOut(0);
+
+                networkInfo.setDropIn(0);
+                networkInfo.setDropOut(0);
+
+
 
                 ServerInfo serverInfo = new ServerInfo();
                 serverInfo.setUid(hostname);
                 serverInfo.setOsType("linux");
+                serverInfo.setOsVersion("Ubuntu 18.04.6 LTS");
+                serverInfo.setIpadress("172.26.36.19");
+                serverInfo.setAgentVersion("2.2.7");
+                serverInfo.setTotalMem("7.7GiB");
                 serverInfo.setCore(4);
-                serverInfo.setCpuUsage(cpuinfo.getCpuUsage());
-                serverInfo.setMenUsage(memInfo.getMemUsage());
-                serverInfo.setDiskUsage(diskInfo.getDiskUsage());
-                serverInfo.setNetworkTraffic("null");
-                serverInfo.setIp("192.62.123.23");
+
+
+                ProcessInfo process1 = new ProcessInfo();
+                process1.setUid(hostname);
+                process1.setHostname(hostname);
+                process1.setProcessUser("root");
+                process1.setProcessName("docker");
+                process1.setCpuUsage(100 * rand.nextDouble());
+                process1.setMemUsage(100 * rand.nextDouble());
+                process1.setDiskUsage(100 * rand.nextDouble());
+
+
+
+                ProcessInfo process2 = new ProcessInfo();
+                process2.setUid(hostname);
+                process2.setHostname(hostname);
+                process2.setProcessUser("ksj");
+                process2.setProcessName("chrome");
+                process2.setCpuUsage(100 * rand.nextDouble());
+                process2.setMemUsage(100 * rand.nextDouble());
+                process2.setDiskUsage(100 * rand.nextDouble());
+
+
+
+                ProcessInfo process3 = new ProcessInfo();
+                process3.setUid(hostname);
+                process3.setHostname(hostname);
+                process3.setProcessUser("ksj");
+                process3.setProcessName("agent");
+                process3.setCpuUsage(100 * rand.nextDouble());
+                process3.setMemUsage(100 * rand.nextDouble());
+                process3.setDiskUsage(100 * rand.nextDouble());
+
 
 
 
@@ -95,9 +204,22 @@ public class insertMain {
                 influxDB.write(Point.measurementByPOJO(MemInfo.class).addFieldsFromPOJO(memInfo).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
                 influxDB.write(Point.measurementByPOJO(DiskInfo.class).addFieldsFromPOJO(diskInfo).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
                 influxDB.write(Point.measurementByPOJO(ServerInfo.class).addFieldsFromPOJO(serverInfo).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
+                influxDB.write(Point.measurementByPOJO(NetworkInfo.class).addFieldsFromPOJO(networkInfo).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
+
+                influxDB.write(Point.measurementByPOJO(ProcessInfo.class).addFieldsFromPOJO(process1).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
+                influxDB.write(Point.measurementByPOJO(ProcessInfo.class).addFieldsFromPOJO(process1).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
+                influxDB.write(Point.measurementByPOJO(ProcessInfo.class).addFieldsFromPOJO(process1).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
+
+                influxDB.write(Point.measurementByPOJO(ProcessInfo.class).addFieldsFromPOJO(process2).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
+                influxDB.write(Point.measurementByPOJO(ProcessInfo.class).addFieldsFromPOJO(process2).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
+
+                influxDB.write(Point.measurementByPOJO(ProcessInfo.class).addFieldsFromPOJO(process3).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
+                influxDB.write(Point.measurementByPOJO(ProcessInfo.class).addFieldsFromPOJO(process3).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
+
 
             }
-            sleep(50E00);
+            System.out.println("Running");
+            sleep(5000);
         }
 
     }

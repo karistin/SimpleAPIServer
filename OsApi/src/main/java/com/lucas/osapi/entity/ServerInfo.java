@@ -31,30 +31,25 @@ public class ServerInfo {
     @Column(name = "uid", tag = true)
     private String uid;
 
-    @Column(name = "core")
-    private int core;
-
     @Column(name = "hostname")
     private String hostName;
 
     @Column(name = "osType")
     private String osType;
 
-    @Column(name = "cpuUsage")
-    private double cpuUsage;
+    @Column(name = "osVersion")
+    private String osVersion;
 
-    @Column(name = "menUsage")
-    private double menUsage;
+    @Column(name = "totalMem")
+    private String totalMem;
 
-    @Column(name = "diskUsage")
-    private double diskUsage;
+    @Column(name = "core")
+    private int core;
 
-    @Column(name = "diskIO")
-    private double diskIO;
+    @Column(name = "ipAdress")
+    private String ipadress;
 
-    @Column(name = "networkTraffic")
-    private String networkTraffic;
+    @Column(name = "agent")
+    private String agentVersion;
 
-    @Column(name = "privateIP")
-    private String ip;
 }

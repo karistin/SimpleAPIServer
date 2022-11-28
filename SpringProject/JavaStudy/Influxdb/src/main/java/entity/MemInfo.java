@@ -35,7 +35,7 @@ public class MemInfo {
     @Column(name = "uid", tag = true)
     private String uid;
 
-    @Column(name = "host")
+    @Column(name = "hostname")
     private String hostname;
 
     @Column(name = "memUsageByteAll")
@@ -43,5 +43,36 @@ public class MemInfo {
 
     @Column(name = "memUsageByteFree")
     private String memUsageByteFree;
+
+    @Column(name = "memUsageByteCached")
+    private String memUsageByteCached;
+
+    @Column(name = "memUsageByteBuffers")
+    private String memUsageByteBuffers;
+
+    @Column(name = "memUsageByteUsed")
+    private String memUsageByteUsed;
+
+    @Column(name = "memAvilable")
+    private String memAvilable;
+
+
+    @Column(name = "memSReclaimable")
+    private String memSReclaimable;
+
+    @Column(name = "memSUnreclaim")
+    private String memSUnreclaim;
+
+    @Column(name = "memSlab")
+    private String memSlab;
+
+    @Column(name = "memSwapUsed")
+    private double memSwapUsed;
+
+    @Column(name = "memSwapUsedByte")
+    private String memSwapUsedByte;
+
+    @Column(name = "memPageFault")
+    private String memPageFault;
 
 }

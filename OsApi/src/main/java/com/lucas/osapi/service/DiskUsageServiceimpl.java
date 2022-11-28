@@ -94,12 +94,12 @@ public class DiskUsageServiceimpl implements DiskUsageService {
         return null;
     }
 
-    @Override
-    public Optional<DiskUsage> findByIdUsage(String uid) {
-//        String query = "select uid, mean from (select MEAN(diskUsage) from DiskInfo group by uid limit 2) where uid='"+uid+"'";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return Optional.ofNullable(resultMapper.toPOJO(diskRepo.findById(uid), DiskUsage.class).get(0));
-    }
+//    @Override
+//    public Optional<DiskUsage> findByIdUsage(String uid) {
+////        String query = "select uid, mean from (select MEAN(diskUsage) from DiskInfo group by uid limit 2) where uid='"+uid+"'";
+////        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+//        return Optional.ofNullable(resultMapper.toPOJO(diskRepo.findById(uid), DiskUsage.class).get(0));
+//    }
 
     @Override
     public Optional<DiskInfo> findById(String uid) {

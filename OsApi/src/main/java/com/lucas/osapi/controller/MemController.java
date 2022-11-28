@@ -69,11 +69,11 @@ public class MemController {
         return responseService.getSingleResult(memUsageService.findMin().orElseThrow(Exception::new));
     }
 
-    @ApiOperation(value = "findById",notes = "특정 호스트 사용량")
-    @GetMapping(value = "/{uid}/usage")
-    public SingleResult<MemUsage> findByIdUsage(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
-        return responseService.getSingleResult(memUsageService.findByIdUsage(uid).orElseThrow(Exception::new));
-    }
+//    @ApiOperation(value = "findById",notes = "특정 호스트 사용량")
+//    @GetMapping(value = "/{uid}/usage")
+//    public SingleResult<MemUsage> findByIdUsage(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
+//        return responseService.getSingleResult(memUsageService.findByIdUsage(uid).orElseThrow(Exception::new));
+//    }
 
     @ApiOperation(value = "findById",notes = "특정 호스트 모든 데이터")
     @GetMapping(value = "/{uid}")

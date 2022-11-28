@@ -9,21 +9,20 @@ import org.influxdb.annotation.TimeColumn;
 import java.time.Instant;
 
 /**
- * packageName    : com.lucas.osapi.entity
- * fileName       : ServerInfo
+ * packageName    : entity
+ * fileName       : process
  * author         : lucas
- * date           : 2022-11-17
+ * date           : 2022-11-28
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2022-11-17        lucas       최초 생성
+ * 2022-11-28        lucas       최초 생성
  */
 @Getter
 @Setter
-@Measurement(name = "ServerInfo", database = "OsData")
-public class ServerInfo {
-
+@Measurement(name = "ProcessInfo", database = "OsData")
+public class ProcessInfo {
     @TimeColumn
     @Column(name = "time")
     private Instant time;
@@ -32,23 +31,22 @@ public class ServerInfo {
     private String uid;
 
     @Column(name = "hostname")
-    private String hostName;
+    private String hostname;
 
-    @Column(name = "osType")
-    private String osType;
+    @Column(name = "processUser")
+    private String processUser;
 
-    @Column(name = "osVersion")
-    private String osVersion;
+    @Column(name = "processName", tag = true)
+    private String processName;
 
-    @Column(name = "totalMem")
-    private String totalMem;
+    @Column(name = "cpuUsage")
+    private double cpuUsage;
 
-    @Column(name = "core")
-    private int core;
+    @Column(name = "memUsage")
+    private double memUsage;
 
-    @Column(name = "ipAdress")
-    private String ipadress;
+    @Column(name = "diskUsage")
+    private double diskUsage;
 
-    @Column(name = "agent")
-    private String agentVersion;
+
 }

@@ -34,7 +34,7 @@ public class MemInfo {
     @Column(name = "uid", tag = true)
     private String uid;
 
-    @Column(name = "host")
+    @Column(name = "hostname")
     private String hostname;
 
     @Column(name = "memUsageByteAll")
@@ -50,11 +50,11 @@ public class MemInfo {
     private String memUsageByteBuffers;
 
     @Column(name = "memUsageByteUsed")
-    private double memUsageByteUsed;
-
+    private String memUsageByteUsed;
 
     @Column(name = "memAvilable")
     private String memAvilable;
+
 
     @Column(name = "memSReclaimable")
     private String memSReclaimable;
@@ -74,25 +74,4 @@ public class MemInfo {
     @Column(name = "memPageFault")
     private String memPageFault;
 
-    @Override
-    public String toString() {
-        return "MemInfo{" +
-                "time=" + time +
-                ", memUsage=" + memUsage +
-                ", uid='" + uid + '\'' +
-                ", hostname='" + hostname + '\'' +
-                ", memUsageByteAll='" + memUsageByteAll + '\'' +
-                ", memUsageByteFree='" + memUsageByteFree + '\'' +
-                ", memUsageByteCached='" + memUsageByteCached + '\'' +
-                ", memUsageByteBuffers='" + memUsageByteBuffers + '\'' +
-                ", memUsageByteUsed='" + memUsageByteUsed + '\'' +
-                ", memAvilable='" + memAvilable + '\'' +
-                ", memSReclaimable='" + memSReclaimable + '\'' +
-                ", memSUnreclaim='" + memSUnreclaim + '\'' +
-                ", memSlab='" + memSlab + '\'' +
-                ", memSwapUsed='" + memSwapUsed + '\'' +
-                ", memSwapUsedByte='" + memSwapUsedByte + '\'' +
-                ", memPageFault='" + memPageFault + '\'' +
-                '}';
-    }
 }

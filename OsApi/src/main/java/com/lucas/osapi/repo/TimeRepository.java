@@ -15,9 +15,10 @@ package com.lucas.osapi.repo;
  * T : Return Type
  * ID : Strign
  */
-public interface TimeRepository<T, K> {
+public interface TimeRepository<T> {
     T findList();
 
-    T findById(K key);
+    T findById(String key);
 
+    T findByIdRange(String key, String time);
 }

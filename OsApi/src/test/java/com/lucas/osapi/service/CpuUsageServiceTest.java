@@ -57,12 +57,5 @@ class CpuUsageServiceTest {
 
     }
 
-    @Test
-    void findTopMock() {
-//        when(cpuUsageServiceMock.findTop());
-//        TODO : MOCK
-        /*
-        * when get that
-        * */
-    }
+
 }

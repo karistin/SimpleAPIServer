@@ -35,10 +35,4 @@ public class ServerUsage {
 
     @Column(name = "osType")
     private String osType;
-
-    @Column(name = "cpuUsage")
-    private double cpuUsage;
-
-    @Column(name = "menUsage")
-    private double menUsage;
 }

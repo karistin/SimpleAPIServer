@@ -30,15 +30,22 @@ public class DiskInfo {
     @Column(name = "uid", tag = true)
     private String uid;
 
-    /*
-    * disk의 위치정보
-    * TODO : 자세히 나타낼 필요가 있는가
-    *  ex / . /mnt/wsl/docker , /d
-    * */
-    @Column(name = "diskinfo", tag = true)
-    private String diskinfo;
+    @Column(name = "diskDeviceId", tag = true)
+    private String diskDeviceId;
 
-    @Column(name = "host")
+    @Column(name = "diskFileSystem")
+    private String diskFileSystem;
+
+    @Column(name = "diskMountPoint")
+    private String diskMountPoint;
+
+    @Column(name = "diskMountOptions")
+    private String diskMountOptions;
+
+    @Column(name = "diskBlockSize")
+    private String diskBlockSize;
+
+    @Column(name = "hostname")
     private String hostname;
 
     @Column(name = "diskUsage")
@@ -47,8 +54,8 @@ public class DiskInfo {
     @Column(name = "diskIOPSWrite")
     private double diskIOPSWrite;
 
-    @Column(name = "diskIOPRead")
-    private double diskIOPRead;
+    @Column(name = "diskIOPSRead")
+    private double diskIOPSRead;
 
     @Column(name = "diskBpsWrite")
     private String diskBpsWrite;
@@ -64,7 +71,7 @@ public class DiskInfo {
     private String diskUsedSpaceByte;
 
     @Column(name = "diskQueuelength")
-    private String diskQueuelength;
+    private double diskQueuelength;
 
     @Column(name = "diskInodeUsed")
     private double diskInodeUsed;
