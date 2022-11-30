@@ -73,7 +73,6 @@ public class CpuInfo {
     @Column(name = "userUsage")
     private double userUsage;
 
-
     @Column(name = "waitIoUsage")
     private double waitIoUsage;
 

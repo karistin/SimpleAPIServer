@@ -2,6 +2,7 @@ package com.lucas.osapi.repo;
 
 import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.repo.influxDB.CpuRepo;
+import com.lucas.osapi.repo.influxDB.CpuRepoImpl;
 import com.lucas.osapi.repo.influxDB.DiskRepo;
 import com.lucas.osapi.repo.influxDB.MemRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -48,37 +49,37 @@ public class CpuRepoTest {
     @Autowired
     private CpuRepo cpuRepo;
 
-    private String key;
+    private String key = "serverA";
     private String time = "30";
 
-    private InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
+
     @Test
     @DisplayName("findList")
     public void findList(){
-        QueryResult result = cpuRepo.findList();
-        List<CpuInfo> cpuInfos = resultMapper.toPOJO(result, CpuInfo.class);
+        assertNotNull(cpuRepo.findList());
 
-        assertNotNull(cpuInfos);
 
     }
 
     @Test
     @DisplayName("findById")
     public void findById(){
-        QueryResult result = cpuRepo.findById(key);
-        List<CpuInfo> cpuInfos = resultMapper.toPOJO(result, CpuInfo.class);
 
-        assertNotNull(cpuInfos);
+        assertNotNull(cpuRepo.findById(key));
     }
 
 
     @Test
     @DisplayName("findByIdRange")
     public void findByIdRange(){
-        QueryResult result = cpuRepo.findByIdRange(key, time);
-        List<CpuInfo> cpuInfos = resultMapper.toPOJO(result, CpuInfo.class);
 
+        List<CpuInfo> cpuInfos = cpuRepo.findByIdRange(key, time);
         assertNotNull(cpuInfos);
+
+        assertEquals(key,cpuInfos.get(0).getUid());
+
     }
+
+
 
 }

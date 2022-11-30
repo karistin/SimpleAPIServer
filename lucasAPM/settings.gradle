@@ -1,4 +1,0 @@
-rootProject.name = 'lucasAPM'
-include 'lucas.base'
-include 'newrelicAgent'
-

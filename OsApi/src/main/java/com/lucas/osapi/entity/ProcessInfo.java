@@ -1,45 +1,52 @@
 package com.lucas.osapi.entity;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.influxdb.annotation.Column;
 import org.influxdb.annotation.Measurement;
 import org.influxdb.annotation.TimeColumn;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 
 /**
- * packageName    : com.lucas.osapi.entity
- * fileName       : CpuUsage
+ * packageName    : entity
+ * fileName       : process
  * author         : lucas
- * date           : 2022-11-16
+ * date           : 2022-11-28
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2022-11-16        lucas       최초 생성
+ * 2022-11-28        lucas       최초 생성
  */
 @Getter
 @Setter
-@Measurement(name = "CpuInfo",database = "OsData")
-public class CpuUsage {
-
+@Measurement(name = "ProcessInfo", database = "OsData")
+public class ProcessInfo {
     @TimeColumn
     @Column(name = "time")
     private Instant time;
 
+    @Column(name = "uid", tag = true)
+    private String uid;
+
+    @Column(name = "hostname")
+    private String hostname;
+
+    @Column(name = "processUser")
+    private String processUser;
+
+    @Column(name = "processName", tag = true)
+    private String processName;
+
     @Column(name = "cpuUsage")
     private double cpuUsage;
 
-    @Column(name = "userUsage")
-    private double userUsage;
+    @Column(name = "memUsage")
+    private double memUsage;
 
-    @Column(name = "sysUsage")
-    private double sysUsage;
+    @Column(name = "diskUsage")
+    private double diskUsage;
 
-    @Column(name = "uid")
-    private String uid;
 
 }

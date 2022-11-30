@@ -63,7 +63,7 @@ public class CpuUsageServiceimpl implements CpuUsageService {
 //        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
 
-        return resultMapper.toPOJO(cpuRepo.findList(), CpuUsage.class);
+        return cpuRepo.findListUsage();
     }
 
     /*
@@ -74,7 +74,7 @@ public class CpuUsageServiceimpl implements CpuUsageService {
     public Optional<List<CpuUsage>> findTop() {
 //        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<CpuUsage> cpuUsage = resultMapper.toPOJO(cpuRepo.findList(), CpuUsage.class);
+        List<CpuUsage> cpuUsage = cpuRepo.findListUsage();
         if (cpuUsage.isEmpty()) {
             return Optional.empty();
         }
@@ -82,10 +82,10 @@ public class CpuUsageServiceimpl implements CpuUsageService {
         List<CpuUsage> topValue = new ArrayList<>();
 
         if(cpuUsage.size() > 5){
-            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getMean).reversed()).limit(5)
+            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getCpuUsage).reversed()).limit(5)
                     .forEach(topValue::add);
         }else {
-            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getMean).reversed())
+            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getCpuUsage).reversed())
                     .forEach(topValue::add);
         }
         return Optional.of(topValue);
@@ -95,24 +95,24 @@ public class CpuUsageServiceimpl implements CpuUsageService {
     public Optional<Double> findAverage() {
 //        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<CpuUsage> cpuUsage = resultMapper.toPOJO(cpuRepo.findList(), CpuUsage.class);
-        return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getMean).average().orElse(Double.NaN));
+        List<CpuUsage> cpuUsage = cpuRepo.findListUsage();
+        return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getCpuUsage).average().orElse(Double.NaN));
     }
 
     @Override
     public Optional<Double> findMax() {
 //        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<CpuUsage> cpuUsage = resultMapper.toPOJO(cpuRepo.findList(), CpuUsage.class);
-        return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getMean).max().orElse(Double.NaN));
+        List<CpuUsage> cpuUsage = cpuRepo.findListUsage();
+        return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getCpuUsage).max().orElse(Double.NaN));
     }
 
     @Override
     public Optional<Double> findMin() {
 //        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<CpuUsage> cpuUsage = resultMapper.toPOJO(cpuRepo.findList(), CpuUsage.class);
-        return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getMean).min().orElse(Double.NaN));
+        List<CpuUsage> cpuUsage = cpuRepo.findListUsage();
+        return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getCpuUsage).min().orElse(Double.NaN));
     }
 
 //    @Override
@@ -126,6 +126,6 @@ public class CpuUsageServiceimpl implements CpuUsageService {
     public Optional<CpuInfo> findById(String uid) {
 //        String query = "select * from CpuInfo where uid='"+uid+"' limit 1";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return Optional.ofNullable(resultMapper.toPOJO(cpuRepo.findById(uid), CpuInfo.class).get(0));
+        return Optional.ofNullable(cpuRepo.findById(uid));
     }
 }

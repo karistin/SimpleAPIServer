@@ -39,14 +39,14 @@ public class DiskUsageServiceimpl implements DiskUsageService {
     public List<DiskUsage> findList() {
 //        String query =  "select MEAN(diskUsage) from DiskInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return resultMapper.toPOJO(diskRepo.findList(), DiskUsage.class);
+        return diskRepo.findListUsage();
     }
 
     @Override
     public Optional<List<DiskUsage>> findTop() {
 //        String query =  "select MEAN(diskUsage) from DiskInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<DiskUsage> diskUsage = resultMapper.toPOJO(diskRepo.findList(), DiskUsage.class);
+        List<DiskUsage> diskUsage = diskRepo.findListUsage();
         if (diskUsage.isEmpty()) {
             return Optional.empty();
         }
@@ -54,10 +54,10 @@ public class DiskUsageServiceimpl implements DiskUsageService {
         List<DiskUsage> topValue = new ArrayList<>();
 
         if(diskUsage.size() > 5){
-            diskUsage.stream().sorted(Comparator.comparing(DiskUsage::getMean).reversed()).limit(5)
+            diskUsage.stream().sorted(Comparator.comparing(DiskUsage::getDiskUsage).reversed()).limit(5)
                     .forEach(topValue::add);
         }else {
-            diskUsage.stream().sorted(Comparator.comparing(DiskUsage::getMean).reversed())
+            diskUsage.stream().sorted(Comparator.comparing(DiskUsage::getDiskUsage).reversed())
                     .forEach(topValue::add);
         }
         return Optional.of(topValue);
@@ -67,24 +67,24 @@ public class DiskUsageServiceimpl implements DiskUsageService {
     public Optional<Double> findAverage() {
 //        String query =  "select MEAN(diskUsage) from DiskInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(diskRepo., influxDBTemplate.getDatabase()));
-        List<DiskUsage> memUsage = resultMapper.toPOJO(diskRepo.findList(), DiskUsage.class);
-        return Optional.of(memUsage.stream().mapToDouble(DiskUsage::getMean).average().orElseThrow());
+        List<DiskUsage> memUsage = diskRepo.findListUsage();
+        return Optional.of(memUsage.stream().mapToDouble(DiskUsage::getDiskUsage).average().orElseThrow());
     }
 
     @Override
     public Optional<Double> findMax() {
 //        String query =  "select MEAN(diskUsage) from DiskInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<DiskUsage> memUsage = resultMapper.toPOJO(diskRepo.findList(), DiskUsage.class);
-        return Optional.of(memUsage.stream().mapToDouble(DiskUsage::getMean).max().orElseThrow());
+        List<DiskUsage> memUsage = diskRepo.findListUsage();
+        return Optional.of(memUsage.stream().mapToDouble(DiskUsage::getDiskUsage).max().orElseThrow());
     }
 
     @Override
     public Optional<Double> findMin() {
 //        String query =  "select MEAN(diskUsage) from DiskInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<DiskUsage> memUsage = resultMapper.toPOJO(diskRepo.findList(), DiskUsage.class);
-        return Optional.of(memUsage.stream().mapToDouble(DiskUsage::getMean).min().orElseThrow());
+        List<DiskUsage> memUsage = diskRepo.findListUsage();
+        return Optional.of(memUsage.stream().mapToDouble(DiskUsage::getDiskUsage).min().orElseThrow());
     }
 
     @Override
@@ -105,6 +105,6 @@ public class DiskUsageServiceimpl implements DiskUsageService {
     public Optional<DiskInfo> findById(String uid) {
 //        String query = "select * from DiskInfo where uid='"+uid+"' limit 1";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return Optional.ofNullable(resultMapper.toPOJO(diskRepo.findById(uid), DiskInfo.class).get(0));
+        return Optional.ofNullable(diskRepo.findById(uid));
     }
 }

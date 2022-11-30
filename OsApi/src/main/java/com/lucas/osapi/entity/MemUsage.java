@@ -27,8 +27,8 @@ public class MemUsage {
     /*
     * Memory 10s average
     * */
-    @Column(name = "mean")
-    private double mean;
+    @Column(name = "memUsage")
+    private double memUsage;
 
     @Column(name = "uid")
     private String uid;

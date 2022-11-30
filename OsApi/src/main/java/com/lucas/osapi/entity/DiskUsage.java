@@ -20,8 +20,9 @@ import org.influxdb.annotation.Measurement;
 @Setter
 @Measurement(name = "DiskInfo", database = "OsData")
 public class DiskUsage {
-    @Column(name = "mean")
-    private double mean;
+    @Column(name = "diskUsage")
+    private double diskUsage;
+
 
     @Column(name = "diskinfo")
     private String diskinfo;

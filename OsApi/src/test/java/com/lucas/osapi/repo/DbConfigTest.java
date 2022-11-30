@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.influxdb.dto.Point;
 
+import org.influxdb.dto.Pong;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
 import org.influxdb.impl.InfluxDBResultMapper;
@@ -66,6 +67,13 @@ public class DbConfigTest {
     public void DbConfigTest(){
         assertEquals(influxDBTemplate.getDatabase(), dbName);
         assertEquals(influxDBTemplate.getRetentionPolicy(), retentionPolicy);
+    }
+
+    @Test
+    @DisplayName("Db ping Test")
+    public void DbPingTest(){
+        Pong pong = influxDBTemplate.ping();
+        assertTrue(pong.isGood());
     }
 
 

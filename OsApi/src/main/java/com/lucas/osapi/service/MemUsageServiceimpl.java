@@ -40,14 +40,14 @@ public class MemUsageServiceimpl implements MemUsageService {
     public List<MemUsage> findList() {
 //        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return resultMapper.toPOJO(memRepo.findList(), MemUsage.class);
+        return memRepo.findListUsage();
     }
 
     @Override
     public Optional<List<MemUsage>> findTop() {
 //        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<MemUsage> memUsage = resultMapper.toPOJO(memRepo.findList(), MemUsage.class);
+        List<MemUsage> memUsage = memRepo.findListUsage();
         if (memUsage.isEmpty()) {
             return Optional.empty();
         }
@@ -55,10 +55,10 @@ public class MemUsageServiceimpl implements MemUsageService {
         List<MemUsage> topValue = new ArrayList<>();
 
         if(memUsage.size() > 5){
-            memUsage.stream().sorted(Comparator.comparing(MemUsage::getMean).reversed()).limit(5)
+            memUsage.stream().sorted(Comparator.comparing(MemUsage::getMemUsage).reversed()).limit(5)
                     .forEach(topValue::add);
         }else {
-            memUsage.stream().sorted(Comparator.comparing(MemUsage::getMean).reversed())
+            memUsage.stream().sorted(Comparator.comparing(MemUsage::getMemUsage).reversed())
                     .forEach(topValue::add);
         }
         return Optional.of(topValue);
@@ -68,24 +68,24 @@ public class MemUsageServiceimpl implements MemUsageService {
     public Optional<Double> findAverage() {
 //        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<MemUsage> memUsage = resultMapper.toPOJO(memRepo.findList(), MemUsage.class);
-        return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMean).average().orElseThrow());
+        List<MemUsage> memUsage = memRepo.findListUsage();
+        return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMemUsage).average().orElseThrow());
     }
 
     @Override
     public Optional<Double> findMax() {
 //        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<MemUsage> memUsage = resultMapper.toPOJO(memRepo.findList(), MemUsage.class);
-        return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMean).max().orElseThrow());
+        List<MemUsage> memUsage = memRepo.findListUsage();
+        return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMemUsage).max().orElseThrow());
     }
 
     @Override
     public Optional<Double> findMin() {
 //        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<MemUsage> memUsage = resultMapper.toPOJO(memRepo.findList(), MemUsage.class);
-        return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMean).min().orElseThrow());
+        List<MemUsage> memUsage = memRepo.findListUsage();
+        return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMemUsage).min().orElseThrow());
     }
 
 //    @Override
@@ -99,6 +99,6 @@ public class MemUsageServiceimpl implements MemUsageService {
     public Optional<MemInfo> findById(String uid) {
 //        String query = "select * from MemInfo where uid='"+uid+"' limit 1";
 //        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return Optional.ofNullable(resultMapper.toPOJO(memRepo.findById(uid), MemInfo.class).get(0));
+        return Optional.ofNullable(memRepo.findById(uid));
     }
 }

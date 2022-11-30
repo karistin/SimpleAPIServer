@@ -48,14 +48,15 @@ class CpuUsageServiceTest {
         Pong pong = influxDBTemplate.ping();
         assertTrue(pong.isGood());
     }
-    @Test
-    void findTop() {
-        Optional<List<CpuUsage>> cpuUsageList = cpuUsageService.findTop();
-        assertTrue(cpuUsageList.isPresent());
-        assertEquals(cpuUsageList.get().size(), 5);
-        cpuUsageList.get().forEach(cpuUsage -> assertNotNull(cpuUsage.getMean()));
-
-    }
+//    @Test
+//    void findTop() {
+//        Optional<List<CpuUsage>> cpuUsageList = cpuUsageService.findTop();
+//        assertTrue(cpuUsageList.isPresent());
+//        List<CpuUsage> cpuUsage = cpuUsageList.get();
+//        assertEquals(5, cpuUsage.size());
+//        cpuUsageList.get().forEach(cpuUsage -> assertNotNull(cpuUsage.getCpuUsage()));
+//
+//    }
 
 
 }

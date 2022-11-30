@@ -2,6 +2,7 @@ package com.lucas.osapi.controller;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -95,13 +96,14 @@ class MetricControllerTest {
     void findTop() throws Exception {
         for(String apiUrl: apiUrlList)
         {
+
             mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/top").contentType("application/json"))
                    .andExpect(status().isOk())
                    .andExpect(jsonPath("$.success").value(true))
                    .andExpect(jsonPath("$.code").value(0))
                    .andExpect(jsonPath("$.msg").exists())
                    .andExpect(jsonPath("$.list.size()").value(5))
-                   .andExpect(jsonPath("$.list[*].mean").exists())
+                   .andExpect(jsonPath("$.list[*].cpuUsage").exists())
                    .andExpect(jsonPath("$.list[*].uid").exists())
                    .andReturn();
         }

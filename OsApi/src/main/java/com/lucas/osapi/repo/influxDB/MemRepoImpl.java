@@ -1,12 +1,20 @@
 package com.lucas.osapi.repo.influxDB;
 
+import com.lucas.osapi.advice.exception.RepoException;
+import com.lucas.osapi.entity.CpuInfo;
+import com.lucas.osapi.entity.MemInfo;
+import com.lucas.osapi.entity.MemUsage;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.desc;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.eq;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.select;
 
@@ -27,28 +35,46 @@ public class MemRepoImpl implements MemRepo{
     @Autowired
     private InfluxDBTemplate<Point> influxDBTemplate;
 
-    private String tableName = "MemInfo";
-    private String tagKey = "uid";
-    private String mainCol = "memUsage";
+    @Value("${spring.influxdbRepo.mem-table.name}")
+    private String tableName;
+    @Value("${spring.influxdbRepo.mem-table.tag}")
+    private String tagKey;
+    @Value("${spring.influxdbRepo.mem-table.usage}")
+    private String mainCol;
 
     @Override
-    public QueryResult findList() {
-//        Query query = select().mean(mainCol).from(influxDBTemplate.getDatabase(), tableName)
-//                              .groupBy(tagKey).limit(2);
-        return influxDBTemplate.getConnection().query(new Query("select mean(memUsage) from (select memUsage from MemInfo group by uid order by time DESC limit 2 ) group by uid order by time DESC",influxDBTemplate.getDatabase()));
+    public List<MemUsage> findListUsage() {
+        Query query = select(mainCol)
+                .from(influxDBTemplate.getDatabase(),tableName)
+                .orderBy(desc())
+                .limit(1);
+        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
+        List<MemUsage> memUsages = resultMapper.toPOJO(queryResult, MemUsage.class);
+        return memUsages;
     }
 
-
-
     @Override
-    public QueryResult findById(String key) {
-//        Query query = select().from(influxDBTemplate.getDatabase(), tableName)
-//                              .where(eq(tagKey,key)).limit(1);
-        return influxDBTemplate.getConnection().query(new Query("select * from DiskInfo where uid ='\"+key+\"'order by time desc limit 1",influxDBTemplate.getDatabase()));
+    public List<MemInfo> findList() {
+        return null;
     }
 
     @Override
-    public QueryResult findByIdRange(String key, String time) {
+    public MemInfo findById(String key) {
+        Query query = select("*")
+                .from(influxDBTemplate.getDatabase(),tableName)
+                .where(eq(tagKey,key))
+                .orderBy(desc())
+                .limit(1);
+        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
+        MemInfo memInfo = resultMapper.toPOJO(queryResult, MemInfo.class).get(0);
+        if (memInfo == null) {
+            throw new RepoException();
+        }
+        return memInfo;
+    }
+
+    @Override
+    public List<MemInfo> findByIdRange(String key, String time) {
         return null;
     }
 

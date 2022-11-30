@@ -1,5 +1,6 @@
 package com.lucas.osapi.advice;
 
+import com.lucas.osapi.advice.exception.RepoException;
 import com.lucas.osapi.model.response.CommonResult;
 import com.lucas.osapi.service.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,12 @@ public class ExceptionAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult defaultException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResult();
+    }
+
+    @ExceptionHandler(RepoException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult repoException(HttpServletRequest request, Exception e){
         return responseService.getFailResult();
     }
 

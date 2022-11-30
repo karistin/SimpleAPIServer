@@ -1,7 +1,0 @@
-rootProject.name = 'JavaStudy'
-include 'Influxdb'
-include 'generic'
-include 'SchemaValidation'
-include 'JsonPath'
-include 'mokito'
-
