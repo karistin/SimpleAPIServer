@@ -1,11 +1,6 @@
 package com.lucas.osapi.repo;
 
-import com.lucas.osapi.entity.CpuInfo;
-import com.lucas.osapi.entity.DiskInfo;
-import com.lucas.osapi.entity.MemInfo;
-import com.lucas.osapi.repo.influxDB.CpuRepo;
-import com.lucas.osapi.repo.influxDB.DiskRepo;
-import com.lucas.osapi.repo.influxDB.MemRepo;
+
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
@@ -48,16 +43,6 @@ import static org.mockito.Mockito.when;
 
 @Slf4j
 public class InfluxdbRepoTest {
-
-    @Test
-    public void getAnnoationTest() {
-        CpuInfo cpuInfo = new CpuInfo();
-        Field[] fields = cpuInfo.getClass().getFields();
-        for (Field field : fields) {
-            Column column = field.getAnnotation(Column.class);
-            System.out.println(column.name());
-        }
-    }
 
 
 }
