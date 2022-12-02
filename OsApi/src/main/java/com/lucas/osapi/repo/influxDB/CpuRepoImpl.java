@@ -14,12 +14,17 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
+
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.desc;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.eq;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.gt;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.ne;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.select;
+import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.subTime;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.time;
+import static org.influxdb.querybuilder.time.DurationLiteral.DAY;
+import static org.influxdb.querybuilder.time.DurationLiteral.MINUTE;
+import static org.influxdb.querybuilder.time.DurationLiteral.SECOND;
 
 /**
  * packageName    : com.lucas.osapi.repo.influxDB
@@ -86,7 +91,7 @@ public class CpuRepoImpl implements CpuRepo {
                 .where(eq(tagKey,key))
                 .orderBy(desc())
                 .limit(1);
-        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query("select * from CpuInfo where uid ='"+key+"' order by time desc limit 1",influxDBTemplate.getDatabase()));
+        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
         CpuInfo cpuInfo = resultMapper.toPOJO(queryResult, CpuInfo.class).get(0);
         if (cpuInfo == null) {
             throw new RepoException();
@@ -99,7 +104,13 @@ public class CpuRepoImpl implements CpuRepo {
 
     @Override
     public List<CpuInfo> findByIdRange(String key, String time) {
-        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query("select * from CpuInfo where uid ='"+key+"' and time > now()-"+time+"m",influxDBTemplate.getDatabase()));
+        Query query = select("*")
+            .from(influxDBTemplate.getDatabase(), tableName)
+            .where(eq(tagKey, key)).and(gt("time",subTime(Long.parseLong(time),MINUTE)));
+
+//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query("select "
+//            + "* from CpuInfo where uid ='"+key+"' and time > now()-"+time+"m",influxDBTemplate.getDatabase()));
+        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
         List<CpuInfo> queryResultList = resultMapper.toPOJO(queryResult, CpuInfo.class);
         if (queryResultList == null) {
             throw new RepoException();
@@ -109,7 +120,13 @@ public class CpuRepoImpl implements CpuRepo {
 
     @Override
     public List<CpuUsage> findbyIdRangeUsage(String key, String time) {
-        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query("select cpuUsage from CpuInfo where uid ='"+key+"' and time > now()-"+time+"m",influxDBTemplate.getDatabase()));
+        Query query = select("cpuUsage")
+            .from("CpuInfo")
+            .where(eq(tagKey,key))
+            .and(gt("time",subTime(
+            Long.parseLong(time), MINUTE)));
+//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query("select cpuUsage from CpuInfo where uid ='"+key+"' and time > now()-"+time+"m",influxDBTemplate.getDatabase()));
+        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
         List<CpuUsage> queryResultList = resultMapper.toPOJO(queryResult, CpuUsage.class);
         if (queryResultList == null) {
             throw new RepoException();

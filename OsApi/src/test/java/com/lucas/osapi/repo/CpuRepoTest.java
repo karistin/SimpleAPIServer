@@ -1,5 +1,6 @@
 package com.lucas.osapi.repo;
 
+import com.lucas.osapi.config.InfluxDBConfigurationTest;
 import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.repo.influxDB.CpuRepo;
 import com.lucas.osapi.repo.influxDB.CpuRepoImpl;
@@ -11,16 +12,21 @@ import org.influxdb.dto.Point;
 import org.influxdb.dto.QueryResult;
 import org.influxdb.impl.InfluxDBResultMapper;
 import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import org.testng.annotations.BeforeTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -46,6 +52,7 @@ import static org.junit.Assert.assertNotNull;
 @SpringBootTest
 @Slf4j
 public class CpuRepoTest {
+
     @Autowired
     private CpuRepo cpuRepo;
 
@@ -53,31 +60,29 @@ public class CpuRepoTest {
     private String time = "30";
 
 
+
     @Test
     @DisplayName("findList")
     public void findList(){
-        assertNotNull(cpuRepo.findList());
-
+        List<CpuInfo> cpuInfoList  = cpuRepo.findList();
+        assertNotNull(cpuInfoList);
+        cpuInfoList.forEach(Assert::assertNotNull);
 
     }
 
     @Test
     @DisplayName("findById")
     public void findById(){
-
-        assertNotNull(cpuRepo.findById(key));
+        CpuInfo cpuInfo = cpuRepo.findById(key);
+        assertNotNull(cpuInfo);
     }
 
 
     @Test
     @DisplayName("findByIdRange")
     public void findByIdRange(){
-
         List<CpuInfo> cpuInfos = cpuRepo.findByIdRange(key, time);
-        assertNotNull(cpuInfos);
-
-        assertEquals(key,cpuInfos.get(0).getUid());
-
+        cpuInfos.forEach(Assert::assertNotNull);
     }
 
 

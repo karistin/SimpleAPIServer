@@ -42,27 +42,22 @@ public class CpuControllerTest {
     @Test
     public void list() throws Exception {
 //        given
-        cpuUsageService = mock(CpuUsageService.class);
-        responseService = mock(ResponseService.class);
-        when(cpuUsageService.findList()).then(Arrays.asList(
-            new CpuUsage[]{new CpuUsage(null, 20, 15, 5, "serverA")}));
-        given(responseService.getListResult(
-            any()
-        )).willReturn((ListResult<Object>) cpuUsageService.findList());
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/cpuinfo/list").contentType("application/json"))
-            .andExpect(status().isOk())
-            .andReturn();
+//        cpuUsageService = mock(CpuUsageService.class);
+//        responseService = mock(ResponseService.class);
+//        when(cpuUsageService.findList()).then(Arrays.asList(
+//            new CpuUsage[]{new CpuUsage(null, 20, 15, 5, "serverA")}));
+//        given(responseService.getListResult(
+//            any()
+//        )).willReturn((ListResult<Object>) cpuUsageService.findList());
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/v1/cpuinfo/list").contentType("application/json"))
+//            .andExpect(status().isOk())
+//            .andReturn();
 //            .andExpect(jsonPath("$.success").value(true))
 //            .andExpect(jsonPath("$.code").value(0))
 //            .andExpect(jsonPath("$.msg").exists())
 //            .andExpect(jsonPath("$.list").exists())
 //            .andReturn().getResponse();
-
-
-
-
-
     }
 
 }
