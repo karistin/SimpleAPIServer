@@ -1,7 +1,6 @@
 package com.lucas.osapi.repo.influxDB;
 
 import com.lucas.osapi.advice.exception.RepoException;
-import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.MemInfo;
 import com.lucas.osapi.entity.MemUsage;
 import org.influxdb.dto.Point;
@@ -74,7 +73,12 @@ public class MemRepoImpl implements MemRepo{
     }
 
     @Override
-    public List<MemInfo> findByIdRange(String key, String time) {
+    public List<MemInfo> findByIdRange(String key, Long time) {
+        return null;
+    }
+
+    @Override
+    public List<MemInfo> findByIdRange(String key, long time) {
         return null;
     }
 

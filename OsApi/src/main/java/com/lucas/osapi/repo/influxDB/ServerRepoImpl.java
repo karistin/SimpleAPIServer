@@ -2,7 +2,6 @@ package com.lucas.osapi.repo.influxDB;
 
 import com.lucas.osapi.entity.ServerInfo;
 import org.influxdb.dto.Point;
-import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.influxdb.InfluxDBTemplate;
@@ -36,7 +35,12 @@ public class ServerRepoImpl implements ServerRepo{
     }
 
     @Override
-    public List<ServerInfo> findByIdRange(String key, String time) {
+    public List<ServerInfo> findByIdRange(String key, Long time) {
+        return null;
+    }
+
+    @Override
+    public List<ServerInfo> findByIdRange(String key, long time) {
         return null;
     }
 

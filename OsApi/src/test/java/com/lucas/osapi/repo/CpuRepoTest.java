@@ -57,7 +57,7 @@ public class CpuRepoTest {
     private CpuRepo cpuRepo;
 
     private String key = "serverA";
-    private String time = "30";
+    private long time = 30;
 
 
 

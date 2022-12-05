@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,48 +44,62 @@ public class CpuController {
     private final ResponseService responseService;
     private final CpuUsageService cpuUsageService;
 
-    @ApiOperation(value = "findList", notes = "모든 호스트들의 CPU의 사용량을 가져온다.")
+    @ApiOperation(value = "List", notes = "최근 CPU 정보를 가져온다.")
     @GetMapping(value = "/list")
-    public ListResult<CpuUsage> findList() {
-        return responseService.getListResult(cpuUsageService.findList());
+    public ListResult<CpuInfo> List() {
+        return responseService.getListResult(cpuUsageService.List());
     }
 
-    @ApiOperation(value = "findTop", notes = "모든 호스트들중 Cpu사용량 상위 5개를 가져온다.")
-    @GetMapping(value = "/top")
-    public ListResult<CpuUsage> findTop() throws Exception {
-        return responseService.getListResult(cpuUsageService.findTop().orElseThrow(Exception::new));
+    @ApiOperation(value = "ListUsage", notes = "최근 CPU 사용량만 가져온다.")
+    @GetMapping(value = "/list/usage")
+    public ListResult<CpuUsage> ListUsage() {
+        return responseService.getListResult(cpuUsageService.ListUsage());
     }
 
-    @ApiOperation(value = "findAver", notes = "모든 호스트들의 평균")
-    @GetMapping(value = "/average")
-    public SingleResult<Double> findAverage() throws Exception {
-        return responseService.getSingleResult(cpuUsageService.findAverage().orElseThrow(Exception::new));
+    @ApiOperation(value = "Id",notes = "ID CPU 정보만 가져온다.")
+    @GetMapping(value = "/list/{uid}")
+    public SingleResult<CpuInfo> Id(@ApiParam(value = "hostName",required = true) @PathVariable String uid){
+        return responseService.getSingleResult(cpuUsageService.Id(uid));
     }
 
-    @ApiOperation(value = "findMax",notes = "모든 호스트들중 최대값")
-    @GetMapping(value = "/max")
-    public SingleResult<Double>  findMax() throws Exception {
-        return responseService.getSingleResult(cpuUsageService.findMax().orElseThrow(Exception::new));
+    @ApiOperation(value = "IdRange",notes = "특정 호스트의 Series Data Time : minute")
+    @GetMapping(value = "/range")
+    public ListResult<CpuInfo>  IdRange(
+        @ApiParam(value = "uid", required = true) @RequestParam(value = "uid") String uid,
+        @ApiParam(value = "time", required = true)@RequestParam(value = "time") Long time) throws Exception {
+        return responseService.getListResult(cpuUsageService.IdRange(uid, time));
     }
 
-    @ApiOperation(value = "findMin",notes = "모든 호스트들중 최소값")
-    @GetMapping(value = "/min")
-    public SingleResult<Double>  findMin() throws Exception {
-        return responseService.getSingleResult(cpuUsageService.findMin().orElseThrow(Exception::new));
+    @ApiOperation(value = "IdRangeUsage",notes = "특정 호스트의 Usage Series Data Time : minute")
+    @GetMapping(value = "/range/usage")
+    public ListResult<CpuUsage>  IdRangeUsage(
+        @ApiParam(value = "uid", required = true) @RequestParam(value = "uid")String uid,
+        @ApiParam(value = "time", required = true)@RequestParam(value = "time") Long time) throws Exception {
+        return responseService.getListResult(cpuUsageService.IdRangeUsage(uid, time));
     }
 
-
-//    @ApiOperation(value = "findById",notes = "특정 호스트 usage")
-//    @GetMapping(value = "/{uid}/usage")
-//    public SingleResult<CpuUsage> findByIdUsage(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
-//        return responseService.getSingleResult(cpuUsageService.findByIdUsage(uid).orElseThrow(Exception::new));
-//    }
-
-    @ApiOperation(value = "findById",notes = "특정 호스트 모든 데이터")
-    @GetMapping(value = "/{uid}")
-    public SingleResult<CpuInfo> findById(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
-        return responseService.getSingleResult(cpuUsageService.findById(uid).orElseThrow(Exception::new));
+    @ApiOperation(value = "Top", notes = "Usage TOP 기능")
+    @GetMapping(value = "/list/usage/top")
+    public ListResult<CpuUsage> Top(){
+        return responseService.getListResult(cpuUsageService.Top());
     }
 
+    @ApiOperation(value = "Aver", notes = "모든 호스트들의 평균")
+    @GetMapping(value = "/list/usage/average")
+    public SingleResult<Double> Average() throws Exception {
+        return responseService.getSingleResult(cpuUsageService.Average().orElseThrow(Exception::new));
+    }
+
+    @ApiOperation(value = "Max",notes = "모든 호스트들중 최대값")
+    @GetMapping(value = "/list/usage/max")
+    public SingleResult<Double>  Max() throws Exception {
+        return responseService.getSingleResult(cpuUsageService.Max().orElseThrow(Exception::new));
+    }
+
+    @ApiOperation(value = "Min",notes = "모든 호스트들중 최소값")
+    @GetMapping(value = "/list/usage/min")
+    public SingleResult<Double>  Min() throws Exception {
+        return responseService.getSingleResult(cpuUsageService.Min().orElseThrow(Exception::new));
+    }
 
 }

@@ -23,4 +23,6 @@ public interface DiskRepo extends InfluxDBRepo<DiskInfo>{
     QueryResult findbyIdInode(String key);
     QueryResult findbyIdUsage(String key);
     List<DiskUsage> findListUsage();
+
+    List<DiskInfo> findByIdRange(String key, long time);
 }

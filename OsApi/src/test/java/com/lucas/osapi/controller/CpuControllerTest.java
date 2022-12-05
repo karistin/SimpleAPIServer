@@ -1,25 +1,24 @@
 package com.lucas.osapi.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.lucas.osapi.entity.CpuUsage;
-import com.lucas.osapi.model.response.ListResult;
-import com.lucas.osapi.service.CpuUsageService;
-import com.lucas.osapi.service.ResponseService;
-import java.util.Arrays;
+
+import lombok.NoArgsConstructor;
+
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
 
 /**
  * packageName    : com.lucas.osapi.controller fileName       : CpuControllerTest author         :
@@ -27,37 +26,120 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * =========================================================== DATE              AUTHOR NOTE
  * ----------------------------------------------------------- 2022-12-01        lucas       최초 생성
  */
-@WebMvcTest(CpuController.class)
+@NoArgsConstructor
+@RunWith(SpringJUnit4ClassRunner.class)
+@AutoConfigureMockMvc
+@SpringBootTest
 public class CpuControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-
-    private CpuUsageService cpuUsageService;
-
-    private ResponseService responseService;
-
-    @DisplayName("CPUList")
+    private String apiVersion = "v1";
+    private String apiUrl = "cpuinfo";
     @Test
+    @DisplayName("/v1/cpuinfo/list")
     public void list() throws Exception {
-//        given
-//        cpuUsageService = mock(CpuUsageService.class);
-//        responseService = mock(ResponseService.class);
-//        when(cpuUsageService.findList()).then(Arrays.asList(
-//            new CpuUsage[]{new CpuUsage(null, 20, 15, 5, "serverA")}));
-//        given(responseService.getListResult(
-//            any()
-//        )).willReturn((ListResult<Object>) cpuUsageService.findList());
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/v1/cpuinfo/list").contentType("application/json"))
+        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/list").contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*]").exists())
+            .andReturn().getResponse();
+    }
+
+
+
+    @Test
+    @DisplayName("/v1/cpuinfo/list/usage")
+    public void listUsage() throws Exception {
+        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/list/usage").contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*].cpuUsage").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*].time").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*].sysUsage").exists())
+            .andReturn().getResponse();
+    }
+
+
+    @Test
+    @DisplayName("/v1/cpuinfo/list/{uid}")
+    public void id() throws Exception {
+        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/list/{uid}","foo")
+                .contentType("application/json"))
+            .andExpect(status().is5xxServerError())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(-1))
+            .andReturn();
+
+        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/list/{uid}","serverA")
+                .contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
+            .andReturn();
+    }
+
+    @Test
+    @DisplayName("/v1/cpuinfo/range")
+    public void idRange() throws Exception {
+        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"range?uid=serverA&time=30").contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*]").exists())
+            .andReturn().getResponse();
+    }
+
+    @Test
+    @DisplayName("/v1/cpuinfo/range/usage")
+    public void idRangeUsage() throws Exception {
+        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"range/usage?uid=serverA&time=30").contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*]").exists())
+            .andReturn().getResponse();
+    }
+
+
+    @Test
+    @DisplayName("/v1/cpuinfo/list/usage/top")
+    public void top() throws Exception {
+        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/list/usage/top").contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list.size()").value(5))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*].cpuUsage").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*].uid").exists())
+            .andReturn();
+    }
+
+
+    @Test
+    @DisplayName("/v1/cpuinfo/usage/average")
+    public void average() throws Exception {
+//        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/usage/average").contentType("application/json"))
 //            .andExpect(status().isOk())
-//            .andReturn();
-//            .andExpect(jsonPath("$.success").value(true))
-//            .andExpect(jsonPath("$.code").value(0))
-//            .andExpect(jsonPath("$.msg").exists())
-//            .andExpect(jsonPath("$.list").exists())
+//            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+//            .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
+//            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").exists())
+//            .andExpect(MockMvcResultMatchers.jsonPath("$.list").exists())
+//            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*]").exists())
 //            .andReturn().getResponse();
     }
+
 
 }

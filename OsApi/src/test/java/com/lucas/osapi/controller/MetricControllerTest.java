@@ -58,21 +58,9 @@ class MetricControllerTest {
     );
 
     private String apiVersion = "v1";
-    /*
-    *
-    {
-        "code": 0,
-        "list": [
-        {
-            "mean": 0,
-            "uid": "string"
-        }
-        ],
-        "msg": "Success",
-        "success": true,
-        "time": 1668994223183
-    }
-    * */
+
+
+
 
 
     @Test
@@ -115,14 +103,14 @@ class MetricControllerTest {
     void findByIdUsage() throws Exception {
         for(String apiUrl: apiUrlList)
         {
-//            longId
+
             mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/{uid}","foo")
                            .contentType("application/json"))
                     .andExpect(status().is5xxServerError())
                     .andExpect(jsonPath("$.success").value(false))
                     .andExpect(jsonPath("$.code").value(-1))
                    .andReturn();
-//              Demo data
+
             mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/{uid}","serverA")
                            .contentType("application/json"))
                    .andExpect(status().isOk())

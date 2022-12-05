@@ -1,7 +1,6 @@
 package com.lucas.osapi.repo.influxDB;
 
 import com.lucas.osapi.advice.exception.RepoException;
-import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.DiskInfo;
 import com.lucas.osapi.entity.DiskUsage;
 import org.influxdb.dto.Point;
@@ -97,7 +96,12 @@ public class DiskRepoImpl implements DiskRepo {
     }
 
     @Override
-    public List<DiskInfo> findByIdRange(String key, String time) {
+    public List<DiskInfo> findByIdRange(String key, Long time) {
+        return null;
+    }
+
+    @Override
+    public List<DiskInfo> findByIdRange(String key, long time) {
         return null;
     }
 
