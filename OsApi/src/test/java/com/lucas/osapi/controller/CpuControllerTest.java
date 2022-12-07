@@ -35,8 +35,8 @@ public class CpuControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private String apiVersion = "v1";
-    private String apiUrl = "cpuinfo";
+    private final String apiVersion = "v1";
+    private final String apiUrl = "cpuinfo";
     @Test
     @DisplayName("/v1/cpuinfo/list")
     public void list() throws Exception {
@@ -89,7 +89,7 @@ public class CpuControllerTest {
     @Test
     @DisplayName("/v1/cpuinfo/range")
     public void idRange() throws Exception {
-        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"range?uid=serverA&time=30").contentType("application/json"))
+        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/range?uid=serverA&time=30").contentType("application/json"))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
             .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
@@ -102,7 +102,7 @@ public class CpuControllerTest {
     @Test
     @DisplayName("/v1/cpuinfo/range/usage")
     public void idRangeUsage() throws Exception {
-        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"range/usage?uid=serverA&time=30").contentType("application/json"))
+        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/range/usage?uid=serverA&time=30").contentType("application/json"))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
             .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
@@ -129,16 +129,16 @@ public class CpuControllerTest {
 
 
     @Test
-    @DisplayName("/v1/cpuinfo/usage/average")
+    @DisplayName("/v1/cpuinfo/list/usage/average")
     public void average() throws Exception {
-//        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/usage/average").contentType("application/json"))
-//            .andExpect(status().isOk())
-//            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
-//            .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
-//            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").exists())
-//            .andExpect(MockMvcResultMatchers.jsonPath("$.list").exists())
-//            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*]").exists())
-//            .andReturn().getResponse();
+        mockMvc.perform(get("/"+apiVersion+"/"+apiUrl+"/list/usage/average").contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data").isNumber())
+            .andReturn().getResponse();
     }
 
 

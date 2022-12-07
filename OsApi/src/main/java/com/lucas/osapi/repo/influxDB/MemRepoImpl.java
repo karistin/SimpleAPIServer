@@ -42,34 +42,13 @@ public class MemRepoImpl implements MemRepo{
     private String mainCol;
 
     @Override
-    public List<MemUsage> findListUsage() {
-        Query query = select(mainCol)
-                .from(influxDBTemplate.getDatabase(),tableName)
-                .orderBy(desc())
-                .limit(1);
-        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
-        List<MemUsage> memUsages = resultMapper.toPOJO(queryResult, MemUsage.class);
-        return memUsages;
-    }
-
-    @Override
     public List<MemInfo> findList() {
         return null;
     }
 
     @Override
     public MemInfo findById(String key) {
-        Query query = select("*")
-                .from(influxDBTemplate.getDatabase(),tableName)
-                .where(eq(tagKey,key))
-                .orderBy(desc())
-                .limit(1);
-        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
-        MemInfo memInfo = resultMapper.toPOJO(queryResult, MemInfo.class).get(0);
-        if (memInfo == null) {
-            throw new RepoException();
-        }
-        return memInfo;
+        return null;
     }
 
     @Override
@@ -78,7 +57,12 @@ public class MemRepoImpl implements MemRepo{
     }
 
     @Override
-    public List<MemInfo> findByIdRange(String key, long time) {
+    public List<MemUsage> findListUsage() {
+        return null;
+    }
+
+    @Override
+    public List<MemUsage> findbyIdRangeUsage(String key, Long time) {
         return null;
     }
 

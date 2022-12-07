@@ -66,8 +66,7 @@ public class DiskRepoImpl implements DiskRepo {
                 .orderBy(desc())
                 .limit(1);
         QueryResult queryResult = influxDBTemplate.getConnection().query(query);
-        List<DiskUsage> diskUsage = resultMapper.toPOJO(queryResult, DiskUsage.class);
-        return diskUsage;
+        return resultMapper.toPOJO(queryResult, DiskUsage.class);
     }
 
     @Override

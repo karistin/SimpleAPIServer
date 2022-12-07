@@ -55,6 +55,7 @@ public class CpuRepoImpl implements CpuRepo {
 
 
 
+
     @Override
     public List<CpuUsage> findListUsage() {
         Query query = select("cpuUsage","userUsage","sysUsage")
@@ -65,8 +66,7 @@ public class CpuRepoImpl implements CpuRepo {
 
         log.info(query.getCommand());
         QueryResult queryResult = influxDBTemplate.query(query);
-        List<CpuUsage> cpuUsage = resultMapper.toPOJO(queryResult, CpuUsage.class);
-        return cpuUsage;
+        return resultMapper.toPOJO(queryResult, CpuUsage.class);
     }
 
     //    Dot data
@@ -125,7 +125,7 @@ public class CpuRepoImpl implements CpuRepo {
 
     @Override
     public List<CpuUsage> findbyIdRangeUsage(String key, Long time) {
-        Query query = select("uid, cpuUsage","userUsage","sysUsage")
+        Query query = select("uid", "cpuUsage","userUsage","sysUsage")
             .from(influxDBTemplate.getDatabase(), tableName)
             .where(eq(tagKey,key))
             .and(gt("time",subTime(

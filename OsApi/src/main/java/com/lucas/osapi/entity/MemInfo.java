@@ -38,40 +38,40 @@ public class MemInfo {
     private String hostname;
 
     @Column(name = "memUsageByteAll")
-    private String memUsageByteAll;
+    private double memUsageByteAll;
 
     @Column(name = "memUsageByteFree")
-    private String memUsageByteFree;
+    private double memUsageByteFree;
 
     @Column(name = "memUsageByteCached")
-    private String memUsageByteCached;
+    private double memUsageByteCached;
 
     @Column(name = "memUsageByteBuffers")
-    private String memUsageByteBuffers;
+    private double memUsageByteBuffers;
 
     @Column(name = "memUsageByteUsed")
-    private String memUsageByteUsed;
+    private double memUsageByteUsed;
 
     @Column(name = "memAvilable")
-    private String memAvilable;
+    private double memAvilable;
 
 
     @Column(name = "memSReclaimable")
-    private String memSReclaimable;
+    private double memSReclaimable;
 
     @Column(name = "memSUnreclaim")
-    private String memSUnreclaim;
+    private double memSUnreclaim;
 
     @Column(name = "memSlab")
-    private String memSlab;
+    private double memSlab;
 
     @Column(name = "memSwapUsed")
     private double memSwapUsed;
 
     @Column(name = "memSwapUsedByte")
-    private String memSwapUsedByte;
+    private double memSwapUsedByte;
 
     @Column(name = "memPageFault")
-    private String memPageFault;
+    private double memPageFault;
 
 }
