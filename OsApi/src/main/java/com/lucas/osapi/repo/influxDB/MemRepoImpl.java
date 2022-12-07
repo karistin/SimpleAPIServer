@@ -49,7 +49,7 @@ public class MemRepoImpl implements MemRepo{
 
     @Override
     public List<MemUsage> findListUsage() {
-        Query query = select("uid", "cpuUsage","userUsage","sysUsage")
+        Query query = select("uid", "memUsage")
             .from(influxDBTemplate.getDatabase(),tableName)
             .groupBy(tagKey)
             .orderBy(desc())
@@ -110,7 +110,7 @@ public class MemRepoImpl implements MemRepo{
 
     @Override
     public List<MemUsage> findbyIdRangeUsage(String key, Long time) {
-        Query query = select("uid", "cpuUsage","userUsage","sysUsage")
+        Query query = select("uid", "memUsage")
             .from(influxDBTemplate.getDatabase(), tableName)
             .where(eq(tagKey,key))
             .and(gt("time",subTime(

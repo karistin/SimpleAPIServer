@@ -66,7 +66,7 @@ public class CpuController {
     @GetMapping(value = "/range")
     public ListResult<CpuInfo>  IdRange(
         @ApiParam(value = "uid", required = true) @RequestParam(value = "uid") String uid,
-        @ApiParam(value = "time", required = true)@RequestParam(value = "time") Long time) throws Exception {
+        @ApiParam(value = "time", required = true)@RequestParam(value = "time") Long time) {
         return responseService.getListResult(cpuUsageService.IdRange(uid, time));
     }
 
@@ -74,7 +74,7 @@ public class CpuController {
     @GetMapping(value = "/range/usage")
     public ListResult<CpuUsage>  IdRangeUsage(
         @ApiParam(value = "uid", required = true) @RequestParam(value = "uid")String uid,
-        @ApiParam(value = "time", required = true)@RequestParam(value = "time") Long time) throws Exception {
+        @ApiParam(value = "time", required = true)@RequestParam(value = "time") Long time){
         return responseService.getListResult(cpuUsageService.IdRangeUsage(uid, time));
     }
 
