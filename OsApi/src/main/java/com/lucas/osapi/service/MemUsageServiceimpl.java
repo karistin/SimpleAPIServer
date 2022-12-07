@@ -54,11 +54,11 @@ public class MemUsageServiceimpl implements MemUsageService {
 
         List<MemUsage> topValue = new ArrayList<>();
 
-        if(memUsage.size() > 5){
-            memUsage.stream().sorted(Comparator.comparing(MemUsage::getMemUsage).reversed()).limit(5)
-                    .forEach(topValue::add);
-        }else {
+        if (memUsage.size() <= 5) {
             memUsage.stream().sorted(Comparator.comparing(MemUsage::getMemUsage).reversed())
+                    .forEach(topValue::add);
+        } else {
+            memUsage.stream().sorted(Comparator.comparing(MemUsage::getMemUsage).reversed()).limit(5)
                     .forEach(topValue::add);
         }
         return Optional.of(topValue);

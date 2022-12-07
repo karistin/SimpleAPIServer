@@ -2,6 +2,7 @@ package com.lucas.osapi.repo;
 
 import com.lucas.osapi.config.InfluxDBConfigurationTest;
 import com.lucas.osapi.entity.CpuInfo;
+import com.lucas.osapi.entity.CpuUsage;
 import com.lucas.osapi.repo.influxDB.CpuRepo;
 import com.lucas.osapi.repo.influxDB.CpuRepoImpl;
 import com.lucas.osapi.repo.influxDB.DiskRepo;
@@ -56,8 +57,8 @@ public class CpuRepoTest {
     @Autowired
     private CpuRepo cpuRepo;
 
-    private String key = "serverA";
-    private long time = 30;
+    private final String  key = "serverA";
+    private final long time = 30;
 
 
 
@@ -66,7 +67,7 @@ public class CpuRepoTest {
     public void findList(){
         List<CpuInfo> cpuInfoList  = cpuRepo.findList();
         assertNotNull(cpuInfoList);
-        cpuInfoList.forEach(Assert::assertNotNull);
+        cpuInfoList.forEach(cpuInfo -> assertThat(cpuInfo).hasNoNullFieldsOrProperties());
 
     }
 
@@ -75,6 +76,8 @@ public class CpuRepoTest {
     public void findById(){
         CpuInfo cpuInfo = cpuRepo.findById(key);
         assertNotNull(cpuInfo);
+        assertThat(cpuInfo).hasNoNullFieldsOrProperties();
+
     }
 
 
@@ -82,7 +85,15 @@ public class CpuRepoTest {
     @DisplayName("findByIdRange")
     public void findByIdRange(){
         List<CpuInfo> cpuInfos = cpuRepo.findByIdRange(key, time);
-        cpuInfos.forEach(Assert::assertNotNull);
+        cpuInfos.forEach(cpuInfo -> assertThat(cpuInfo).hasNoNullFieldsOrProperties());
+    }
+
+
+    @Test
+    @DisplayName("findByIdRangeUsage")
+    public void findByIdRangeUsage(){
+        List<CpuUsage> cpuInfos = cpuRepo.findbyIdRangeUsage(key, time);
+        cpuInfos.forEach(cpuInfo -> assertThat(cpuInfo).hasNoNullFieldsOrProperties());
     }
 
 

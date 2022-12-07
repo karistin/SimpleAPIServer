@@ -50,15 +50,14 @@ public class CpuRepoImpl implements CpuRepo {
     @Value("${spring.influxdbRepo.cpu-table.tag}")
     private String tagKey;
 
-    @Value("${spring.influxdbRepo.cpu-table.usage}")
-    private String mainCol;
+
 
 
 
 
     @Override
     public List<CpuUsage> findListUsage() {
-        Query query = select("cpuUsage","userUsage","sysUsage")
+        Query query = select("uid","cpuUsage","userUsage","sysUsage")
                 .from(influxDBTemplate.getDatabase(),tableName)
                 .groupBy(tagKey)
                 .orderBy(desc())
@@ -98,11 +97,11 @@ public class CpuRepoImpl implements CpuRepo {
                 .limit(1);
         log.info(query.getCommand());
         QueryResult queryResult = influxDBTemplate.getConnection().query(query);
-        List<CpuInfo> cpuInfoList = resultMapper.toPOJO(queryResult, CpuInfo.class);
-        if (cpuInfoList == null || cpuInfoList.isEmpty()) {
+        List<CpuInfo> cpuInfo = resultMapper.toPOJO(queryResult, CpuInfo.class);
+        if (cpuInfo == null || cpuInfo.isEmpty()) {
             throw new RepoException();
         }
-        return resultMapper.toPOJO(queryResult, CpuInfo.class).get(0);
+        return cpuInfo.get(0);
     }
 
 

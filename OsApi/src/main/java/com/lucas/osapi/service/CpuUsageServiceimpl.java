@@ -90,11 +90,11 @@ public class CpuUsageServiceimpl implements CpuUsageService {
 
         List<CpuUsage> topValue = new ArrayList<>();
 
-        if(cpuUsage.size() > 5){
-            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getCpuUsage).reversed()).limit(5)
-                .forEach(topValue::add);
-        }else {
+        if (cpuUsage.size() <= 5) {
             cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getCpuUsage).reversed())
+                .forEach(topValue::add);
+        } else {
+            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getCpuUsage).reversed()).limit(5)
                 .forEach(topValue::add);
         }
         return topValue;
