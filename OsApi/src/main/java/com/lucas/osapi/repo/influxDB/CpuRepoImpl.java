@@ -50,11 +50,6 @@ public class CpuRepoImpl implements CpuRepo {
     @Value("${spring.influxdbRepo.cpu-table.tag}")
     private String tagKey;
 
-
-
-
-
-
     @Override
     public List<CpuUsage> findListUsage() {
         Query query = select("uid","cpuUsage","userUsage","sysUsage")

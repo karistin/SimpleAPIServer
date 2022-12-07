@@ -20,12 +20,15 @@ import org.influxdb.annotation.Measurement;
 @Setter
 @Measurement(name = "DiskInfo", database = "OsData")
 public class DiskUsage {
+
+    @Column(name = "diskInodeUsed")
+    private double diskInodeUsed;
+
+    @Column(name = "diskIOPS")
+    private double diskIOPS;
+
     @Column(name = "diskUsage")
     private double diskUsage;
-
-
-    @Column(name = "diskinfo")
-    private String diskinfo;
 
     @Column(name = "uid")
     private String uid;
