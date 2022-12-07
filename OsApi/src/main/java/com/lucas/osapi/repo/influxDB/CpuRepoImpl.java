@@ -3,6 +3,7 @@ package com.lucas.osapi.repo.influxDB;
 import com.lucas.osapi.advice.exception.RepoException;
 import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.CpuUsage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
@@ -39,6 +40,7 @@ import static org.influxdb.querybuilder.time.DurationLiteral.SECOND;
  * 2022-11-21        lucas       최초 생성
  */
 @Repository
+@RequiredArgsConstructor
 @Slf4j
 public class CpuRepoImpl implements CpuRepo {
     @Autowired
@@ -50,11 +52,6 @@ public class CpuRepoImpl implements CpuRepo {
     @Value("${spring.influxdbRepo.cpu-table.tag}")
     private String tagKey;
 
-
-
-
-
-
     @Override
     public List<CpuUsage> findListUsage() {
         Query query = select("uid","cpuUsage","userUsage","sysUsage")
@@ -65,7 +62,11 @@ public class CpuRepoImpl implements CpuRepo {
 
         log.info(query.getCommand());
         QueryResult queryResult = influxDBTemplate.query(query);
-        return resultMapper.toPOJO(queryResult, CpuUsage.class);
+        List<CpuUsage> cpuUsageList = resultMapper.toPOJO(queryResult, CpuUsage.class);
+        if (cpuUsageList.isEmpty()) {
+            throw new RepoException();
+        }
+        return cpuUsageList;
     }
 
     //    Dot data
@@ -79,7 +80,7 @@ public class CpuRepoImpl implements CpuRepo {
         log.info(query.getCommand());
         QueryResult queryResult = influxDBTemplate.query(query);
         List<CpuInfo> cpuInfo = resultMapper.toPOJO(queryResult, CpuInfo.class);
-        if (cpuInfo == null) {
+        if (cpuInfo.isEmpty()) {
             throw new RepoException();
         }
         return cpuInfo;

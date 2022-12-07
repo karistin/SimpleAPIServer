@@ -128,11 +128,11 @@ public class insertMain {
                 diskInfo.setDiskMountPoint("/");
                 diskInfo.setDiskMountOptions("rw");
                 diskInfo.setDiskBlockSize("4KiB");
-
                 diskInfo.setDiskUsage(10 + 50*rand.nextDouble());
                 diskInfo.setDiskIOPSRead(0.2*rand.nextDouble());
                 diskInfo.setDiskIOPSWrite(2*rand.nextDouble());
                 diskInfo.setDiskBpsRead(20 * rand.nextDouble()+"KiB");
+                diskInfo.setDiskIOPS(diskInfo.getDiskIOPSRead()+ diskInfo.getDiskIOPSWrite());
                 diskInfo.setDiskBpsWrite(20 * rand.nextDouble() +"KiB");
                 diskInfo.setDiskUsedSpace(30*rand.nextDouble());
                 diskInfo.setDiskUsedSpaceByte(30*rand.nextDouble() + "GiB");

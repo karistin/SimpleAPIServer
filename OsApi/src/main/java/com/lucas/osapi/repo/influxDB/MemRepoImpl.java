@@ -1,8 +1,6 @@
 package com.lucas.osapi.repo.influxDB;
 
 import com.lucas.osapi.advice.exception.RepoException;
-import com.lucas.osapi.entity.CpuInfo;
-import com.lucas.osapi.entity.CpuUsage;
 import com.lucas.osapi.entity.MemInfo;
 import com.lucas.osapi.entity.MemUsage;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +22,7 @@ import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.subTime;
 import static org.influxdb.querybuilder.time.DurationLiteral.MINUTE;
 
 /**
- * packageName    : com.lucas.osapi.repo.influxDB
+ * packageName    : com.lucas.OsApi.repo.influxDB
  * fileName       : MemRepoImpl
  * author         : lucas
  * date           : 2022-11-21
@@ -38,13 +36,16 @@ import static org.influxdb.querybuilder.time.DurationLiteral.MINUTE;
 @Slf4j
 public class MemRepoImpl implements MemRepo{
 
-    @Autowired
-    private InfluxDBTemplate<Point> influxDBTemplate;
+    private final InfluxDBTemplate<Point> influxDBTemplate;
 
     @Value("${spring.influxdbRepo.mem-table.name}")
     private String tableName;
     @Value("${spring.influxdbRepo.mem-table.tag}")
     private String tagKey;
+
+    public MemRepoImpl(InfluxDBTemplate<Point> influxDBTemplate) {
+        this.influxDBTemplate = influxDBTemplate;
+    }
 
 
     @Override

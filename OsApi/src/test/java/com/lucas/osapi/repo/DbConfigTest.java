@@ -1,6 +1,7 @@
 package com.lucas.osapi.repo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lucas.osapi.config.InfluxDBConfiguration;
 import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.DiskInfo;
 import com.lucas.osapi.entity.MemInfo;
@@ -26,6 +27,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -47,7 +49,7 @@ import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = {InfluxDBConfiguration.class})
 @Slf4j
 public class DbConfigTest {
     @Autowired
@@ -59,12 +61,12 @@ public class DbConfigTest {
     @Value("${spring.influxdb.retention-policy}")
     private String retentionPolicy;
 
-    private InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
+    private final InfluxDBResultMapper resultMapper = new InfluxDBResultMapper();
 
 
     @Test
     @DisplayName("Db properties")
-    public void DbConfigTest(){
+    public void DbPropertiesTest(){
         assertEquals(influxDBTemplate.getDatabase(), dbName);
         assertEquals(influxDBTemplate.getRetentionPolicy(), retentionPolicy);
     }
@@ -106,17 +108,16 @@ public class DbConfigTest {
     public void DiskTable(){
         QueryResult result = influxDBTemplate.getConnection().query(new Query("select * from DiskInfo limit 1", dbName));
         List<String> colums = result.getResults().get(0).getSeries().get(0).getColumns();
-        List<String> diskInfoCol = Arrays.asList("time", "diskDeviceId","uid", "diskFileSystem", "diskMountPoint","diskMountOptions","diskBlockSize","hostname",
-                "diskUsage","diskIOPSWrite","diskIOPSRead","diskBpsWrite","diskBpsRead",
+        List<String> diskInfoCol = Arrays.asList("time", "diskDeviceId","diskIOPS","uid", "diskFileSystem", "diskMountPoint","diskMountOptions"
+            ,"diskBlockSize","hostname", "diskUsage","diskIOPSWrite","diskIOPSRead","diskBpsWrite","diskBpsRead",
                 "diskUsedSpace","diskUsedSpaceByte","diskQueuelength", "diskInodeUsed", "diskFreeSpacePercentage", "diskFreeSpaceByte");
 
-
-        assertEquals(colums.size(), diskInfoCol.size());
 
         for (String colum : colums) {
             assertTrue(diskInfoCol.contains(colum));
         }
 
+        assertEquals(colums.size(), diskInfoCol.size());
         List<DiskInfo> diskInfos = resultMapper.toPOJO(result, DiskInfo.class);
         assertNotNull(diskInfos.get(0));
 

@@ -3,10 +3,12 @@ package com.lucas.osapi.repo.influxDB;
 import com.lucas.osapi.advice.exception.RepoException;
 import com.lucas.osapi.entity.DiskInfo;
 import com.lucas.osapi.entity.DiskUsage;
+
+import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,10 +17,13 @@ import java.util.List;
 
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.desc;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.eq;
+import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.gt;
 import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.select;
+import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.subTime;
+import static org.influxdb.querybuilder.time.DurationLiteral.MINUTE;
 
 /**
- * packageName    : com.lucas.osapi.repo.influxDB
+ * packageName    : com.lucas.OsApi.repo.influxDB
  * fileName       : DiskRepoImpl
  * author         : lucas
  * date           : 2022-11-21
@@ -28,80 +33,109 @@ import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.select;
  * -----------------------------------------------------------
  * 2022-11-21        lucas       최초 생성
  */
+@Slf4j
 @Repository
 public class DiskRepoImpl implements DiskRepo {
 
-    @Autowired
-    private InfluxDBTemplate<Point> influxDBTemplate;
+    private final InfluxDBTemplate<Point> influxDBTemplate;
 
     @Value("${spring.influxdbRepo.disk-table.name}")
     private String tableName;
     @Value("${spring.influxdbRepo.disk-table.tagKey}")
     private String tagKey;
-    @Value("${spring.influxdbRepo.disk-table.usage}")
-    private String mainCol;
 
-
-
-    @Override
-    public QueryResult findbyIdIops(String key) {
-        return null;
+    public DiskRepoImpl(InfluxDBTemplate<Point> influxDBTemplate) {
+        this.influxDBTemplate = influxDBTemplate;
     }
 
-    @Override
-    public QueryResult findbyIdInode(String key) {
-        return influxDBTemplate.getConnection().query(new Query("select mean(diskUsage) from (select diskUsage from DiskInfo where uid='"+key+"' order " +
-                "by time DESC limit 2 )  order by time desc",influxDBTemplate.getDatabase()));
-    }
-
-    @Override
-    public QueryResult findbyIdUsage(String key) {
-        return influxDBTemplate.getConnection().query(new Query("select mean(diskUsage) from (select diskUsage from DiskInfo where uid='"+key+"' order by time DESC limit 2 )  order by time desc",influxDBTemplate.getDatabase()));
-    }
 
     @Override
     public List<DiskUsage> findListUsage() {
-        Query query = select(mainCol)
-                .from(influxDBTemplate.getDatabase(),tableName)
-                .orderBy(desc())
-                .limit(1);
-        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
-        return resultMapper.toPOJO(queryResult, DiskUsage.class);
-    }
+        Query query = select("uid","diskUsage","diskIOPS","diskInodeUsed")
+            .from(influxDBTemplate.getDatabase(),tableName)
+            .groupBy(tagKey)
+            .orderBy(desc())
+            .limit(1);
 
-    @Override
-    public List<DiskInfo> findList() {
-        Query query = select("*")
-                .from(influxDBTemplate.getDatabase(),tableName)
-                .orderBy(desc())
-                .limit(1);
-
-        return null;
-    }
-
-    @Override
-    public DiskInfo findById(String key) {
-        Query query = select("*")
-                .from(influxDBTemplate.getDatabase(),tableName)
-                .where(eq(tagKey,key))
-                .orderBy(desc())
-                .limit(1);
-        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
-        DiskInfo diskInfo = resultMapper.toPOJO(queryResult, DiskInfo.class).get(0);
-        if (diskInfo == null) {
+        log.info(query.getCommand());
+        QueryResult queryResult = influxDBTemplate.query(query);
+        List<DiskUsage> diskInfo =  resultMapper.toPOJO(queryResult, DiskUsage.class);
+        if (diskInfo.isEmpty()) {
             throw new RepoException();
         }
         return diskInfo;
     }
 
+    //    Dot data
     @Override
-    public List<DiskInfo> findByIdRange(String key, Long time) {
-        return null;
+    public List<DiskInfo> findList() {
+        Query query = select()
+            .from(influxDBTemplate.getDatabase(),tableName)
+            .groupBy(tagKey)
+            .orderBy(desc())
+            .limit(1);
+        log.info(query.getCommand());
+        QueryResult queryResult = influxDBTemplate.query(query);
+        List<DiskInfo> diskInfo = resultMapper.toPOJO(queryResult, DiskInfo.class);
+        log.info(String.valueOf(diskInfo.size()));
+        if (diskInfo.isEmpty()) {
+            throw new RepoException();
+        }
+        return diskInfo;
     }
 
+
+
+    //    Dot data
     @Override
-    public List<DiskInfo> findByIdRange(String key, long time) {
-        return null;
+    public DiskInfo findById(String key) {
+        Query query = select()
+            .from(influxDBTemplate.getDatabase(),tableName)
+            .where(eq(tagKey,key))
+            .orderBy(desc())
+            .limit(1);
+        log.info(query.getCommand());
+        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
+        List<DiskInfo> diskInfo = resultMapper.toPOJO(queryResult, DiskInfo.class);
+        if (diskInfo.isEmpty()) {
+            throw new RepoException();
+        }
+        return diskInfo.get(0);
+    }
+
+
+//    Range Data
+
+    @Override
+    public List<DiskInfo> findByIdRange(String key, Long time) {
+        Query query = select()
+            .from(influxDBTemplate.getDatabase(), tableName)
+            .where(eq(tagKey, key)).and(gt("time",subTime(time, MINUTE)));
+
+        log.info(query.getCommand());
+        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
+        List<DiskInfo> diskInfo = resultMapper.toPOJO(queryResult, DiskInfo.class);
+        if (diskInfo.isEmpty()) {
+            throw new RepoException();
+        }
+        return diskInfo;
+    }
+
+
+    @Override
+    public List<DiskUsage> findByIdRangeUsage(String key, Long time) {
+        Query query = select("uid","diskUsage","diskIOPS","diskInodeUsed")
+            .from(influxDBTemplate.getDatabase(), tableName)
+            .where(eq(tagKey,key))
+            .and(gt("time",subTime(
+                time, MINUTE)));
+        QueryResult queryResult = influxDBTemplate.getConnection().query(query);
+        List<DiskUsage> queryResultList = resultMapper.toPOJO(queryResult, DiskUsage.class);
+        log.info(query.getCommand());
+        if (queryResultList.isEmpty()) {
+            throw new RepoException();
+        }
+        return queryResultList;
     }
 
     @Override

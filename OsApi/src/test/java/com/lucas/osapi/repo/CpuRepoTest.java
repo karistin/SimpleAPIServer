@@ -1,11 +1,13 @@
 package com.lucas.osapi.repo;
 
+import com.lucas.osapi.config.InfluxDBConfiguration;
 import com.lucas.osapi.config.InfluxDBConfigurationTest;
 import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.CpuUsage;
 import com.lucas.osapi.repo.influxDB.CpuRepo;
 import com.lucas.osapi.repo.influxDB.CpuRepoImpl;
 import com.lucas.osapi.repo.influxDB.DiskRepo;
+import com.lucas.osapi.repo.influxDB.DiskRepoImpl;
 import com.lucas.osapi.repo.influxDB.MemRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.InfluxDB;
@@ -50,7 +52,7 @@ import static org.junit.Assert.assertNotNull;
 //           "values":[["2015-06-06T14:55:27.195Z",90],["2015-06-06T14:56:24.556Z",90]]}]}]}
 // {"results":[{"series":[{"name":"databases","columns":["name"],"values":[["mydb"]]}]}]}
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = {CpuRepoImpl.class, InfluxDBConfiguration.class})
 @Slf4j
 public class CpuRepoTest {
 

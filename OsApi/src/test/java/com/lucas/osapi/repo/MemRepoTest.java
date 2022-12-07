@@ -3,12 +3,15 @@ package com.lucas.osapi.repo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 
+import com.lucas.osapi.config.InfluxDBConfiguration;
 import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.CpuUsage;
 import com.lucas.osapi.entity.MemInfo;
 import com.lucas.osapi.entity.MemUsage;
 import com.lucas.osapi.repo.influxDB.CpuRepo;
+import com.lucas.osapi.repo.influxDB.DiskRepoImpl;
 import com.lucas.osapi.repo.influxDB.MemRepo;
+import com.lucas.osapi.repo.influxDB.MemRepoImpl;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -34,7 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 //           "values":[["2015-06-06T14:55:27.195Z",90],["2015-06-06T14:56:24.556Z",90]]}]}]}
 // {"results":[{"series":[{"name":"databases","columns":["name"],"values":[["mydb"]]}]}]}
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = {MemRepoImpl.class, InfluxDBConfiguration.class})
 @Slf4j
 public class MemRepoTest {
 
