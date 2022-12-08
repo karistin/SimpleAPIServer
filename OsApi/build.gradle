@@ -24,6 +24,9 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.22'
     implementation 'org.testng:testng:7.1.0'
 
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     testImplementation 'junit:junit:4.13.1'

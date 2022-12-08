@@ -1,5 +1,6 @@
 package com.lucas.osapi.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.influxdb.annotation.Column;
@@ -18,6 +19,7 @@ import org.influxdb.annotation.Measurement;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 @Measurement(name = "DiskInfo", database = "OsData")
 public class DiskUsage {
 
@@ -32,4 +34,14 @@ public class DiskUsage {
 
     @Column(name = "uid")
     private String uid;
+
+    @Override
+    public String toString() {
+        return "DiskUsage{" +
+            "diskInodeUsed=" + diskInodeUsed +
+            ", diskIOPS=" + diskIOPS +
+            ", diskUsage=" + diskUsage +
+            ", uid='" + uid + '\'' +
+            '}';
+    }
 }
