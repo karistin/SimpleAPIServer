@@ -1,7 +1,9 @@
 package com.lucas.osapi.repo.influxDB;
 
+import com.lucas.osapi.entity.CpuUsage;
 import com.lucas.osapi.entity.DiskInfo;
 import com.lucas.osapi.entity.DiskUsage;
+import org.influxdb.dto.QueryResult;
 
 import java.util.List;
 
