@@ -1,0 +1,7 @@
+# docker run -d --name influxdb -p 8086:8086 -e INFLUXDB_ADMIN_USER=admin -e INFLUX_ADMIN_PASSWORD=admin123 -v influx_data:/var/lib/influxdb influxdb:1.8
+# you must set influxdb version under 2.0
+#  https://www.youtube.com/watch?v=0CpHwszFjUY
+# https://docs.influxdata.com/influxdb/v1.4/tools/shell/#execute-an-influxql-command-and-quit-with-execute
+#--precision 'rfc3339'
+
+#insert into measer

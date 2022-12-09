@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+subprojects{
+    group = 'com.example.practice'
+    version = '0.0.1-SNAPSHOT'
+
+    apply plugin:'java'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    }
+    test {
+        useJUnitPlatform()
+    }
+
+}
