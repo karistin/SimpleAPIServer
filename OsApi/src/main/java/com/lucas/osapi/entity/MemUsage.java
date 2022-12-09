@@ -27,6 +27,12 @@ public class MemUsage {
     /*
     * Memory 10s average
     * */
+
+    @TimeColumn
+    @Column(name = "time")
+    private Instant time;
+
+
     @Column(name = "memUsage")
     private double memUsage;
 
