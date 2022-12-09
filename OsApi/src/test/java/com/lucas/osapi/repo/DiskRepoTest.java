@@ -43,7 +43,16 @@ public class DiskRepoTest {
         List<DiskInfo> diskInfoList  = diskRepo.findList();
         assertNotNull(diskInfoList);
         diskInfoList.forEach(diskInfo -> assertThat(diskInfo).hasNoNullFieldsOrProperties());
+    }
 
+    @Test
+    @DisplayName("findListUsage")
+    public void findListUsage() {
+        List<DiskUsage> diskUsage = diskRepo.findListUsage();
+        assertNotNull(diskUsage);
+        for (DiskUsage usage : diskUsage) {
+            assertThat(usage).hasNoNullFieldsOrProperties();
+        }
     }
 
     @Test
