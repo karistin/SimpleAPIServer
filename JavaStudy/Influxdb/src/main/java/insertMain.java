@@ -96,23 +96,24 @@ public class insertMain {
                 memInfo.setHostname(hostname);
                 usage = (5+(20) * rand.nextDouble());
                 memInfo.setMemUsage(usage);
-//                KB
-                double mem = 7.894967;
-                memInfo.setMemUsageByteAll(mem +"GiB");
-                memInfo.setMemUsageByteFree(mem*0.5 +"GiB");
-                memInfo.setMemUsageByteCached(mem*0.3 +"GiB");
-                memInfo.setMemUsageByteBuffers(mem*0.1 +"GiB");
-                memInfo.setMemUsageByteUsed(mem*0.2 +"GiB");
+//                Gib = KB * 1e6
+//                gib = byte * 1e9
+                double mem = 7.894967 * 1E9;
+                memInfo.setMemUsageByteAll(mem);
+                memInfo.setMemUsageByteFree(mem*0.5);
+                memInfo.setMemUsageByteCached(mem*0.3);
+                memInfo.setMemUsageByteBuffers(mem*0.1);
+                memInfo.setMemUsageByteUsed(mem*0.2);
                 memInfo.setMemAvilable(memInfo.getMemUsageByteFree());
 
                 //MiB
-                memInfo.setMemSReclaimable((36+(60) * rand.nextDouble()) + "MiB");
-                memInfo.setMemSUnreclaim(45+(75) * rand.nextDouble() + "MiB");
-                memInfo.setMemSlab(80+(120) * rand.nextDouble() + "MiB");
+                memInfo.setMemSReclaimable( ((36+(60) * rand.nextDouble())) *1e6);
+                memInfo.setMemSUnreclaim((45+(75) * rand.nextDouble()) * 1e6);
+                memInfo.setMemSlab( (80+(120) * rand.nextDouble()) * 1e6);
 
                 memInfo.setMemSwapUsed(rand.nextDouble());
-                memInfo.setMemSwapUsedByte(rand.nextDouble() + "Byte");
-                memInfo.setMemPageFault((42) * rand.nextDouble() + "K");
+                memInfo.setMemSwapUsedByte(rand.nextDouble());
+                memInfo.setMemPageFault(((42) * rand.nextDouble()) * 1e3);
 
 
 
@@ -121,16 +122,17 @@ public class insertMain {
                 diskInfo.setUid(hostname);
                 diskInfo.setHostname(hostname);
 
+//                TODO : KIB
                 diskInfo.setDiskDeviceId("/dev/sdd");
                 diskInfo.setDiskFileSystem("ext4");
                 diskInfo.setDiskMountPoint("/");
                 diskInfo.setDiskMountOptions("rw");
                 diskInfo.setDiskBlockSize("4KiB");
-
                 diskInfo.setDiskUsage(10 + 50*rand.nextDouble());
                 diskInfo.setDiskIOPSRead(0.2*rand.nextDouble());
                 diskInfo.setDiskIOPSWrite(2*rand.nextDouble());
                 diskInfo.setDiskBpsRead(20 * rand.nextDouble()+"KiB");
+                diskInfo.setDiskIOPS(diskInfo.getDiskIOPSRead()+ diskInfo.getDiskIOPSWrite());
                 diskInfo.setDiskBpsWrite(20 * rand.nextDouble() +"KiB");
                 diskInfo.setDiskUsedSpace(30*rand.nextDouble());
                 diskInfo.setDiskUsedSpaceByte(30*rand.nextDouble() + "GiB");

@@ -31,74 +31,73 @@ import java.util.Optional;
 @Service
 public class MemUsageServiceimpl implements MemUsageService {
 //    @Autowired
-//    private InfluxDBTemplate<Point> influxDBTemplate;
 
+//    private InfluxDBTemplate<Point> influxDBTemplate;
     @Autowired
     private MemRepo memRepo;
 
     @Override
-    public List<MemUsage> findList() {
-//        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+    public List<MemInfo> List() {
+        return memRepo.findList();
+    }
+
+    @Override
+    public List<MemUsage> ListUsage() {
         return memRepo.findListUsage();
     }
 
     @Override
-    public Optional<List<MemUsage>> findTop() {
-//        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<MemUsage> memUsage = memRepo.findListUsage();
-        if (memUsage.isEmpty()) {
-            return Optional.empty();
-        }
-
-        List<MemUsage> topValue = new ArrayList<>();
-
-        if(memUsage.size() > 5){
-            memUsage.stream().sorted(Comparator.comparing(MemUsage::getMemUsage).reversed()).limit(5)
-                    .forEach(topValue::add);
-        }else {
-            memUsage.stream().sorted(Comparator.comparing(MemUsage::getMemUsage).reversed())
-                    .forEach(topValue::add);
-        }
-        return Optional.of(topValue);
+    public MemInfo Id(String uid) {
+        return memRepo.findById(uid);
     }
 
     @Override
-    public Optional<Double> findAverage() {
-//        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+    public List<MemInfo> IdRange(String key, Long time) {
+        return memRepo.findByIdRange(key, time);
+    }
+
+    @Override
+    public List<MemUsage> IdRangeUsage(String key, Long time) {
+        return memRepo.findbyIdRangeUsage(key, time);
+    }
+
+
+
+    @Override
+    public List<MemUsage> Top() {
+
+        List<MemUsage> memUsage = memRepo.findListUsage();
+        List<MemUsage> topValue = new ArrayList<>();
+
+        if (memUsage.size() <= 5) {
+            memUsage.stream().sorted(Comparator.comparing(MemUsage::getMemUsage)
+                    .reversed())
+                    .forEach(topValue::add);
+        } else {
+            memUsage.stream().sorted(Comparator.comparing(MemUsage::getMemUsage).reversed())
+                .limit(5)
+                .forEach(topValue::add);
+        }
+        return topValue;
+    }
+
+    @Override
+    public Optional<Double> Average() {
         List<MemUsage> memUsage = memRepo.findListUsage();
         return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMemUsage).average().orElseThrow());
     }
 
     @Override
-    public Optional<Double> findMax() {
-//        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+    public Optional<Double> Max() {
         List<MemUsage> memUsage = memRepo.findListUsage();
         return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMemUsage).max().orElseThrow());
     }
 
     @Override
-    public Optional<Double> findMin() {
-//        String query =  "select MEAN(memUsage) from MemInfo group by uid limit 2";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+    public Optional<Double> Min() {
         List<MemUsage> memUsage = memRepo.findListUsage();
         return Optional.of(memUsage.stream().mapToDouble(MemUsage::getMemUsage).min().orElseThrow());
     }
 
-//    @Override
-//    public Optional<MemUsage> findByIdUsage(String uid) {
-////        String query = "select uid, mean from (select MEAN(memUsage) from MemInfo group by uid limit 2) where uid='"+uid+"'";
-////        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-//        return Optional.ofNullable(resultMapper.toPOJO(memRepo.findById(uid), MemUsage.class).get(0));
-//    }
 
-    @Override
-    public Optional<MemInfo> findById(String uid) {
-//        String query = "select * from MemInfo where uid='"+uid+"' limit 1";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return Optional.ofNullable(memRepo.findById(uid));
-    }
 }

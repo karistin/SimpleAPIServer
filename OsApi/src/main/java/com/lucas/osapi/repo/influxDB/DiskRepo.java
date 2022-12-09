@@ -19,8 +19,8 @@ import java.util.List;
  * 2022-11-21        lucas       최초 생성
  */
 public interface DiskRepo extends InfluxDBRepo<DiskInfo>{
-    QueryResult findbyIdIops(String key);
-    QueryResult findbyIdInode(String key);
-    QueryResult findbyIdUsage(String key);
+
     List<DiskUsage> findListUsage();
+    List<DiskUsage> findByIdRangeUsage(String key, Long time);
+
 }

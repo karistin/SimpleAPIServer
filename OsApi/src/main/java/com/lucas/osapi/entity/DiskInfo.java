@@ -51,6 +51,9 @@ public class DiskInfo {
     @Column(name = "diskUsage")
     private double diskUsage;
 
+    @Column(name = "diskIOPS")
+    private double diskIOPS;
+
     @Column(name = "diskIOPSWrite")
     private double diskIOPSWrite;
 
@@ -81,7 +84,5 @@ public class DiskInfo {
 
     @Column(name = "diskFreeSpaceByte")
     private String diskFreeSpaceByte;
-
-
 
 }

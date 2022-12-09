@@ -18,6 +18,8 @@ import java.util.List;
  * 2022-11-21        lucas       최초 생성
  */
 public interface CpuRepo extends InfluxDBRepo<CpuInfo> {
-    List<CpuUsage> findbyIdRangeUsage(String key, String time);
+    List<CpuUsage> findbyIdRangeUsage(String key, Long time);
     List<CpuUsage> findListUsage();
+
+
 }

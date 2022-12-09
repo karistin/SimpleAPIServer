@@ -21,4 +21,7 @@ import java.util.List;
  */
 public interface MemRepo extends InfluxDBRepo<MemInfo> {
     List<MemUsage> findListUsage();
+
+    List<MemUsage> findbyIdRangeUsage(String key, Long time);
+
 }

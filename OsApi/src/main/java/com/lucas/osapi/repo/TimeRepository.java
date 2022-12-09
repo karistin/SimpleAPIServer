@@ -21,5 +21,5 @@ public interface TimeRepository<T> {
 
     T findById(String key);
 
-    List<T> findByIdRange(String key, String time);
+    List<T> findByIdRange(String key, Long time);
 }

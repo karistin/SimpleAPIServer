@@ -1,40 +1,25 @@
 package com.lucas.osapi.repo;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
+
 import com.lucas.osapi.config.InfluxDBConfiguration;
-import com.lucas.osapi.config.InfluxDBConfigurationTest;
 import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.CpuUsage;
+import com.lucas.osapi.entity.MemInfo;
+import com.lucas.osapi.entity.MemUsage;
 import com.lucas.osapi.repo.influxDB.CpuRepo;
-import com.lucas.osapi.repo.influxDB.CpuRepoImpl;
-import com.lucas.osapi.repo.influxDB.DiskRepo;
 import com.lucas.osapi.repo.influxDB.DiskRepoImpl;
 import com.lucas.osapi.repo.influxDB.MemRepo;
+import com.lucas.osapi.repo.influxDB.MemRepoImpl;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.influxdb.InfluxDB;
-import org.influxdb.dto.Point;
-import org.influxdb.dto.QueryResult;
-import org.influxdb.impl.InfluxDBResultMapper;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
-import org.testng.annotations.BeforeTest;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * packageName    : com.lucas.osapi.repo
@@ -52,12 +37,12 @@ import static org.junit.Assert.assertNotNull;
 //           "values":[["2015-06-06T14:55:27.195Z",90],["2015-06-06T14:56:24.556Z",90]]}]}]}
 // {"results":[{"series":[{"name":"databases","columns":["name"],"values":[["mydb"]]}]}]}
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = {CpuRepoImpl.class, InfluxDBConfiguration.class})
+@SpringBootTest(classes = {MemRepoImpl.class, InfluxDBConfiguration.class})
 @Slf4j
-public class CpuRepoTest {
+public class MemRepoTest {
 
     @Autowired
-    private CpuRepo cpuRepo;
+    private MemRepo memRepo;
 
     private final String  key = "serverA";
     private final long time = 30;
@@ -67,7 +52,7 @@ public class CpuRepoTest {
     @Test
     @DisplayName("findList")
     public void findList(){
-        List<CpuInfo> cpuInfoList  = cpuRepo.findList();
+        List<MemInfo> cpuInfoList  = memRepo.findList();
         assertNotNull(cpuInfoList);
         cpuInfoList.forEach(cpuInfo -> assertThat(cpuInfo).hasNoNullFieldsOrProperties());
 
@@ -76,7 +61,7 @@ public class CpuRepoTest {
     @Test
     @DisplayName("findById")
     public void findById(){
-        CpuInfo cpuInfo = cpuRepo.findById(key);
+        MemInfo cpuInfo = memRepo.findById(key);
         assertNotNull(cpuInfo);
         assertThat(cpuInfo).hasNoNullFieldsOrProperties();
 
@@ -86,7 +71,7 @@ public class CpuRepoTest {
     @Test
     @DisplayName("findByIdRange")
     public void findByIdRange(){
-        List<CpuInfo> cpuInfos = cpuRepo.findByIdRange(key, time);
+        List<MemInfo> cpuInfos = memRepo.findByIdRange(key, time);
         cpuInfos.forEach(cpuInfo -> assertThat(cpuInfo).hasNoNullFieldsOrProperties());
     }
 
@@ -94,7 +79,7 @@ public class CpuRepoTest {
     @Test
     @DisplayName("findByIdRangeUsage")
     public void findByIdRangeUsage(){
-        List<CpuUsage> cpuInfos = cpuRepo.findbyIdRangeUsage(key, time);
+        List<MemUsage> cpuInfos = memRepo.findbyIdRangeUsage(key, time);
         cpuInfos.forEach(cpuInfo -> assertThat(cpuInfo).hasNoNullFieldsOrProperties());
     }
 

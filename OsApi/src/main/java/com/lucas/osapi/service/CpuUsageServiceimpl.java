@@ -36,96 +36,70 @@ import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.select;
 @Service
 public class CpuUsageServiceimpl implements CpuUsageService {
 
-//    @Autowired
-//    private InfluxDBTemplate<Point> influxDBTemplate;
+    private final CpuRepo cpuRepo;
 
-    @Autowired
-    private CpuRepo cpuRepo;
-    /*
-     * Time now()
-     * uid가 가지고 있는 Cpu data 출력
-     *  */
-
-
-    /*
-    * 최신 CPU 사용량 TOP 5 가져오기
-    * TODO : queryBuilder를 사용한 쿼리문 제작하기
-    *  https://github.com/influxdata/influxdb-java/blob/master/QUERY_BUILDER.md
-
-    *  TODO : cpuTodoList 정렬해서 보낼것인가???
-    *   https://stackoverflow.com/questions/12184378/sorting-linkedhashmap
-    * */
-
+    public CpuUsageServiceimpl(CpuRepo cpuRepo) {
+        this.cpuRepo = cpuRepo;
+    }
 
     @Override
-    public List<CpuUsage> findList() {
-//        Query query = BuiltQuery.QueryBuilder.
-//        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+    public List<CpuInfo> List() {
+        return cpuRepo.findList();
+    }
 
+    public List<CpuUsage> ListUsage(){
         return cpuRepo.findListUsage();
     }
 
-    /*
-    * 정렬하고 5개만 나오기
-    * TODO : query 수정
-    * */
     @Override
-    public Optional<List<CpuUsage>> findTop() {
-//        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        List<CpuUsage> cpuUsage = cpuRepo.findListUsage();
-        if (cpuUsage.isEmpty()) {
-            return Optional.empty();
-        }
+    public CpuInfo Id(String uid) {
+        return cpuRepo.findById(uid);
+    }
 
-        List<CpuUsage> topValue = new ArrayList<>();
 
-        if(cpuUsage.size() > 5){
-            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getCpuUsage).reversed()).limit(5)
-                    .forEach(topValue::add);
-        }else {
-            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getCpuUsage).reversed())
-                    .forEach(topValue::add);
-        }
-        return Optional.of(topValue);
+    @Override
+    public List<CpuInfo> IdRange(String key, Long time){
+        return cpuRepo.findByIdRange(key, time);
     }
 
     @Override
-    public Optional<Double> findAverage() {
-//        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+    public List<CpuUsage> IdRangeUsage(String key, Long time){
+        return cpuRepo.findbyIdRangeUsage(key, time);
+    }
+
+    @Override
+    public Optional<Double> Average() {
         List<CpuUsage> cpuUsage = cpuRepo.findListUsage();
         return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getCpuUsage).average().orElse(Double.NaN));
     }
 
     @Override
-    public Optional<Double> findMax() {
-//        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+    public Optional<Double> Max() {
         List<CpuUsage> cpuUsage = cpuRepo.findListUsage();
         return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getCpuUsage).max().orElse(Double.NaN));
     }
 
     @Override
-    public Optional<Double> findMin() {
-//        String query =  "select MEAN(cpuUsage) from CpuInfo group by uid limit 2";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
+    public Optional<Double> Min() {
         List<CpuUsage> cpuUsage = cpuRepo.findListUsage();
+//        TODO : Double -> Json
+//         CpuUsage minCpuUsage = cpuUsage.stream().mapToDouble(CpuUsage::getCpuUsage).min().getClass();
         return Optional.of(cpuUsage.stream().mapToDouble(CpuUsage::getCpuUsage).min().orElse(Double.NaN));
     }
 
-//    @Override
-//    public Optional<CpuUsage> findByIdUsage(String uid) {
-////        String query = "select uid, mean from (select MEAN(cpuUsage) from CpuInfo group by uid limit 2) where uid='"+uid+"'";
-////        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-//        return Optional.ofNullable(resultMapper.toPOJO(cpuRepo.findByIdUsage(uid), CpuUsage.class).get(0));
-//    }
-
     @Override
-    public Optional<CpuInfo> findById(String uid) {
-//        String query = "select * from CpuInfo where uid='"+uid+"' limit 1";
-//        QueryResult queryResult = influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
-        return Optional.ofNullable(cpuRepo.findById(uid));
+    public List<CpuUsage> Top() {
+        List<CpuUsage> cpuUsage = cpuRepo.findListUsage();
+
+        List<CpuUsage> topValue = new ArrayList<>();
+
+        if (cpuUsage.size() <= 5) {
+            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getCpuUsage).reversed())
+                .forEach(topValue::add);
+        } else {
+            cpuUsage.stream().sorted(Comparator.comparing(CpuUsage::getCpuUsage).reversed()).limit(5)
+                .forEach(topValue::add);
+        }
+        return topValue;
     }
 }
