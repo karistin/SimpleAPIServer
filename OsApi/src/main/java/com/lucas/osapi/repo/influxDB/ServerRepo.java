@@ -16,5 +16,5 @@ import java.util.List;
  */
 public interface ServerRepo extends InfluxDBRepo<ServerInfo>{
 
-    List<ServerInfo> findByIdRange(String key, long time);
+
 }

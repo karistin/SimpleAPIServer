@@ -67,9 +67,7 @@ public class ServerListServiceImpl implements ServerListService {
             return Optional.empty();
         }
         List<osTypeData> osTypeDataList = new ArrayList<>();
-        /*
-        * TODO: https://m.blog.naver.com/tmondev/220353774803
-        * */
+
 
         for (ServerUsage serverUsage : serverUsages) {
             osTypeData.valueOf(serverUsage.getOsType());
