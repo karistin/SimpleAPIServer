@@ -1,12 +1,21 @@
-package com.lucas.osapi.service;
+package com.lucas.osapi.dev.service;
 
 import com.lucas.osapi.entity.CpuUsage;
+import com.lucas.osapi.entity.DiskUsage;
+import com.lucas.osapi.repo.influxDB.CpuRepo;
+import com.lucas.osapi.repo.influxDB.CpuRepoImpl;
+import com.lucas.osapi.service.CpuUsageService;
+import com.lucas.osapi.service.CpuUsageServiceimpl;
+import java.util.ArrayList;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Pong;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.influxdb.InfluxDBTemplate;
@@ -16,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * packageName    : com.lucas.osapi.service
@@ -28,35 +39,20 @@ import static org.junit.jupiter.api.Assertions.*;
  * -----------------------------------------------------------
  * 2022-11-18        lucas       최초 생성
  */
-@NoArgsConstructor
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
+@Slf4j
 class CpuUsageServiceTest {
+    private final CpuRepo cpuRepo = mock(CpuRepoImpl.class);
 
-    @Autowired
-    private InfluxDBTemplate<Point> influxDBTemplate;
+    private final CpuUsageService cpuUsageService = new CpuUsageServiceimpl(cpuRepo);
 
-    @Autowired
-    private CpuUsageServiceimpl cpuUsageService;
+    private final List<CpuUsage> cpuUsageList = new ArrayList<>();
 
-    @Mock
-    private CpuUsageServiceimpl cpuUsageServiceMock;
+    @Before
+    public void mocking() {
 
-
-    @Test
-    void pingDB(){
-        Pong pong = influxDBTemplate.ping();
-        assertTrue(pong.isGood());
     }
-//    @Test
-//    void findTop() {
-//        Optional<List<CpuUsage>> cpuUsageList = cpuUsageService.findTop();
-//        assertTrue(cpuUsageList.isPresent());
-//        List<CpuUsage> cpuUsage = cpuUsageList.get();
-//        assertEquals(5, cpuUsage.size());
-//        cpuUsageList.get().forEach(cpuUsage -> assertNotNull(cpuUsage.getCpuUsage()));
-//
-//    }
+
 
 
 }

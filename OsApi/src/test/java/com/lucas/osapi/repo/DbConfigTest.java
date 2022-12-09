@@ -107,16 +107,12 @@ public class DbConfigTest {
         List<String> diskInfoCol = Arrays.asList("time", "diskDeviceId","diskIOPS","uid", "diskFileSystem", "diskMountPoint","diskMountOptions"
             ,"diskBlockSize","hostname", "diskUsage","diskIOPSWrite","diskIOPSRead","diskBpsWrite","diskBpsRead",
                 "diskUsedSpace","diskUsedSpaceByte","diskQueuelength", "diskInodeUsed", "diskFreeSpacePercentage", "diskFreeSpaceByte");
-
-
         for (String colum : colums) {
             assertTrue(diskInfoCol.contains(colum));
         }
-
         assertEquals(colums.size(), diskInfoCol.size());
         List<DiskInfo> diskInfos = resultMapper.toPOJO(result, DiskInfo.class);
         assertNotNull(diskInfos.get(0));
-
     }
 
     @Test
