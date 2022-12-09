@@ -24,6 +24,7 @@ import java.time.Instant;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 @Measurement(name = "CpuInfo",database = "OsData")
 public class CpuUsage {
 
