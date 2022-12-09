@@ -1,4 +1,4 @@
-package com.lucas.osapi.dev.service;
+package com.lucas.dev.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -41,12 +41,18 @@ public class DiskUsageServiceTest {
 //    TODO : IOPS Col change Iops
     @Before
     public void mocking() {
-        diskUsageList.add(new DiskUsage(Instant.now(),10, 20, 30, "A"));
-        diskUsageList.add(new DiskUsage(Instant.now(),20, 20, 31, "B"));
-        diskUsageList.add(new DiskUsage(Instant.now(),30, 200, 32, "C"));
-        diskUsageList.add(new DiskUsage(Instant.now(),40, 2, 33, "D"));
-        diskUsageList.add(new DiskUsage(Instant.now(),50, 40, 34, "E"));
-        diskUsageList.add(new DiskUsage(Instant.now(),60, 600, 35, "F"));
+        diskUsageList.add(new DiskUsage()
+            .setDiskUsage(Instant.now(),10, 20, 30, "A"));
+        diskUsageList.add(new DiskUsage()
+            .setDiskUsage(Instant.now(), 20, 20, 31, "B"));
+        diskUsageList.add(new DiskUsage()
+            .setDiskUsage(Instant.now(),30, 200, 32, "C"));
+        diskUsageList.add(new DiskUsage()
+            .setDiskUsage(Instant.now(),40, 2, 33, "D"));
+        diskUsageList.add(new DiskUsage()
+            .setDiskUsage(Instant.now(),50, 40, 34, "E"));
+        diskUsageList.add(new DiskUsage()
+            .setDiskUsage(Instant.now(),60, 600, 35, "F"));
         given(diskRepo.findListUsage())
             .willReturn(diskUsageList);
     }
@@ -58,7 +64,7 @@ public class DiskUsageServiceTest {
         List<DiskUsage> diskUsageSorted = diskUsageServiceimpl.Top("diskInodeUsed");
         List<String> sortedUid = new ArrayList<>();
         diskUsageSorted.forEach(o -> sortedUid.add(o.getUid()));
-        assertEquals(sortedUid, Arrays.asList("F", "E", "D", "C", "B", "A"));
+        assertEquals(sortedUid, Arrays.asList("F", "E", "D", "C", "B"));
     }
 
     @Test
@@ -67,7 +73,7 @@ public class DiskUsageServiceTest {
         List<DiskUsage> diskUsageSorted = diskUsageServiceimpl.Top("diskIOPS");
         List<String> sortedUid = new ArrayList<>();
         diskUsageSorted.forEach(o -> sortedUid.add(o.getUid()));
-        assertEquals(Arrays.asList("F", "C", "E", "A", "B", "D") , sortedUid);
+        assertEquals(Arrays.asList("F", "C", "E", "A", "B") , sortedUid);
     }
 
     @Test
@@ -76,7 +82,7 @@ public class DiskUsageServiceTest {
         List<DiskUsage> diskUsageSorted = diskUsageServiceimpl.Top("diskUsage");
         List<String> sortedUid = new ArrayList<>();
         diskUsageSorted.forEach(o -> sortedUid.add(o.getUid()));
-        assertEquals(Arrays.asList("F", "E", "D", "C", "B", "A") , sortedUid);
+        assertEquals(Arrays.asList("F", "E", "D", "C", "B") , sortedUid);
     }
 
 

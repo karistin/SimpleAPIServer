@@ -88,17 +88,17 @@ public class DiskUsageServiceimpl implements DiskUsageService {
         switch (colType) {
             case "diskUsage":
                 diskUsage.stream().sorted(Comparator.comparing(DiskUsage::getDiskUsage)
-                        .reversed())
+                        .reversed()).limit(5)
                     .forEach(topValue::add);
                 break;
             case "diskIOPS":
                 diskUsage.stream().sorted(Comparator.comparing(DiskUsage::getDiskIOPS)
-                        .reversed())
+                        .reversed()).limit(5)
                     .forEach(topValue::add);
                 break;
             case "diskInodeUsed":
                 diskUsage.stream().sorted(Comparator.comparing(DiskUsage::getDiskInodeUsed)
-                        .reversed())
+                        .reversed()).limit(5)
                     .forEach(topValue::add);
                 break;
             default:

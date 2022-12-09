@@ -24,7 +24,6 @@ import java.time.Instant;
  */
 @Getter
 @Setter
-@AllArgsConstructor
 @Measurement(name = "CpuInfo",database = "OsData")
 public class CpuUsage {
 
@@ -44,4 +43,12 @@ public class CpuUsage {
     @Column(name = "uid")
     private String uid;
 
+    public CpuUsage setCpuUsage(Instant time, double cpuUsage, double userUsage, double sysUsage, String uid) {
+        this.time = time;
+        this.cpuUsage = cpuUsage;
+        this.userUsage = userUsage;
+        this.sysUsage = sysUsage;
+        this.uid = uid;
+        return this;
+    }
 }

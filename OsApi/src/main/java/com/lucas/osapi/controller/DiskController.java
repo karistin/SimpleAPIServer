@@ -5,9 +5,7 @@ import com.lucas.osapi.entity.DiskUsage;
 import com.lucas.osapi.model.response.ListResult;
 import com.lucas.osapi.model.response.SingleResult;
 import com.lucas.osapi.service.DiskUsageService;
-import com.lucas.osapi.service.DiskUsageServiceimpl;
 import com.lucas.osapi.service.ResponseService;
-import com.lucas.osapi.service.ResponseServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -16,9 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 /**
  * packageName    : com.lucas.osapi.controller
@@ -43,49 +40,68 @@ public class DiskController {
 
     private final DiskUsageService diskUsageService;
 
-    @ApiOperation(value = "findList", notes = "모든 호스트들의 Disk의 사용량을 가져온다.")
+    @ApiOperation(value = "List", notes = "최근 disk 정보를 가져온다.")
     @GetMapping(value = "/list")
-    public ListResult<DiskInfo> findList() {
+    public ListResult<DiskInfo> List() {
         return responseService.getListResult(diskUsageService.List());
     }
 
 
-    @ApiOperation(value = "findUsageList", notes = "모든 호스트들의 정보를 가져온다.")
+    @ApiOperation(value = "UsageList", notes = "최근 diskUsage 정보를 가져온다.")
     @GetMapping(value = "/list/usage")
-    public ListResult<DiskUsage> findUsageList() {
+    public ListResult<DiskUsage> ListUsage() {
         return responseService.getListResult(diskUsageService.ListUsage());
     }
 
-
-
-    @ApiOperation(value = "findTop", notes = "모든 호스트들중 Disk사용량 상위 5개를 가져온다.")
-    @GetMapping(value = "/top")
-    public ListResult<DiskUsage> findTop() throws Exception {
-        return responseService.getListResult(diskUsageService.Top("diskUsage"));
+    @ApiOperation(value = "Id",notes = "Id disk 정보를 가져온다.")
+    @GetMapping(value = "/list/{uid}")
+    public SingleResult<DiskInfo> Id(
+        @ApiParam(value = "uid",required = true) @PathVariable String uid)
+        throws Exception {
+        return responseService.getSingleResult(diskUsageService.Id(uid));
     }
 
-    @ApiOperation(value = "findAver", notes = "모든 호스트들의 Disk 사용량 평균")
-    @GetMapping(value = "/average")
-    public SingleResult<Double> findAverage() throws Exception {
+    @ApiOperation(value = "Id", notes = "특정 호스트의 Series Data Time : minute")
+    @GetMapping(value = "/range")
+    public ListResult<DiskInfo> IdRange(
+        @ApiParam(value = "uid", required = true) @RequestParam(value = "uid") String uid,
+        @ApiParam(value = "time", required = true)@RequestParam(value = "time") Long time) {
+        return responseService.getListResult(diskUsageService.IdRange(uid, time));
+    }
+
+    @ApiOperation(value = "Idrange", notes = "특정 호스트의 Series Data Time : minute")
+    @GetMapping(value = "/range/usage")
+    public ListResult<DiskUsage> IdRangeUsage(
+        @ApiParam(value = "uid", required = true) @RequestParam(value = "uid") String uid,
+        @ApiParam(value = "time", required = true)@RequestParam(value = "time") Long time) {
+        return responseService.getListResult(diskUsageService.IdRangeUsage(uid, time));
+    }
+
+    @ApiOperation(value = "Top", notes = "Usage TOP diskUsage/ diskInodeUsed/ diskIOPS")
+    @GetMapping(value = "/list/{type}/top")
+    public ListResult<DiskUsage> Top(
+        @ApiParam(value = "type", required = true) @PathVariable String type) {
+        return responseService.getListResult(diskUsageService.Top(type));
+    }
+
+    @ApiOperation(value = "Aver", notes = "Disk 사용량 평균")
+    @GetMapping(value = "/list/usage/average")
+    public SingleResult<Double> Average() throws Exception {
         return responseService.getSingleResult(diskUsageService.Average().orElseThrow(Exception::new));
     }
 
-    @ApiOperation(value = "findMax",notes = "모든 호스트들중 최대값")
-    @GetMapping(value = "/max")
-    public SingleResult<Double>  findMax() throws Exception {
+    @ApiOperation(value = "findMax",notes = "Disk 사용량 최대값")
+    @GetMapping(value = "/list/usage/max")
+    public SingleResult<Double>  Max() throws Exception {
         return responseService.getSingleResult(diskUsageService.Max().orElseThrow(Exception::new));
     }
 
-    @ApiOperation(value = "findMin",notes = "모든 호스트들중 최소값")
-    @GetMapping(value = "/min")
-    public SingleResult<Double>  findMin() throws Exception {
+    @ApiOperation(value = "findMin",notes = "Disk 사용량 최소값")
+    @GetMapping(value = "/list/usage/min")
+    public SingleResult<Double>  Min() throws Exception {
         return responseService.getSingleResult(diskUsageService.Min().orElseThrow(Exception::new));
     }
 
 
-    @ApiOperation(value = "findById",notes = "특정 호스트 모든 데이터")
-    @GetMapping(value = "/{uid}")
-    public SingleResult<DiskInfo> findById(@ApiParam(value = "uid",required = true) @PathVariable String uid) throws Exception {
-        return responseService.getSingleResult(diskUsageService.Id(uid));
-    }
+
 }

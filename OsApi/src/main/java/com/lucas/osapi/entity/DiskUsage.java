@@ -1,7 +1,6 @@
 package com.lucas.osapi.entity;
 
 import java.time.Instant;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.influxdb.annotation.Column;
@@ -21,7 +20,6 @@ import org.influxdb.annotation.TimeColumn;
  */
 @Getter
 @Setter
-@AllArgsConstructor
 @Measurement(name = "DiskInfo", database = "OsData")
 public class DiskUsage {
 
@@ -41,5 +39,13 @@ public class DiskUsage {
     @Column(name = "uid")
     private String uid;
 
-
+    public DiskUsage setDiskUsage(Instant time, double diskInodeUsed, double diskIOPS, double diskUsage,
+        String uid) {
+        this.time = time;
+        this.diskInodeUsed = diskInodeUsed;
+        this.diskIOPS = diskIOPS;
+        this.diskUsage = diskUsage;
+        this.uid = uid;
+        return this;
+    }
 }

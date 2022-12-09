@@ -1,4 +1,4 @@
-package com.lucas.osapi.dev.service;
+package com.lucas.dev.service;
 
 import com.lucas.osapi.entity.CpuUsage;
 import com.lucas.osapi.entity.DiskUsage;
