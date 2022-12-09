@@ -36,8 +36,11 @@ import static org.influxdb.querybuilder.BuiltQuery.QueryBuilder.select;
 @Service
 public class CpuUsageServiceimpl implements CpuUsageService {
 
-    @Autowired
-    private CpuRepo cpuRepo;
+    private final CpuRepo cpuRepo;
+
+    public CpuUsageServiceimpl(CpuRepo cpuRepo) {
+        this.cpuRepo = cpuRepo;
+    }
 
     @Override
     public List<CpuInfo> List() {
