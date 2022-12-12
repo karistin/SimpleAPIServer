@@ -5,6 +5,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+import com.lucas.osapi.config.InfluxDBConfiguration;
+import com.lucas.osapi.repo.influxDB.CpuRepoImpl;
+import com.lucas.osapi.service.CpuUsageServiceimpl;
+import com.lucas.osapi.service.ResponseService;
 import lombok.NoArgsConstructor;
 
 import org.junit.Test;

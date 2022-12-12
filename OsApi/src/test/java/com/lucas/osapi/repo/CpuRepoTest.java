@@ -1,7 +1,6 @@
 package com.lucas.osapi.repo;
 
 import com.lucas.osapi.config.InfluxDBConfiguration;
-import com.lucas.osapi.config.InfluxDBConfigurationTest;
 import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.CpuUsage;
 import com.lucas.osapi.repo.influxDB.CpuRepo;
