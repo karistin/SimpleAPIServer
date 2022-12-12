@@ -43,9 +43,33 @@ class ServerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+
+    @Test
+    void getList() throws Exception{
+        mockMvc.perform(get("/v1/server/list").contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.code").value(0))
+            .andExpect(jsonPath("$.msg").exists())
+            .andExpect(jsonPath("$.list[*].uid").exists())
+            .andReturn();
+    }
+
+    @Test
+    void getId() throws Exception{
+        mockMvc.perform(get("/v1/server/{id}", "serverA").contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.code").value(0))
+            .andExpect(jsonPath("$.msg").exists())
+            .andExpect(jsonPath("$.data").exists())
+            .andReturn();
+    }
+
+
     @Test
     void getServerCount() throws Exception{
-        mockMvc.perform(get("/v1/server/count").contentType("application/json"))
+        mockMvc.perform(get("/v1/server/list/type").contentType("application/json"))
                .andExpect(status().isOk())
                .andExpect(jsonPath("$.success").value(true))
                .andExpect(jsonPath("$.code").value(0))
@@ -56,12 +80,23 @@ class ServerControllerTest {
 
     @Test
     void getServerCore() throws Exception{
-        mockMvc.perform(get("/v1/server/core").contentType("application/json"))
+        mockMvc.perform(get("/v1/server/list/core").contentType("application/json"))
                .andExpect(status().isOk())
                .andExpect(jsonPath("$.success").value(true))
                .andExpect(jsonPath("$.code").value(0))
                .andExpect(jsonPath("$.msg").exists())
                .andExpect(jsonPath("$.data").exists())
                .andReturn();
+    }
+
+    @Test
+    void getCount() throws Exception{
+        mockMvc.perform(get("/v1/server/list/count").contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.code").value(0))
+            .andExpect(jsonPath("$.msg").exists())
+            .andExpect(jsonPath("$.data").exists())
+            .andReturn();
     }
 }

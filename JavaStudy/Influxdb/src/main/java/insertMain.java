@@ -161,6 +161,7 @@ public class insertMain {
 
                 ServerInfo serverInfo = new ServerInfo();
                 serverInfo.setUid(hostname);
+                serverInfo.setHostName(hostname);
                 serverInfo.setOsType("linux");
                 serverInfo.setOsVersion("Ubuntu 18.04.6 LTS");
                 serverInfo.setIpadress("172.26.36.19");
