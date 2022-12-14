@@ -40,6 +40,7 @@ public class ServerInfo {
     @Column(name = "osVersion")
     private String osVersion;
 
+//    TODO : change String -> Long
     @Column(name = "totalMem")
     private String totalMem;
 
@@ -52,4 +53,17 @@ public class ServerInfo {
     @Column(name = "agent")
     private String agentVersion;
 
+    public ServerInfo setServerInfo(Instant time, String uid, String hostName, String osType, String osVersion,
+        String totalMem, int core, String ipadress, String agentVersion) {
+        this.time = time;
+        this.uid = uid;
+        this.hostName = hostName;
+        this.osType = osType;
+        this.osVersion = osVersion;
+        this.totalMem = totalMem;
+        this.core = core;
+        this.ipadress = ipadress;
+        this.agentVersion = agentVersion;
+        return this;
+    }
 }

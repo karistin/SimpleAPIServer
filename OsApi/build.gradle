@@ -1,11 +1,30 @@
+//buildScript {
+//    ext {
+//        springBootVersion = '2.7.5'
+//        dependencyManagementVersion = '1.0.11.RELEASE'
+//    }
+//    repositories {
+//        mavenCentral()
+//    }
+//
+//    dependencies {
+//        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//        classpath ("io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}")
+//    }
+//}
+
+
+
 plugins {
     id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'java'
 }
 
+
+
 group = 'com.lucas'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 sourceCompatibility = '11'
 
 configurations {
@@ -48,6 +67,16 @@ dependencies {
     implementation 'io.springfox:springfox-swagger-ui:2.6.1'
 }
 
+tasks.named('jar') {
+    manifest {
+        attributes('Main-Class':"com.lucas.osapi.OsApiApplication",
+    )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
 tasks.named('test') {
     useJUnitPlatform()
 }

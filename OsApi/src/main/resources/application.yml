@@ -15,6 +15,9 @@ spring:
     mem-table:
       name: MemInfo
       tag: uid
+    server-table:
+      name: ServerInfo
+      tag: uid
   main:
     allow-bean-definition-overriding: true
   mvc:
