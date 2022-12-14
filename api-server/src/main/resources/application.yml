@@ -18,6 +18,9 @@ spring:
     server-table:
       name: ServerInfo
       tag: uid
+    process-table:
+      name: ProcessInfo
+      tag: uid
   main:
     allow-bean-definition-overriding: true
   mvc:

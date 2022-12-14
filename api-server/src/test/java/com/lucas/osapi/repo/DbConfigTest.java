@@ -5,6 +5,7 @@ import com.lucas.osapi.config.InfluxDBConfiguration;
 import com.lucas.osapi.entity.CpuInfo;
 import com.lucas.osapi.entity.DiskInfo;
 import com.lucas.osapi.entity.MemInfo;
+import com.lucas.osapi.entity.ProcessInfo;
 import lombok.extern.slf4j.Slf4j;
 
 import org.influxdb.dto.Point;
@@ -133,6 +134,24 @@ public class DbConfigTest {
         List<MemInfo> memInfos = resultMapper.toPOJO(result, MemInfo.class);
         assertNotNull(memInfos.get(0));
 
+    }
+
+    @Test
+    @DisplayName("ProcessTable")
+    public void ProcessTable(){
+        QueryResult result = influxDBTemplate.getConnection().query(new Query("select * from ProcessInfo limit 1", dbName));
+        List<String> colums = result.getResults().get(0).getSeries().get(0).getColumns();
+        List<String> processCol = Arrays.asList("time", "cpuUsage", "diskUsage", "hostname", "memUsage", "processName", "processUser", "uid");
+
+
+        assertEquals(colums.size(), processCol.size());
+
+        for (String colum : colums) {
+            assertTrue(processCol.contains(colum));
+        }
+
+        List<ProcessInfo> processInfoList = resultMapper.toPOJO(result, ProcessInfo.class);
+        assertNotNull(processInfoList.get(0));
 
     }
 }

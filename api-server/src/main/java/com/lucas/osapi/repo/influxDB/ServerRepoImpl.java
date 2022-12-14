@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 
 import java.util.List;
+
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,7 +34,7 @@ import org.springframework.stereotype.Service;
  * 2022-11-30        lucas       최초 생성
  * 서버의 정보를 가져오는 Repo
  */
-@Service
+@Repository
 @Slf4j
 public class ServerRepoImpl implements ServerRepo{
 
@@ -97,6 +99,6 @@ public class ServerRepoImpl implements ServerRepo{
 
     @Override
     public QueryResult query(String query) {
-        return null;
+        return influxDBTemplate.getConnection().query(new Query(query, influxDBTemplate.getDatabase()));
     }
 }
