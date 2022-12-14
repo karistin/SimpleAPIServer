@@ -22,8 +22,6 @@ plugins {
 }
 
 
-
-group = 'com.lucas'
 version = '1.0.0'
 sourceCompatibility = '11'
 
