@@ -1,3 +1,5 @@
+package main;
+
 import static java.lang.Thread.sleep;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +28,7 @@ import org.influxdb.dto.Point;
 
 /**
  * packageName    : com.lucas.influxdb
- * fileName       : insertMain
+ * fileName       : main.insertMain
  * author         : lucas
  * date           : 2022-11-17
  * description    :
@@ -46,7 +48,10 @@ public class insertMain {
 
     static {
         try {
-            if (!Files.exists(path)) Files.createFile(path);
+            if (!Files.exists(path)) {
+                Files.createFile(path);
+                System.out.println("File Settings are not correct");
+            }
             ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
             config = objectMapper.readValue(path.toFile(), ApplicationConfig.class);
             System.out.println("Application config info " + config.toString());
@@ -60,8 +65,6 @@ public class insertMain {
     );
 
     public static void main(String[] args) throws InterruptedException {
-        System.out.println("================Testing for influxdb==============================");
-        System.out.println(config.toString());
         final String serverURL = config.getInfluxdb().getUrl() +":"+ config.getInfluxdb().getPort();
         final String username = config.getInfluxdb().getUsername();
         final String password = config.getInfluxdb().getPassword();
@@ -237,11 +240,6 @@ public class insertMain {
                 influxDB.write(Point.measurementByPOJO(ProcessInfo.class).addFieldsFromPOJO(process3).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
                 influxDB.write(Point.measurementByPOJO(ProcessInfo.class).addFieldsFromPOJO(process3).time(System.currentTimeMillis(),TimeUnit.MILLISECONDS).build());
 
-//                QueryResult queryResult = influxDB.query(new Query("select * from CpuInfo where uid = 'serverA' and time > now() -3m"));
-//                InfluxDBResultMapper influxDBResultMapper = new InfluxDBResultMapper();
-////                System.out.println(queryResult.toString());
-//                List<CpuInfo> cpuInfo = influxDBResultMapper.toPOJO(queryResult, CpuInfo.class);
-//                System.out.println(cpuInfo.size());
             }
             System.out.println("Running");
             sleep(config.getDummy().getIntervel());

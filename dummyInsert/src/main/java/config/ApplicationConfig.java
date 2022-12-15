@@ -16,8 +16,8 @@ public class ApplicationConfig {
     public ApplicationConfig() {
     }
 
-    private influxConfig influxdb;
-    private dummyConfig dummy;
+    private InfluxConfig influxdb;
+    private DummyConfig dummy;
 
     @Override
     public String toString() {

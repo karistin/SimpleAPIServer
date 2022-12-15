@@ -1,3 +1,0 @@
-rootProject.name = 'AgentSlave'
-include 'api-server'
-include 'dummyInsert'

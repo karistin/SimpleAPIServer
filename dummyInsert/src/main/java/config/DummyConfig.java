@@ -4,20 +4,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * packageName    : config fileName       : dummyConfig author         : lucas date           :
+ * packageName    : config fileName       : DummyConfig author         : lucas date           :
  * 2022-12-15 description    : =========================================================== DATE
  *         AUTHOR             NOTE -----------------------------------------------------------
  * 2022-12-15        lucas       최초 생성
  */
 @Getter
 @Setter
-public class dummyConfig {
+public class DummyConfig {
 
-    private long intervel = 5000;
+    private long intervel;
 
     @Override
     public String toString() {
-        return "dummyConfig{" +
+        return "DummyConfig{" +
             "intervel=" + intervel +
             '}';
     }

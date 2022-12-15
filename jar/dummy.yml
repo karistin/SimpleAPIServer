@@ -1,0 +1,8 @@
+influxdb:
+  url: http://127.0.0.1
+  port: 8086
+  dbname: OsData
+  username: root
+  password: root
+dummy:
+  intervel: 5000

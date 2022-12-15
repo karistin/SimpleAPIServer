@@ -7,7 +7,7 @@ version '1.0.0'
 
 tasks.named('jar') {
     manifest {
-        attributes('Main-Class':"insertMain",
+        attributes('Main-Class':"main.insertMain",
         )
     }
     from {
