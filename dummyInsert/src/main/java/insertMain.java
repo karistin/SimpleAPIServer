@@ -1,5 +1,8 @@
 import static java.lang.Thread.sleep;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import config.ApplicationConfig;
 import entity.CpuInfo;
 import entity.DiskInfo;
 import entity.MemInfo;
@@ -7,6 +10,10 @@ import entity.NetworkInfo;
 import entity.ProcessInfo;
 import entity.ServerInfo;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,19 +37,42 @@ import org.influxdb.dto.Point;
  */
 
 public class insertMain {
-    static List<String> hostnameList = new ArrayList<>(
-            Arrays.asList("serverA","serverB","serverC", "serverD", "serverE", "serverF", "serverG","serverH")
-    );
-    private String GiGa = "GiB";
 
+    private static final String settingName = "./dummy.yml";
+
+    private static final Path path = Paths.get(settingName);
+
+    static ApplicationConfig config = new ApplicationConfig();
+
+    static {
+        try {
+            if (!Files.exists(path)) Files.createFile(path);
+            ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+            config = objectMapper.readValue(path.toFile(), ApplicationConfig.class);
+            System.out.println("Application config info " + config.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    static List<String> hostnameList = new ArrayList<>(
+            Arrays.asList("serverA","serverB","serverC", "serverD", "serverE",
+                "serverF", "serverG","serverH")
+    );
 
     public static void main(String[] args) throws InterruptedException {
-        final String serverURL = "http://127.0.0.1:8086", username = "root", password = "root";
-        String databases = "OsData";
+        System.out.println("================Testing for influxdb==============================");
+        System.out.println(config.toString());
+        final String serverURL = config.getInfluxdb().getUrl() +":"+ config.getInfluxdb().getPort();
+        final String username = config.getInfluxdb().getUsername();
+        final String password = config.getInfluxdb().getPassword();
+        final String databases = config.getInfluxdb().getDbname();
         InfluxDB influxDB = InfluxDBFactory.connect(serverURL);
+        if (!influxDB.ping().isGood()) {
+            System.out.println("Not find DB");
+            return;
+        }
+        System.out.println("Ping OK!");
         influxDB.setDatabase(databases);
-
-
         Runtime.getRuntime().addShutdownHook(new Thread(influxDB::close));
         influxDB.enableBatch(
                 BatchOptions.DEFAULTS
@@ -52,19 +82,10 @@ public class insertMain {
                             return thread;
                         })
         );
-
-
-
         Random rand = new Random();
-
-
-
-
         while(true) {
             long seed = System.currentTimeMillis();
             rand.setSeed(seed);
-            List<CpuInfo> cpuinfoList = new ArrayList<>();
-
             for (String hostname : hostnameList) {
                 CpuInfo cpuinfo = new CpuInfo();
                 cpuinfo.setUid(hostname);
@@ -93,8 +114,6 @@ public class insertMain {
                 memInfo.setHostname(hostname);
                 usage = (5+(20) * rand.nextDouble());
                 memInfo.setMemUsage(usage);
-//                Gib = KB * 1e6
-//                gib = byte * 1e9
                 double mem = 7.894967 * 1E9;
                 memInfo.setMemUsageByteAll(mem);
                 memInfo.setMemUsageByteFree(mem*0.5);
@@ -225,8 +244,21 @@ public class insertMain {
 //                System.out.println(cpuInfo.size());
             }
             System.out.println("Running");
-            sleep(5000);
+            sleep(config.getDummy().getIntervel());
         }
 
+    }
+
+    private ProcessInfo mkProcess(String hostname, String user, String processName, Random rand) {
+        ProcessInfo processInfo = new ProcessInfo();
+        processInfo.setUid(hostname);
+        processInfo.setHostname(hostname);
+        processInfo.setProcessUser(user);
+        processInfo.setProcessName(processName);
+        processInfo.setCpuUsage(100 * rand.nextDouble());
+        processInfo.setMemUsage(100 * rand.nextDouble());
+        processInfo.setDiskUsage(100 * rand.nextDouble());
+
+        return processInfo;
     }
 }
