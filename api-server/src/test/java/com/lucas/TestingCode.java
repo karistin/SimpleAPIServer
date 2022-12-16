@@ -25,11 +25,10 @@ public class TestingCode {
         int age = 1234;
         char[] lang = "abcdefghij".toCharArray();
         String val = String.valueOf(age);
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
-        for(char ch: val.toCharArray()) {
-            result += (lang[Character.getNumericValue(ch) - 1]);
-        }
+        for(char ch: val.toCharArray())
+            result.append(lang[Character.getNumericValue(ch) - 1]);
 
         System.out.println(result);
     }
