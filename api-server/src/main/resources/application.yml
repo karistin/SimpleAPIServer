@@ -1,3 +1,20 @@
+server:
+  tomcat:
+    access-log:
+      enabled: true
+      suffix: .log
+      prefix: access_log
+      file-date-format: yyyy-MM-dd
+      pattern: common  # 일반적인 access log 적용시
+      directory: log
+#      pattern: %{yyyy-MM-dd HH:mm:ss}t %s %r %{User-Agent}i %{Referer}i %a %b %D
+#      %h – 요청을 보낸 클라이언트 IP
+#      %l – 사용자 식별 정보
+#      %u – HTTP 인증에 의해 지정된 사용자 이름
+#      %t – 요청 시간
+#      %r – 사용자 요청 URL
+#      %s – HTTP 응답 코드
+#      %b – 응답 사이즈
 spring:
   influxdb:
     url: http://localhost:8086

@@ -6,13 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
-/**
- * packageName    : com.lucas fileName       : testingCode author         : lucas date           :
- * 2022-12-15 description    : =========================================================== DATE
- *         AUTHOR             NOTE -----------------------------------------------------------
- * 2022-12-15        lucas       최초 생성
- */
-public class testingCode {
+
+public class TestingCode {
 
     @Test
     public void arraySlice() {
@@ -23,5 +18,19 @@ public class testingCode {
     private int[] solution(int[] numbers, int start, int end) {
         int[] arr = Arrays.copyOfRange(numbers, start, end + 1);
         return arr;
+    }
+
+    @Test
+    public void codeTest() {
+        int age = 1234;
+        char[] lang = "abcdefghij".toCharArray();
+        String val = String.valueOf(age);
+        String result = "";
+
+        for(char ch: val.toCharArray()) {
+            result += (lang[Character.getNumericValue(ch) - 1]);
+        }
+
+        System.out.println(result);
     }
 }
