@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -194,9 +195,22 @@ public class insertMain {
                 process1.setHostname(hostname);
                 process1.setProcessUser("root");
                 process1.setProcessName("docker");
-                process1.setCpuUsage(100 * rand.nextDouble());
-                process1.setMemUsage(100 * rand.nextDouble());
-                process1.setDiskUsage(100 * rand.nextDouble());
+                double cpuUsage = 20 * rand.nextDouble();
+                process1.setCpuUsage(cpuUsage);
+                process1.setCpuUsageCount(2);
+                process1.setCpuUsageMax(cpuUsage*0.8);
+                process1.setCpuUsageMin(cpuUsage*0.2);
+
+
+                double memUsage = 15 * rand.nextDouble();
+                process1.setMemUsage(memUsage);
+                process1.setMemUsageCount(3);
+                process1.setMemUsageMax(memUsage*0.7);
+                process1.setMemUsageMin(memUsage*0.2);
+
+                double diskUsage = 100 * rand.nextDouble();
+                process1.setDiskUsage(diskUsage);
+
 
 
 
@@ -205,8 +219,20 @@ public class insertMain {
                 process2.setHostname(hostname);
                 process2.setProcessUser("ksj");
                 process2.setProcessName("chrome");
-                process2.setCpuUsage(100 * rand.nextDouble());
+
+                cpuUsage = 20 * rand.nextDouble();
+
+                process2.setCpuUsage(cpuUsage);
+                process2.setCpuUsageCount(1);
+                process2.setCpuUsageMax(cpuUsage);
+                process2.setCpuUsageMin(cpuUsage);
+
+                memUsage = 15 * rand.nextDouble();
                 process2.setMemUsage(100 * rand.nextDouble());
+                process2.setMemUsageCount(1);
+                process2.setMemUsageMax(memUsage);
+                process2.setMemUsageMin(memUsage);
+
                 process2.setDiskUsage(100 * rand.nextDouble());
 
 
@@ -216,8 +242,22 @@ public class insertMain {
                 process3.setHostname(hostname);
                 process3.setProcessUser("ksj");
                 process3.setProcessName("agent");
+
                 process3.setCpuUsage(100 * rand.nextDouble());
+                cpuUsage = 20 * rand.nextDouble();
+                process3.setCpuUsage(cpuUsage);
+                process3.setCpuUsageCount(2);
+                process3.setCpuUsageMax(cpuUsage*0.6);
+                process3.setCpuUsageMin(cpuUsage*0.4);
+
+
                 process3.setMemUsage(100 * rand.nextDouble());
+                memUsage = 15 * rand.nextDouble();
+                process3.setMemUsage(memUsage);
+                process3.setMemUsageCount(1);
+                process3.setMemUsageMax(memUsage);
+                process3.setMemUsageMin(memUsage);
+
                 process3.setDiskUsage(100 * rand.nextDouble());
 
 
@@ -258,5 +298,14 @@ public class insertMain {
         processInfo.setDiskUsage(100 * rand.nextDouble());
 
         return processInfo;
+    }
+
+    public static long cutDouble(double value) {
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMinimumFractionDigits(2);
+        nf.setGroupingUsed(false);
+
+        String val = nf.format(2);
+        return Long.parseLong(val);
     }
 }

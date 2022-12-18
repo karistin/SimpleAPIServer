@@ -38,8 +38,26 @@ public class ProcessInfo {
     @Column(name = "processName", tag = true)
     private String processName;
 
+    @Column(name = "cpuUsageMin")
+    private double cpuUsageMin;
+
+    @Column(name = "cpuUsageMax")
+    private double cpuUsageMax;
+
+    @Column(name = "cpuUsageCount")
+    private double cpuUsageCount;
+
     @Column(name = "cpuUsage")
     private double cpuUsage;
+
+    @Column(name = "memUsageMin")
+    private double memUsageMin;
+
+    @Column(name = "memUsageMax")
+    private double memUsageMax;
+
+    @Column(name = "memUsageCount")
+    private double memUsageCount;
 
     @Column(name = "memUsage")
     private double memUsage;

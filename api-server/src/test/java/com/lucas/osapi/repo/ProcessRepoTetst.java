@@ -37,7 +37,23 @@ public class ProcessRepoTetst {
         List<ProcessInfo> processInfoList  = processRepo.findList();
         assertNotNull(processInfoList);
         processInfoList.forEach(processInfo -> assertThat(processInfo).hasNoNullFieldsOrProperties());
+    }
 
+    @Test
+    @DisplayName("findList")
+    public void findCpuList(){
+        List<ProcessInfo> processInfoList  = processRepo.findCpuList();
+        assertNotNull(processInfoList);
+        processInfoList.forEach(processInfo -> assertThat(processInfo.getCpuUsage()).isNotNull());
+    }
+
+    @Test
+    @DisplayName("findList")
+    public void findMemList(){
+        List<ProcessInfo> processInfoList  = processRepo.findMemList();
+        assertNotNull(processInfoList);
+        processInfoList.forEach(processInfo -> assertThat(processInfo.getMemUsage()).isNotNull());
+//        processInfoList.forEach(processInfo -> assertThat(processInfo).hasNoNullFieldsOrProperties());
     }
 
 }

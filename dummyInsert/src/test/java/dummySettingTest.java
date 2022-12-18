@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Random;
+import main.insertMain;
 import org.junit.jupiter.api.Test;
 
 
@@ -30,4 +32,13 @@ public class dummySettingTest {
         ApplicationConfig config = objectMapper.readValue(path.toFile(), ApplicationConfig.class);
         System.out.println("Application config info " + config.toString());
     }
+
+//    @Test
+//    public void cutDoubleTest() {
+//        Random rand = new Random();
+//        rand.setSeed(System.currentTimeMillis());
+////        insertMain insert = new insertMain();
+//        long val = insertMain.cutDouble(rand.nextDouble());
+//        System.out.println(val);
+//    }
 }

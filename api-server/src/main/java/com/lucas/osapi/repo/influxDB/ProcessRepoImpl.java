@@ -39,13 +39,14 @@ public class ProcessRepoImpl implements ProcessRepo{
 
     @Override
     public List<ProcessInfo> findList() {
-//        select * from ProcessInfo group by uid order by desc limit 1
-        Query query = select().from(influxDBTemplate.getDatabase(), tableName)
-                .groupBy(tagKey)
-                .orderBy(desc())
-                .limit(1);
-        log.info(query.getCommand());
-        QueryResult queryResult = influxDBTemplate.query(query);
+//         select top(cpuUsage, 10) as cpuUsage , * from ProcessInfo where time > now() - 5s
+//        Query query = select().from(influxDBTemplate.getDatabase(), tableName)
+//                .groupBy(tagKey)
+//                .orderBy(desc())
+//                .limit(1);
+        String query = " select top(cpuUsage, 10) as cpuUsage , * from ProcessInfo where time > now() - 10s";
+        log.info(query);
+        QueryResult queryResult = influxDBTemplate.query(new Query(query, influxDBTemplate.getDatabase()));
         List<ProcessInfo> processInfoList =  resultMapper.toPOJO(queryResult, ProcessInfo.class);
         if (processInfoList.isEmpty()) {
             throw new RepoException();
@@ -53,13 +54,29 @@ public class ProcessRepoImpl implements ProcessRepo{
         return processInfoList;
     }
 
+
     @Override
     public List<ProcessInfo> findCpuList() {
-        return null;
+//        select top(cpuUsage, 5) as cpuUsage , processName , uid from ProcessInfo where time > now() - 5s
+        String query = "select top(cpuUsage, 5) as cpuUsage , * from ProcessInfo where time > now() - 10s";
+        log.info(query);
+        QueryResult queryResult = influxDBTemplate.query(new Query(query, influxDBTemplate.getDatabase()));
+        List<ProcessInfo> processInfoList = resultMapper.toPOJO(queryResult, ProcessInfo.class);
+        if (processInfoList.isEmpty()) {
+            throw new RepoException();
+        }
+        return processInfoList;
     }
 
     @Override
     public List<ProcessInfo> findMemList() {
-        return null;
+        String query = "select top(memUsage, 5) as memUsage , * from ProcessInfo where time > now() - 10s ";
+        log.info(query);
+        QueryResult queryResult = influxDBTemplate.query(new Query(query, influxDBTemplate.getDatabase()));
+        List<ProcessInfo> processInfoList = resultMapper.toPOJO(queryResult, ProcessInfo.class);
+        if (processInfoList.isEmpty()) {
+            throw new RepoException();
+        }
+        return processInfoList;
     }
 }
