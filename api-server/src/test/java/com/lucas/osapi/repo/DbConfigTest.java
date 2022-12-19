@@ -88,12 +88,10 @@ public class DbConfigTest {
         List<String> cpuInfoCol = Arrays.asList("time", "cpuUsage", "uid", "hostname","idleUsage","irqUsage","niceUsage","softIrqUsage","stealUsage","sysUsage",
                 "cpuLoad15min","cpuLoad1min","cpuLoad5min",
                 "userUsage","waitIoUsage");
+        String[] col = colums.toArray(new String[0]);
+        String[] cpuInfo = cpuInfoCol.toArray(new String[0]);
 
-        assertEquals(colums.size(), cpuInfoCol.size());
-
-        for (String colum : colums) {
-            assertTrue(cpuInfoCol.contains(colum));
-        }
+        assertArrayEquals(col, cpuInfo);
 
 
         List<CpuInfo> cpuInfos = resultMapper.toPOJO(result, CpuInfo.class);

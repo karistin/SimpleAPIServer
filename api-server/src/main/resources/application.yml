@@ -18,8 +18,8 @@ server:
 spring:
   influxdb:
     url: http://localhost:8086
-    username: admin
-    password: admin
+    username: root
+    password: root
     database: OsData
     retention-policy: autogen
   influxdbRepo:

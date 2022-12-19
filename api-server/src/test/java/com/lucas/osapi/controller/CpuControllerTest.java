@@ -99,7 +99,7 @@ public class CpuControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").exists())
             .andExpect(MockMvcResultMatchers.jsonPath("$.list").exists())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*]").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*].time").exists())
             .andReturn().getResponse();
     }
 
@@ -112,7 +112,7 @@ public class CpuControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(0))
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").exists())
             .andExpect(MockMvcResultMatchers.jsonPath("$.list").exists())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*]").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.list[*].time").exists())
             .andReturn().getResponse();
     }
 

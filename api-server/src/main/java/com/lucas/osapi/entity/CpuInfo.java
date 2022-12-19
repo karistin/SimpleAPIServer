@@ -39,6 +39,7 @@ public class CpuInfo {
 
     @Column(name = "uid", tag = true)
     private String uid;
+
     @Column(name = "hostname")
     private String hostname;
 
