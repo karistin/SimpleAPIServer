@@ -28,11 +28,11 @@ import javax.servlet.http.HttpServletResponse;
 public class ExceptionAdvice {
     private final ResponseService responseService;
 
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    protected CommonResult defaultException(HttpServletRequest request, Exception e) {
-//        return responseService.getFailResult();
-//    }
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult defaultException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResult();
+    }
 
     @ExceptionHandler(RepoException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
