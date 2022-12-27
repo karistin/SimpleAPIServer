@@ -1,3 +1,13 @@
+server:
+  tomcat:
+    accesslog:
+      prefix: access_log
+      file-date-format: .yyyy-MM-dd
+      enabled: 'true'
+      suffix: .log
+      directory: logs
+      pattern: '%{yyyy-MM-dd HH:mm:ss}t %s %r %{User-Agent}i %{Referer}i %a %b'
+    basedir: .
 spring:
   influxdb:
     url: http://localhost:8086

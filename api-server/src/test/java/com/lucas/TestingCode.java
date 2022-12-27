@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,5 +41,10 @@ public class TestingCode {
 //        java.util.logging.Logger log = new java.util.logging.Logger();
         Logger logger = LoggerFactory.getLogger(this.getClass());
         logger.info("Hello World");
+    }
+
+    @Test
+    public void sum() {
+        IntStream intStream = IntStream.range(1, 10);
     }
 }
